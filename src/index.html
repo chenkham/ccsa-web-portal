@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../faculty/DU-logo.png" />
+    <title>CCSA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="./tail.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeEW94sAAAAAPFa_NXd8WemwqWn-SLlNjpnN0CH"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            top: 100%;
+            left: 0;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .bg-pattern {
+            background-color: #ffffff;
+            background-image: url('https://www.transparenttextures.com/patterns/black-thread-light.png');
+            background-repeat: repeat;
+            position: relative;
+        }
+
+        .bg-pattern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(26, 54, 93, 0.03), rgba(26, 54, 93, 0.06));
+            pointer-events: none;
+        }
+
+        section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Menu Enhancements */
+        @media (max-width: 768px) {
+
+            .dropdown-menu,
+            .nested-menu {
+                position: static;
+                box-shadow: none;
+                border: none;
+                background-color: rgba(30, 58, 138, 0.05);
+                margin: 0.25rem 0;
+                padding: 0.5rem;
+            }
+
+            .nested-dropdown .nested-menu {
+                margin-left: 1rem;
+            }
+        }
+
+        h2 {
+            background: linear-gradient(45deg, #1a365d, #2d4a7c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            position: relative;
+        }
+
+        /* Enhanced content container */
+        .content-container {
+            background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+            border: 1px solid rgba(26, 54, 93, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .content-container:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .nested-dropdown {
+            position: relative;
+        }
+
+        .nested-dropdown:hover>.dropdown-menu {
+            display: block;
+        }
+
+        .nested-menu {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            color: #4f46e5;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        /* Add arrow indication for items with submenus */
+        .has-submenu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .dropdown-menu a {
+            transition: all 0.2s ease;
+            color: #1a365d;
+        }
+
+        .dropdown-item {
+            display: block;
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item i {
+            color: #4f46e5;
+        }
+
+
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Achievement Cards Enhancement */
+        .bg-gradient-to-br {
+            background-size: 200% 200%;
+            animation: gradientAnimation 5s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Responsive adjustments for achievement cards */
+        @media (max-width: 768px) {
+            .achievement-card {
+                margin-bottom: 2rem;
+            }
+
+            .achievement-icon {
+                font-size: 3rem;
+            }
+        }
+
+        /* Announcement Swiper Styles */
+        .noticeSwiper {
+            width: 100%;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        .swiper-slide {
+            width: 100%;
+            height: auto;
+            min-height: fit-content;
+        }
+
+        @media (max-width: 375px) {
+            .noticeSwiper {
+                max-height: 200px;
+            }
+        }
+
+        .noticeSwiper .swiper-pagination-bullet {
+            background: #4f46e5;
+        }
+
+        /* Download Item Styles */
+        .download-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .download-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .download-item i {
+            color: #4f46e5;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .download-item:hover i {
+            transform: translateY(-2px);
+        }
+
+        .download-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background-color: #4f46e5;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Mobile Download Menu Enhancements */
+        @media (max-width: 768px) {
+            .mobile-download-menu {
+                background-color: rgba(30, 58, 138, 0.95);
+                backdrop-filter: blur(8px);
+                border-radius: 0.5rem;
+                margin: 0.5rem 0;
+                padding: 0.75rem;
+            }
+
+            .mobile-download-item {
+                border-radius: 0.375rem;
+                margin: 0.25rem 0;
+                padding: 0.75rem;
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+/* ========== LOGO SHINY BORDER ANIMATIONS ========== */
+@keyframes radialGlow {
+    0% { opacity: 0.2; transform: scale(0.96); }
+    50% { opacity: 0.6; transform: scale(1.08); }
+    100% { opacity: 0.2; transform: scale(0.96); }
+}
+
+@keyframes shine {
+    from { transform: translateX(-50%) rotate(35deg); }
+    to { transform: translateX(250%) rotate(35deg); }
+}
+
+@keyframes logoBorderSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes logoPulseRing {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.12); opacity: 0.15; }
+    100% { transform: scale(1); opacity: 0.5; }
+}
+
+@keyframes sparkleOrbit {
+    0% { transform: rotate(0deg) translateX(calc(50% + 6px)) rotate(0deg); opacity: 1; }
+    25% { opacity: 0.3; }
+    50% { transform: rotate(180deg) translateX(calc(50% + 6px)) rotate(-180deg); opacity: 1; }
+    75% { opacity: 0.3; }
+    100% { transform: rotate(360deg) translateX(calc(50% + 6px)) rotate(-360deg); opacity: 1; }
+}
+
+@keyframes shimmerSweep {
+    0% { transform: rotate(-45deg) translateY(-100%); }
+    100% { transform: rotate(-45deg) translateY(300%); }
+}
+
+/* Logo wrapper — holds everything */
+.logo-shiny-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(64px, 22vw, 80px);
+    height: clamp(64px, 22vw, 80px);
+}
+
+/* Pulsing outer glow ring */
+.logo-pulse-ring {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 215, 0, 0.25);
+    animation: logoPulseRing 2.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* Rotating conic-gradient border ring */
+.logo-border-ring {
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba(255, 215, 0, 0.05) 10%,
+        rgba(255, 223, 0, 0.7) 25%,
+        rgba(255, 248, 220, 0.95) 30%,
+        rgba(255, 223, 0, 0.7) 35%,
+        rgba(255, 215, 0, 0.05) 50%,
+        transparent 55%,
+        rgba(255, 215, 0, 0.05) 65%,
+        rgba(255, 223, 0, 0.5) 75%,
+        rgba(255, 248, 220, 0.8) 80%,
+        rgba(255, 223, 0, 0.5) 85%,
+        rgba(255, 215, 0, 0.05) 95%,
+        transparent 100%
+    );
+    animation: logoBorderSpin 4s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Mask out the inside of the ring so it's just a border */
+.logo-border-ring::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: #1a365d;
+}
+
+/* Orbiting sparkle dots */
+.logo-sparkle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, rgba(255, 223, 0, 0.9) 40%, transparent 70%);
+    box-shadow: 0 0 6px 2px rgba(255, 223, 0, 0.7), 0 0 12px 4px rgba(255, 215, 0, 0.3);
+    animation: sparkleOrbit 3s linear infinite;
+    z-index: 3;
+    pointer-events: none;
+}
+.logo-sparkle:nth-child(2) {
+    animation-delay: -1s;
+    width: 4px;
+    height: 4px;
+}
+.logo-sparkle:nth-child(3) {
+    animation-delay: -2s;
+    width: 3px;
+    height: 3px;
+    opacity: 0.7;
+}
+
+/* Badge container — holds the actual logo */
+.badge-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #2a4a7f 0%, #1a365d 100%);
+    padding: clamp(2px, 1vw, 3px);
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+/* Sweep shimmer across the badge */
+.badge-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -30%;
+    width: 60%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.05) 20%,
+        rgba(255, 223, 0, 0.25) 45%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 223, 0, 0.25) 55%,
+        rgba(255, 255, 255, 0.05) 80%,
+        transparent 100%
+    );
+    animation: shimmerSweep 2.8s ease-in-out infinite;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.badge-inner {
+    position: relative;
+    z-index: 2;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a365d;
+}
+
+/* Soft golden glow behind the logo on hover */
+.logo-shiny-wrapper:hover .logo-border-ring {
+    animation-duration: 2s;
+}
+.logo-shiny-wrapper:hover .logo-sparkle {
+    animation-duration: 1.8s;
+}
+.logo-shiny-wrapper:hover .logo-pulse-ring {
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+/* Outer soft glow */
+.glow-effect {
+    position: relative;
+    display: inline-block;
+}
+
+.glow-effect::before {
+    content: '';
+    position: absolute;
+    inset: clamp(-12px, -3vw, -22px);
+    background: radial-gradient(circle,
+        rgba(255, 223, 0, 0.3) 0%,
+        rgba(255, 215, 0, 0.08) 50%,
+        rgba(255, 215, 0, 0) 70%
+    );
+    animation: radialGlow 3s ease-in-out infinite;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.badge-inner img {
+    width: 92%;
+    height: auto;
+    max-width: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .logo-shiny-wrapper {
+        width: clamp(48px, 25vw, 60px);
+        height: clamp(48px, 25vw, 60px);
+    }
+    .logo-pulse-ring { inset: -4px; }
+    .logo-border-ring { inset: -2px; }
+    .glow-effect::before { inset: clamp(-8px, -2vw, -14px); }
+    .badge-inner img { max-width: 80px; }
+    .logo-sparkle { width: 3px; height: 3px; }
+}
+
+@keyframes fade-loop {
+    0%, 100% { opacity: 0; }
+    10%, 30% { opacity: 1; }
+}
+
+.animate-fade-loop {
+    animation: fade-loop 9s infinite;
+}
+
+.animation-delay-3000 {
+    animation-delay: 3s;
+}
+
+.animation-delay-6000 {
+    animation-delay: 6s;
+}
+.transition-opacity {
+    transition: opacity 1s ease-in-out;
+}
+
+.duration-1000 {
+    transition-duration: 1000ms;
+}
+
+.marquee-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.marquee {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.marquee-content {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+    min-width: 100%;
+    animation: scroll 30s linear infinite;
+}
+
+.company-name {
+    font-size: clamp(1.8rem, 6vw, 4.5rem);
+    font-weight: 600;
+    white-space: nowrap;
+    color: grey;
+    padding: 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+}
+
+.company-name:hover {
+    color: #1e40af;
+}
+
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+@media (min-width: 640px) {
+    .company-name {
+        font-size: 4rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee-content {
+        animation: none;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+
+
+#notifications-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+#notifications-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#notifications-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#notifications-container::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 20px;
+}
+
+#notifications-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.8);
+}
+
+    </style>
+</head>
+
+<body>
+
+    <header class="bg-teal-700 text-white">
+        <!-- Main Header Container -->
+        <div class="container mx-auto lg:px-10">
+            <div class="lg:flex justify-between items-center">
+
+                <!-- Email Section -->
+                <div class="hidden lg:flex items-center text-sm font-semibold">
+                    <a href="mailto:ccsduoffice@gmail.com" class="flex items-center py-2 hover:text-[#fbbf24]">
+                        <svg class="inline mr-2 text-sm w-4 h-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path fill="currentColor"
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                        <span class="whitespace-nowrap">ccsduoffice@gmail.com</span>
+                    </a>
+                </div>
+                <div class="whitespace-nowrap px-4 font-semibold text-center sm:text-center">
+                    Approved by AICTE
+                </div>
+                 
+                <!-- Social Media Links -->
+                <div class="hidden lg:flex items-center w-auto font-semibold relative">
+                    <a href="https://ccsaalumni.in/"
+                        class="hover:text-[#fbbf24] transition-colors duration-200 group relative">
+                        <div class="whitespace-nowrap px-4">
+                            Alumni
+                        </div>
+                    </a>
+                    <a href="https://placeccsa.wordpress.com/"
+                        class="hover:text-[#fbbf24] transition-colors duration-200 group relative">
+                        <div class="whitespace-nowrap px-4">
+                            Placement Cell
+                        </div>
+                    </a>
+                    
+                    <a href="https://dibru.ac.in/admission-2025"
+                        class="hover:text-[#fbbf24] transition-colors duration-200 group relative">
+                        <div class="whitespace-nowrap px-4">
+                            Admission-2025
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <div >
+<style>
+  .blinking {
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50%, 100% {
+      opacity: 1;
+    }
+    25%, 75% {
+      opacity: 0;
+    }
+  }
+</style>
+                    <a href="https://dibru.ac.in/admission-2025"
+                        class="hover:text-[#fb247e] transition-colors duration-200 group relative">
+                        
+                           <!--<marquee onmouseover="this.stop();" onmouseout="this.start();"><span class="blinking">MCA & BCA Admission-2025-- Last Date for Applying: 01-June-2025</span></marquee>-->
+                        
+                    </a>
+    </div>
+    <!--div class="marquee">
+        <span>🚧 Site is in Maintenance Mode. Please check back later. 🚧</span>
+     
+    </div-->
+    <!-- Navigation -->
+    <nav class="bg-[#1a365d] text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+<div class="flex items-center sm:space-x-1 lg:space-x-2">
+    <!-- Logo with premium shiny animated border -->
+    <div class="relative glow-effect">
+        <div class="logo-shiny-wrapper">
+            <!-- Pulsing outer ring -->
+            <div class="logo-pulse-ring"></div>
+            <!-- Rotating conic gradient border -->
+            <div class="logo-border-ring"></div>
+            <!-- Orbiting sparkle particles -->
+            <div class="logo-sparkle"></div>
+            <div class="logo-sparkle"></div>
+            <div class="logo-sparkle"></div>
+            <!-- Badge with logo -->
+            <div class="badge-container">
+                <div class="badge-inner">
+                    <img src="src/logo.webp" alt="Logo" class="h-16 w-16 object-cover">
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="text-animation-container">
+<h1 class="text-sm lg:text-base font-semibold text-white">Centre for Computer Science And Applications, Dibrugarh University</h1>
+<p class="text-xs lg:text-sm text-blue-200">পৰিকলন বিজ্ঞান আৰু প্ৰয়োগ কেন্দ্ৰ, ডিব্ৰুগড় বিশ্ববিদ্যালয়</p>
+</div>        
+</div>
+
+       <div class="hidden lg:flex space-x-6">
+                    <div class="nav-item relative">
+                        <a href="index.html" class="hover:text-[#fbbf24] py-2 flex items-center">Home</a>
+                    </div>
+                    <div class="nav-item relative">
+                        <a href="index.html#aboutus" class=" hover:text-[#fbbf24] py-2 inline-block flex">About</a>
+                    </div>
+
+                    <div class="nav-item relative inline-block group">
+                        <a href="#" class="hover:text-[#fbbf24] py-2 flex items-center">
+                            <i class=" mr-2"></i>
+                            Downloads
+                            <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                        </a>
+                        <div class="dropdown-menu download-menu">
+                            <!-- BCA Downloads -->
+                            
+                             <div class="flex dropdown-item">
+                                <a href="../downloads/PROJECTGUIDELINES.pdf"
+                                    download="Project Guidelines.pdf" class=" text-[#1a365d]">
+                                    <i class="fas fa-file-pdf"></i>
+                                    <span>Project Guidelines</span>
+                                </a>
+                                <a href="../downloads/PROJECTGUIDELINES.pdf"
+                                    target="_blank" class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+
+                                </a>
+                            </div>
+                           
+                            <div class="flex dropdown-item">
+                                <a href="https://drive.google.com/uc?export=download&id=1iQa96osBOWTw6oBQ2h2UvCEQ2N2Dg4xe"
+                                    download="BOM committee.pdf" class=" text-[#1a365d]">
+                                    <i class="fas fa-file-pdf"></i>
+                                    <span>BOM</span>
+                                </a>
+                                <a href="https://drive.google.com/file/d/1iQa96osBOWTw6oBQ2h2UvCEQ2N2Dg4xe/view?usp=sharing"
+                                    target="_blank" class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+
+                                </a>
+                            </div>
+                          
+                            <div class="nested-dropdown">
+                                <a href="#" class="dropdown-item has-submenu flex">
+                                    <span class="flex items-center">
+                                        <i class="fas fa-chart-line mr-2"></i>
+                                        EOA Reports
+                                    </span>
+                                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                                </a>
+                                <div class="dropdown-menu nested-menu">
+                                    <div class="dropdown-item flex text-[#1a365d]">
+                                        <a href="https://drive.google.com/uc?export=download&id=1F5LzMzhrfK240Ljy4sOluridoSl6fyN9"
+                                            download="1735024829_EOA_Report_2024_2025.pdf">
+                                            <i class="fas fa-file-pdf"></i>
+                                            EOA Report 2018
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1F5LzMzhrfK240Ljy4sOluridoSl6fyN9/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-item text-[#1a365d] flex items-center">
+                                        <a href="https://drive.google.com/uc?export=download&id=1oZTklVQcryJUwp7q5HCOlnD8O9TA1k9V"
+                                            download="1735024819_EOA_Report__2023_24.pdf"><i
+                                                class="fas fa-file-pdf"></i>
+                                            EOA Report 2019
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1oZTklVQcryJUwp7q5HCOlnD8O9TA1k9V/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-item text-[#1a365d] flex items-center">
+                                        <a href="https://drive.google.com/file/d/1oZTklVQcryJUwp7q5HCOlnD8O9TA1k9V/view?usp=sharing"
+                                            download="1735024796_EOA_Report_2022_23.pdf">
+                                            <i class="fas fa-file-pdf"></i>
+                                            EOA Report 2020
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1TX3LviQqaLXInf3QdNw0E1-2hYiAj_5q/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-item text-[#1a365d] flex items-center">
+                                        <a href="https://drive.google.com/uc?export=download&id=1ZaYFU8gyK5E73x9BLH8ifeZTbq6clvG8"
+                                            download="1735024721_EOA_Report_2018_19.pdf"><i class="fas fa-file-pdf"></i>
+                                            EOA Report 2021
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1ZaYFU8gyK5E73x9BLH8ifeZTbq6clvG8/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+
+                                    <div class="dropdown-item text-[#1a365d] flex items-center">
+                                        <a href="https://drive.google.com/file/d/1hosWQIaCq69hWhByj0HqLAdJIBZuOZdt/view?usp=sharing"
+                                            download="1735024782_EOA_Report_21_22.pdf">
+                                            <i class="fas fa-file-pdf"></i>
+                                            EOA Report 2022
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1TX3LviQqaLXInf3QdNw0E1-2hYiAj_5q/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+
+                                    <div class="dropdown-item text-[#1a365d] flex items-center">
+                                        <a href="https://drive.google.com/uc?export=download&id=1WCHodZ6y_gmK7BIpSGtnLiUt0CKJP2Gz"
+                                            download="1735024766_EOA_Report_2020_21.pdf"><i class="fas fa-file-pdf"></i>
+                                            EOA Report 2023
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1WCHodZ6y_gmK7BIpSGtnLiUt0CKJP2Gz/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+
+                                    <div class="dropdown-item text-[#1a365d] flex items-center">
+                                        <a href="https://drive.google.com/uc?export=download&id=1OeBRQP3McBuIUedc82uSQya9wrmN-Yey"
+                                            download="1735024754_EOA_Report_2019_20.pdf"><i class="fas fa-file-pdf"></i>
+                                            EOA Report 2024
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1OeBRQP3McBuIUedc82uSQya9wrmN-Yey/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-item text-[#1a365d] flex items-center">
+                                        <a href="https://drive.google.com/uc?export=download&id=1TeYrjK1qBNQxSuMt8rpHXek0gh90f5Pz"
+                                            download="1735024754_EOA_Report_2025_26.pdf"><i class="fas fa-file-pdf"></i>
+                                            EOA Report 2025
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1TeYrjK1qBNQxSuMt8rpHXek0gh90f5Pz/view?usp=drivesdk"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-item relative inline-block flex items-center">
+                        <a href="#" class="hover:text-[#fbbf24] inline-block group flex items-center ">
+                            Programs <i
+                                class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="phd.html" class="block px-4 py-2 text-[#1a365d] hover:bg-slate-100">PhD</a>
+                            <a href="postgraduate.html" class="dropdown-item text-[#1a365d]">MCA</a>
+                            <a href="undergraduate.html" class="dropdown-item text-[#1a365d]">BCA</a>
+                            <a href="pgdca.html" class="dropdown-item text-[#1a365d]">PGDCA</a>
+                        </div>
+                    </div>
+                    <div class="nav-item relative inline-block group">
+                        <a href="#" class="hover:text-[#fbbf24] py-2 flex items-center">Research
+                            <i
+                                class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i></a>
+                        <div class="dropdown-menu">
+                            <a href="research.html" class="block px-4 py-2 text-[#1a365d] hover:bg-slate-100">Research Areas</a>
+                            <a href="publication.html" class="block px-4 py-2 text-[#1a365d] hover:bg-slate-100">Publications </a>
+                        </div>
+                    </div>
+                    <div class="nav-item relative">
+                        <a href="#" class="hover:text-[#fbbf24] inline-block group py-2 flex items-center">Faculty <i
+                                class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i></i></a>
+                        <div class="dropdown-menu">
+                            <a href="https://www.dibru.ac.in/teachers-profile/paramananda-deka"
+                                class="block px-4 py-2 text-[#1a365d] hover:bg-slate-100">ChairPerson</a>
+                            <a href="faculty.html" class="block px-4 py-2 text-[#1a365d] hover:bg-slate-100">Teaching
+                                Staff</a>
+                            <a href="#" class="block px-4 py-2 text-[#1a365d] hover:bg-slate-100">Non-Teaching Staff (coming soon)</a>
+                        </div>
+                    </div>
+                    <div class="nav-item relative">
+                        <a href="#" class="hover:text-[#fbbf24] inline-block group py-2 flex items-center">Students <i
+                                class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i></a>
+
+                        <div class="dropdown-menu">
+                            <a href="Present_Stu.html" class="block px-4 py-2 text-[#1a365d] hover:bg-slate-100">Present
+                                Students</a>
+                            <a href="https://ccsaalumni.in/"
+                                class="block px-4 py-2 text-[#1a365d] hover:bg-slate-100">Alumni</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item relative">
+                        <a href="#contact" class="hover:text-[#fbbf24] py-2 flex items-center">Contact</a>
+                    </div>
+                </div>
+                <button class="lg:hidden text-2xl" id="mobileMenuButton">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div class="lg:hidden hidden" id="mobileMenu">
+                <div class="py-4 space-y-2">
+                    <a href="index.html" class="block py-2 hover:text-[#fbbf24]">Home</a>
+                    <a href="index.html#aboutus" class="block py-2 hover:text-[#fbbf24]">About Us</a>
+                    <div class="mobile-dropdown">
+                        <a href="#" class="block py-2 hover:text-[#fbbf24] flex justify-between items-center">
+                            Programs
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </a>
+                        <div class="hidden pl-4 space-y-2 mt-2">
+                            <a href="phd.html" class="block py-2 text-slate-300 hover:text-[#fbbf24]">PhD</a>
+                            <a href="postgraduate.html"
+                                class="block py-2 text-slate-300 hover:text-[#fbbf24]">MCA</a>
+                            <a href="undergraduate.html"
+                                class="block py-2 text-slate-300 hover:text-[#fbbf24]">BCA</a>
+                            <a href="pgdca.html" class="block py-2 text-slate-300 hover:text-[#fbbf24]">PGDCA</a>
+                        </div>
+                    </div>
+                    <div class="mobile-dropdown">
+                        <a href="#" class="block py-2 hover:text-[#fbbf24] flex justify-between items-center">
+                            Research
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </a>
+                        <div class="hidden pl-4 space-y-2 mt-2">
+                            <a href="research.html" class="block py-2 text-slate-300 hover:text-[#fbbf24]">Research areas</a>
+                            <a href="publication.html" class="block py-2 text-slate-300 hover:text-[#fbbf24]">Publications</a>
+                        </div>
+                    </div>
+                    <div class="mobile-dropdown">
+                        <a href="#" class="block py-2 hover:text-[#fbbf24] flex justify-between items-center">
+                            Faculty
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </a>
+                        <div class="hidden pl-4 space-y-2 mt-2">
+                            <a href="https://www.dibru.ac.in/teachers-profile/paramananda-deka"
+                                class="block py-2 text-slate-300 hover:text-[#fbbf24]">ChairPerson</a>
+                            <a href="faculty.html" class="block py-2 text-slate-300 hover:text-[#fbbf24]">Teaching
+                                Staff</a>
+                            <a href="#" class="block py-2 text-slate-300 hover:text-[#fbbf24]">Non-Teaching Staff</a>
+                        </div>
+                    </div>
+                    <div class="mobile-dropdown">
+                        <a href="#" class="block py-2 hover:text-[#fbbf24] flex justify-between items-center">
+                            Students
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </a>
+                        <div class="hidden pl-4 space-y-2 mt-2">
+                            <a href="Present_Stu.html" class="block py-2 text-slate-300 hover:text-[#fbbf24]">Present
+                                Students</a>
+                            <a href="https://ccsaalumni.in/"
+                                class="block py-2 text-slate-300 hover:text-[#fbbf24]">Alumni</a>
+                        </div>
+                    </div>
+                    <div class="mobile-dropdown">
+                        <a href="#" class="block py-2 hover:text-[#fbbf24] flex justify-between items-center">
+                            Downloads
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </a>
+                        <div class="hidden pl-4 space-y-2 mt-2">
+                            
+                             <div class="flex justify-between">
+                                <a href="../downloads/PROJECTGUIDELINES.pdf"
+                                    download="Project Guidlines.pdf"
+                                    class="block py-2 text-slate-300 hover:text-[#fbbf24]">Project Guidelines</a>
+                                <a href="../downloads/PROJECTGUIDELINES.pdf"
+                                    target="_blank" class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+
+                                </a>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <a href="https://drive.google.com/uc?export=download&id=1iQa96osBOWTw6oBQ2h2UvCEQ2N2Dg4xe"
+                                    download="BOM committee.pdf"
+                                    class="block py-2 text-slate-300 hover:text-[#fbbf24]">BOM</a>
+                                <a href="https://drive.google.com/file/d/1iQa96osBOWTw6oBQ2h2UvCEQ2N2Dg4xe/view?usp=sharing"
+                                    target="_blank" class="ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+
+                                </a>
+                            </div>
+                            <div class="mobile-dropdown">
+                                <a href="#" class="block py-2 hover:text-[#fbbf24] flex justify-between items-center">
+                                    EOA Reports
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </a>
+                                <div class="hidden pl-4 space-y-2 mt-2">
+                                     <div class="flex justify-between">
+                                        <a href="https://drive.google.com/uc?export=download&id=1TeYrjK1qBNQxSuMt8rpHXek0gh90f5Pz"
+                                            download="1735024829_EOA_Report_2025_2026.pdf"
+                                            class="block py-2 text-slate-300 hover:text-[#fbbf24]">
+                                            EOA Report 2025
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1TeYrjK1qBNQxSuMt8rpHXek0gh90f5Pz/view?usp=drivesdk"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="https://drive.google.com/uc?export=download&id=1OeBRQP3McBuIUedc82uSQya9wrmN-Yey"
+                                            download="1735024829_EOA_Report_2024_2025.pdf"
+                                            class="block py-2 text-slate-300 hover:text-[#fbbf24]">
+                                            EOA Report 2024
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1OeBRQP3McBuIUedc82uSQya9wrmN-Yey/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                  
+                                    <div class="flex justify-between">
+                                        <a href="https://drive.google.com/uc?export=download&id=1WCHodZ6y_gmK7BIpSGtnLiUt0CKJP2Gz"
+                                            download="1735024819_EOA_Report__2023_24.pdf"
+                                            class="block py-2 text-slate-300 hover:text-[#fbbf24]">
+                                            EOA Report 2023
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1WCHodZ6y_gmK7BIpSGtnLiUt0CKJP2Gz/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="https://drive.google.com/uc?export=download&id=1ZaYFU8gyK5E73x9BLH8ifeZTbq6clvG8"
+                                            download="1735024782_EOA_Report_21_22.pdf"
+                                            class="block py-2 text-slate-300 hover:text-[#fbbf24]">
+                                            EOA Report 2021
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1ZaYFU8gyK5E73x9BLH8ifeZTbq6clvG8/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="https://drive.google.com/uc?export=download&id=1TX3LviQqaLXInf3QdNw0E1-2hYiAj_5q"
+                                            download="1735024766_EOA_Report_2020_21.pdf"
+                                            class="block py-2 text-slate-300 hover:text-[#fbbf24]">
+                                            EOA Report 2020
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1TX3LviQqaLXInf3QdNw0E1-2hYiAj_5q/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="https://drive.google.com/uc?export=download&id=1oZTklVQcryJUwp7q5HCOlnD8O9TA1k9V"
+                                            download="1735024754_EOA_Report_2019_20.pdf"
+                                            class="block py-2 text-slate-300 hover:text-[#fbbf24]">
+                                            EOA Report 2019
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1oZTklVQcryJUwp7q5HCOlnD8O9TA1k9V/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="https://drive.google.com/uc?export=download&id=1F5LzMzhrfK240Ljy4sOluridoSl6fyN9"
+                                            download="1735024721_EOA_Report_2018_19.pdf"
+                                            class="block py-2 text-slate-300 hover:text-[#fbbf24]">
+                                            EOA Report 2018
+                                        </a>
+                                        <a href="https://drive.google.com/file/d/1F5LzMzhrfK240Ljy4sOluridoSl6fyN9/view?usp=sharing"
+                                            target="_blank" class="ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <a href=" index.html#contact" class="block py-2 hover:text-[#fbbf24]">Contact</a>
+                        <!-- ... Similar structure for other mobile menu items ... -->
+                         
+                    </div>
+                   
+                
+                </div>
+            
+            </div>
+       
+        </div>
+    </nav>
+    <section class="relative bg-[#1a365d] text-white">
+        <div class="h-64 sm:h-[70vh] relative overflow-hidden">
+            <!-- Fixed Text Overlay -->
+            <!--div class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                <!--div class="text-2xl md:text-4xl text-amber-200 text-center px-4 ">
+                    পৰিকলন বিজ্ঞান আৰু প্ৰয়োগ কেন্দ্ৰ,ডিব্ৰুগড় বিশ্ববিদ্যালয়
+                </div-->
+            
+
+            <div class="slider h-full flex transition-transform duration-700 ease-in-out">
+                <!-- Slide 1 -->
+                <div class="slide min-w-full h-full relative group">
+                    <img src="https://dibru.ac.in/assets/image/Centre-for-Computer-Science-and-Application-banner.jpg"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        alt="Slide 1">
+                    <div
+                        class="absolute inset-0 bg-black opacity-40 group-hover:opacity-60 transition-opacity duration-500">
+                    </div>
+                    <div
+                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+
+                    </div>
+                </div>
+
+                <!-- Additional slides with same structure -->
+                <div class="slide min-w-full h-full relative group">
+                    <img src="https://admin.ccsaalumni.in/storage/sliders/VPn3DiUMcBRipEQv7JgCzcanPBcLNosV9FxeNcVY.jpg"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        alt="Slide 2">
+                    <div
+                        class="absolute inset-0 bg-black opacity-40 group-hover:opacity-60 transition-opacity duration-500">
+                    </div>
+                    <div
+                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+
+                    </div>
+                </div>
+
+                <div class="slide min-w-full h-full relative group">
+                    <img src="../media/ccs.jpeg"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        alt="Slide 3">
+                    <div
+                        class="absolute inset-0 bg-black opacity-40 group-hover:opacity-60 transition-opacity duration-500">
+                    </div>
+                    <div
+                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--About and announcement-->
+    <section id="aboutus" class="py-16 h-auto bg-white relative">
+        <!-- Background texture layer -->
+        <div class="absolute inset-0 z-0" style="background-color: #ffffff;
+                    background-image: url('https://www.transparenttextures.com/patterns/black-thread-light.png');
+                    background-repeat: repeat;">
+        </div>
+
+        <!-- Content with proper z-index -->
+        <div class="container flex flex-col lg:flex-row gap-6 lg:gap-10 mx-auto px-4 relative z-10">
+            <!-- About Section -->
+            <div
+                class="relative w-full lg:w-4/6 min-h-[300px] sm:min-h-[400px] bg-white/95 backdrop-blur-sm rounded-xl p-2 sm:p-3 lg:p-4 shadow-lg shadow-slate-200 hover:shadow-xl card-hover border border-gray-100">
+                <h2 class="text-center text-xl sm:text-2xl lg:text-3xl font-semibold text-indigo-600 mb-2 sm:mb-4 ">
+                    About Us</h2>
+                <div
+                    class="relative h-[calc(100%-2rem)] lg:mt-2 sm:h-[calc(100%-3rem)] overflow-y-auto pr-2  scrollbar-thin scrollbar-thumb-indigo-600 scrollbar-track-slate-200">
+                    <p class="text-justify text-xs sm:text-sm lg:text-lg leading-relaxed sm:leading-loose text-gray-700">
+                        Centre for Computer Science and Applications (formerly known as Centre for Computer Studies) is
+                        one of the premier institutes of North-East-India imparting computer education.
+                        Dibrugarh University initiated its journey of imparting computer education by establishing a
+                        Computer Centre in 1976.
+                        The Computer Centre was established with the objective of creating Computer awareness among the
+                        teachers, research scholars and employees of the University.
+                        It started Computer education by introducing a "Six-months Certificate Course on Computer
+                        Programming". It also trained the employees of various banks including State Bank of India,
+                        Dibrugarh university Branch and helped them in computerization.
+                        In 2004, it was upgraded to the Centre for Computer Studies (CCS) and a "Post-Graduate Diploma
+                        in Computer Application (PGDCA)" course was started. BCA was introduced in July, 2004 and MCA
+                        and BSc
+                        (IT) were introduced in January and July, 2007, respectively.
+                        In 2018, the name of the centre has been changed to "Centre for Computer Science and
+                        Applications.
+                    </p>
+                </div>
+            </div>
+
+
+            <!-- Announcement Section -->
+            
+            <div class="w-full lg:w-2/6 rounded-xl h-[40vh] lg:h-[60vh] bg-white/95 backdrop-blur-sm shadow-lg shadow-slate-200 hover:shadow-xl transition-all duration-100 border border-gray-100 flex flex-col">
+    <!-- Header Section -->
+    <div class="border-b border-gray-100 flex-none">
+        <h3 class="text-center p-2 text-xl lg:text-2xl font-semibold text-indigo-600 flex items-center justify-between px-4">
+            <span class="inline-flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                Announcements
+            </span>
+            <a href="/notices.html">
+    <span class="text-sm">View All</span>
+            </a>
+           
+
+        </h3>
+    </div>
+
+    <!-- Notifications Container -->
+    <div class="flex-1 overflow-y-auto" id="notifications-container">
+        <div id="notice-wrapper" class="divide-y divide-gray-100">
+            <!-- Notices will be injected here -->
+        </div>
+        <!-- Fallback Message -->
+        <div id="no-notices" class="hidden text-center text-gray-600 p-8">
+            <p>No notices available at the moment. Please check back later!</p>
+        </div>
+    </div>
+</div>
+            
+            
+            
+            
+            
+            
+            
+        </div>
+    </section>
+    <!-- Programs Section -->
+    <section id="programs" class="pt-8 pb-16 bg-white relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5 bg-pattern"></div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-[#1a365d] mb-4">Our Programs</h2>
+                <p class="text-slate-600">Empowering Students through comprehensive computer science education and
+                    research opportunities</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- BCA Card -->
+                <div
+                    class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                    <div
+                        class="bg-gradient-to-br from-[#1a365d] to-[#2563eb] w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-laptop-code text-3xl text-[#fbbf24]"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-[#1a365d]">Bachelor of Computer Applications</h3>
+                    <div class="space-y-4 mb-6">
+                        <p class="text-slate-600">A comprehensive program covering fundamental and advanced computer
+                            science concepts.</p>
+                    </div>
+                    <a href="undergraduate.html"
+                        class="inline-flex items-center px-6 py-3 rounded-lg bg-[#1a365d] text-white hover:bg-[#234681] transition-colors">
+                        Learn More
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- MCA Card -->
+                <div
+                    class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                    <div
+                        class="bg-gradient-to-br from-[#1a365d] to-[#2563eb] w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-laptop text-3xl text-[#fbbf24]"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-[#1a365d]">Master of Computer Applications</h3>
+                    <div class="space-y-4 mb-6">
+                        <p class="text-slate-600">Advanced studies in specialized areas of computer science and
+                            research.</p>
+                    </div>
+                    <a href="postgraduate.html"
+                        class="inline-flex items-center px-6 py-3 rounded-lg bg-[#1a365d] text-white hover:bg-[#234681] transition-colors">
+                        Learn More
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- PhD Card -->
+                <div
+                    class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                    <div
+                        class="bg-gradient-to-br from-[#1a365d] to-[#2563eb] w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-microscope text-3xl text-[#fbbf24]"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-[#1a365d]">PhD in Computer Science</h3>
+                    <div class="space-y-4 mb-6">
+                        <p class="text-slate-600">Research-focused doctoral studies in cutting-edge computer science
+                            fields.</p>
+                    </div>
+                    <a href="phd.html"
+                        class="inline-flex items-center px-6 py-3 rounded-lg bg-[#1a365d] text-white hover:bg-[#234681] transition-colors">
+                        Learn More
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Additional Program Features -->
+            <div class="grid md:grid-cols-4 gap-6 mt-12">
+                <div class="bg-slate-50 p-4 rounded-lg text-center">
+                    <i class="fas fa-users text-[#fbbf24] text-2xl mb-2"></i>
+                    <h4 class="font-semibold text-[#1a365d]">Expert Faculty</h4>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg text-center">
+                    <i class=" fas fa-flask text-[#fbbf24] text-2xl mb-2"></i>
+                    <h4 class="font-semibold text-[#1a365d]">Modern Computer Labs</h4>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg text-center">
+                    <i class="fas fa-wifi text-[#fbbf24] text-2xl mb-2"></i>
+                    <h4 class="font-semibold text-[#1a365d]">Internet (LAN and wifi)</h4>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg text-center">
+                    <i class="fas fa-book-open text-[#fbbf24] text-2xl mb-2"></i>
+                    <h4 class="font-semibold text-[#1a365d]">Library cum conference room</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Section -->
+    <section class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4">
+            <div class="text-3xl font-bold text-center text-[#1a365d] mb-12">Message from The Chairperson</div>
+
+            <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                <div class="flex flex-col lg:flex-row">
+                    <!-- Principal's Image Section -->
+                    <div class="lg:w-1/3 relative">
+                        <!-- Principal's Image -->
+                        <div class="h-80 lg:h-full relative overflow-hidden">
+                            <img src="../faculty/Chairperson.jpg"
+                                alt="Principal's Photo" class="w-full h-full object-cover" />
+                            <!-- Overlay gradient -->
+                            <div
+                                class="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#1a365d] to-transparent lg:hidden">
+                            </div>
+                        </div>
+
+                        <!-- Principal's Info (Visible on mobile) -->
+                        <div class="lg:hidden absolute bottom-0 left-0 right-0 p-4 text-white">
+                            <h3 class="text-xl font-semibold">Prof. Paramananda Deka</h3>
+                            <p class="text-sm opacity-90">Professor, Department of Mathematics</p>
+                        </div>
+                    </div>
+
+                    <!-- Message Content Section -->
+                    <div class="lg:w-2/3 p-6 lg:p-8 ">
+                        <!-- Principal's Info (Visible on desktop) -->
+                        <div class="hidden lg:block mb-6 card-hover">
+                            <h3 class="text-2xl font-semibold text-[#1a365d]">Prof. Paramananda Deka</h3>
+                            <p class="text-slate-600">Professor, Department of Mathematics</p>
+                        </div>
+
+                        <!-- Quote Symbol -->
+                        <div class="text-[#fbbf24] mb-4">
+                            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 32 32">
+                                <path
+                                    d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H6c0-2.2 1.8-4 4-4V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-8c0-2.2 1.8-4 4-4V8z" />
+                            </svg>
+                        </div>
+
+                        <!-- Message Content -->
+                        <div class="space-y-4 text-slate-700 text-justify">
+                            <p>Welcome to the Centre for Computer Science and Applications at Dibrugarh University. As
+                                we navigate through the digital age, our centre stands at the forefront of computer
+                                science education and research in Northeast India.</p>
+
+                            <p>Our mission is to nurture innovative minds and create technology leaders who can address
+                                the challenges of tomorrow. We focus on providing a comprehensive education that blends
+                                theoretical knowledge with practical applications.</p>
+
+                            <p>With state-of-the-art facilities, dedicated faculty, and strong industry connections, we
+                                prepare our students not just for careers, but for leadership in the ever-evolving field
+                                of computer science.</p>
+                        </div>
+
+                        <!-- Signature Section -->
+                        <div class="mt-8">
+                            <div class="flex items-center">
+                                <!--img src="/api/placeholder/200/100" alt="Chairperson's Signature" class="h-16 w-auto" --/>
+                            </div>
+                            <!--div class="mt-2">
+                                <p class="font-semibold text-[#1a365d]">Dr. John Doe</p>
+                                <p class="text-sm text-slate-600">PhD in Computer Science</p>
+                                <p class="text-sm text-slate-600">CCSA, Dibrugarh University</p>
+                            </div-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+     <!--Placement section-->
+    <section class="py-16 bg-white relative">
+        <div class="container mx-auto px-4">
+           
+            <div class="text-center mb-12">
+                <h2 class="text-3xl  font-bold text-[#1a365d] mb-4">
+                    Our Placements
+                </h2>
+                <p class="text-gray-600 max-w-xl mx-auto">
+                    Trusted by leading organizations worldwide
+                </p>
+            </div>
+    
+            <!-- Marquee Section -->
+                <div class="marquee-container">
+                    <div class="marquee">
+                        <div class="marquee-content">
+                            <span class="company-name"><img src="https://cdn.freelogovectors.net/wp-content/uploads/2023/08/sbi-logo-freelogovectors.net_.png" class="h-24" alt = "SBI"></span>
+                            <span class="company-name"><img src="https://www.drupal.org/files/Capgemini_Logo_2COL_RGB.png" class="h-24" alt = "Infosys"></span>
+                            <span class="company-name"><img src="https://ibsintelligence.com/wp-content/uploads/2021/09/TCS.jpg" class="h-24" alt = "TCS"></span>
+                            <span class="company-name"><img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Federal_Bank_Logo.jpg" class="h-24" alt = "Federal Bank"></span>
+                            <span class="company-name"><img src="https://s32519.pcdn.co/wp-content/uploads/2023/10/partner-wipro-512px.png" class="h-24" alt = "Wipro"></span>
+                            <span class="company-name"><img src="https://media.licdn.com/dms/image/v2/C560BAQHqBGJNYwYrQw/company-logo_200_200/company-logo_200_200/0/1670300070799/gratia_technology_private_limited_guwahati_logo?e=2147483647&v=beta&t=YosTHoHISNlfKqiJxpVP_kZdD76BOBskXRY5d0qrM8E" class="h-24" alt = "Gratia Technology"></span>
+                            <span class="company-name"><img src="https://www.logo.wine/a/logo/IBM/IBM-Logo.wine.svg" class="h-24" alt = "IBM"></span>
+                            <span class="company-name"><img src="https://content.linkedin.com/content/dam/me/business/en-us/sales-solutions/resources/images/apac/images/infosys-logo.png.original.png" class="h-24" alt = "Infosys"></span>
+                        </div>
+                        <div class="marquee-content" aria-hidden="true">
+                            <span class="company-name"><img src="https://cdn.freelogovectors.net/wp-content/uploads/2023/08/sbi-logo-freelogovectors.net_.png" class="h-24" alt = "SBI"></span>
+                            <span class="company-name"><img src="https://www.drupal.org/files/Capgemini_Logo_2COL_RGB.png" class="h-24" alt = "Infosys"></span>
+                            <span class="company-name"><img src="https://ibsintelligence.com/wp-content/uploads/2021/09/TCS.jpg" class="h-24" alt = "TCS"></span>
+                            <span class="company-name"><img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Federal_Bank_Logo.png" class="h-24" alt = "Federal Bank"></span>
+                            <span class="company-name"><img src="https://s32519.pcdn.co/wp-content/uploads/2023/10/partner-wipro-512px.png" class="h-24" alt = "Wipro"></span>
+                            <span class="company-name"><img src="https://media.licdn.com/dms/image/v2/C560BAQHqBGJNYwYrQw/company-logo_200_200/company-logo_200_200/0/1670300070799/gratia_technology_private_limited_guwahati_logo?e=2147483647&v=beta&t=YosTHoHISNlfKqiJxpVP_kZdD76BOBskXRY5d0qrM8E" class="h-24" alt = "Gratia Technology"></span>
+                            <span class="company-name"><img src="https://www.logo.wine/a/logo/IBM/IBM-Logo.wine.svg" class="h-24" alt = "IBM"></span>
+                            <span class="company-name"><img src="https://content.linkedin.com/content/dam/me/business/en-us/sales-solutions/resources/images/apac/images/infosys-logo.png.original.png" class="h-24" alt = "Infosys"></span>
+                        </div>    
+                    </div> 
+                </div>
+        </div>
+    </section>
+
+
+    <!-- Achievements Section -->
+    <section class="py-16 bg-white relative">
+        <div class="absolute inset-0 z-0 bg-pattern opacity-5"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-3xl font-bold text-center mb-12 text-[#1a365d]">Our Achievements</div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Research Excellence -->
+                <div
+                    class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                    <div
+                        class="h-48 rounded-t-lg bg-gradient-to-br from-[#1a365d] to-[#2563eb] flex items-center justify-center p-6">
+                        <i class="fas fa-award text-6xl text-[#fbbf24]"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span
+                                class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Research</span>
+
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4 text-[#1a365d]">Research Excellence</h3>
+                        <ul class="text-slate-600 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>50+ Research Papers Published in International Journals</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Received Research Grants</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Academic Excellence -->
+                <div
+                    class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                    <div
+                        class="h-48 rounded-t-lg bg-gradient-to-br from-[#1a365d] to-[#2563eb] flex items-center justify-center p-6">
+                        <i class="fas fa-graduation-cap text-6xl text-[#fbbf24]"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span
+                                class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Academic</span>
+                            
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4 text-[#1a365d]">Academic Excellence</h3>
+                        <ul class="text-slate-600 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Good Placement Rate </span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>5+ Gold Medalists in Last 5 Years</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Industry Collaboration -->
+                <div
+                    class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-100">
+                    <div
+                        class="h-48 rounded-t-lg bg-gradient-to-br from-[#1a365d] to-[#2563eb] flex items-center justify-center p-6">
+                        <i class="fas fa-handshake text-6xl text-[#fbbf24]"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span
+                                class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded">Industry</span>
+                            
+                        </div>
+                        <h3 class="text-xl font-semibold mb-4 text-[#1a365d]">Industry Collaboration</h3>
+                        <ul class="text-slate-600 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>5+ Industry Partners for Training & Placement</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-[#1a365d] text-white relative">
+        <div class="container px-8 mx-auto">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Contact Information -->
+                <div class="space-y-8">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold mb-4 text-center sm:text-start relative">
+                            Contact Us
+
+                        </h1>
+                        <p class="text-gray-300 text-center sm:text-start">
+                            Reach out to us using the contact information below.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Address -->
+                        <div class="flex items-start space-x-4 group">
+                            <div
+                                class="text-[#fbbf24] mt-1 w-8 h-8 flex items-center justify-center rounded-full border border-[#fbbf24] group-hover:bg-[#fbbf24] group-hover:text-white transition-all duration-300">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2 text-[#fbbf24]">Address</h3>
+                                <div class="text-gray-300 space-y-1">
+                                    <p>Centre for Computer Science and Applications</p>
+                                    <p>Dibrugarh University, Dibrugarh-786004</p>
+                                    <p>Assam, India</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <!--div class="flex items-start space-x-4 group">
+                            <div
+                                class="text-[#fbbf24] mt-1 w-8 h-8 flex items-center justify-center rounded-full border border-[#fbbf24] group-hover:bg-[#fbbf24] group-hover:text-white transition-all duration-300">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <!--div>
+                                <h3 class="font-semibold mb-2 text-[#fbbf24]">Phone</h3>
+                                <p class="text-gray-300">(0373) 2911704</p>
+                                </div-->
+                      
+
+                        <!-- Email -->
+                        <div class="flex items-start space-x-4 group">
+                            <div
+                                class="text-[#fbbf24] mt-1 w-8 h-8 flex items-center justify-center rounded-full border border-[#fbbf24] group-hover:bg-[#fbbf24] group-hover:text-white transition-all duration-100 ">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2 text-[#fbbf24]">Email</h3>
+                                <p class="text-gray-300">ccsduoffice@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+<form id="contactForm" class="space-y-6 bg-white/5 p-2 rounded-lg backdrop-blur-sm">
+    <div>
+        <label class="block mb-2 text-[#fbbf24] font-medium">Name</label>
+        <input type="text" name="name"
+            class="w-full px-4 py-3 rounded-lg bg-white/10 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#fbbf24] focus:border-transparent text-white placeholder-gray-400"
+            required>
+    </div>
+
+    <div>
+        <label class="block mb-2 text-[#fbbf24] font-medium">Email</label>
+        <input type="email" name="email"
+            class="w-full px-4 py-3 rounded-lg bg-white/10 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#fbbf24] focus:border-transparent text-white placeholder-gray-400"
+            required>
+    </div>
+
+    <div>
+        <label class="block mb-2 text-[#fbbf24] font-medium">Message</label>
+        <textarea name="message"
+            class="w-full px-4 py-3 rounded-lg bg-white/10 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#fbbf24] focus:border-transparent text-white placeholder-gray-400"
+            rows="4" placeholder="Your message" required></textarea>
+    </div>
+
+    <button type="submit" id="submitBtn"
+        class="w-full bg-[#fbbf24] text-[#1a365d] px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center space-x-2">
+        <span>Send Message</span>
+        <i class="fas fa-paper-plane"></i>
+    </button>
+</form>
+            </div>
+
+            <!-- Map -->
+            <div class="mt-16 rounded-xl overflow-hidden shadow-lg">
+                <div class="relative w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden">
+                    <div class="absolute inset-0 bg-[#1a365d]/10 pointer-events-none z-10"></div>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1770.3297589595813!2d94.89320993864749!3d27.448719944082946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3740a2b2ddddd7f1%3A0x89121528a05cb44a!2sCentre%20for%20Computer%20Science%20and%20Applications!5e0!3m2!1sen!2sin!4v1749018895880!5m2!1sen!2sin"
+                        class="absolute inset-0 w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-slate-900 text-white py-12 relative">
+        <div class="container mx-auto px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#aboutus" class="hover:text-[#fbbf24]">About Us</a></li>
+                        <li><a href="index.html#programs" class="hover:text-[#fbbf24]">Programs</a></li>
+                        <li><a href="#" class="hover:text-[#fbbf24]">Research</a></li>
+                        <li><a href="index.html#contact" class="hover:text-[#fbbf24]">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Important Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://erp.dibru.work/dibru/student/login" class="hover:text-[#fbbf24]">Student
+                                Portal</a></li>
+                        <li><a href="https://dibru.ac.in/library" class="hover:text-[#fbbf24]">Library</a></li>
+                        <li><a href="https://dibru.ac.in/" class="hover:text-[#fbbf24]">Dibrugarh University</a></li>
+                        <li><a href="https://ccsaalumni.in/" class="hover:text-[#fbbf24]">Alumni</a></li>
+                        <li><a href="#" class="hover:text-[#fbbf24]">Anazori</a></li>
+                        <!--<li>-->
+                        <!--    <a href="https://www.ccsdu.in/admin/login.html" target="_blank" class="hover:text-[#fbbf24] font-semibold">-->
+                        <!--        Admin Panel-->
+                        <!--    </a>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Social</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-[#fbbf24]"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="hover:text-[#fbbf24]"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="hover:text-[#fbbf24]"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Weather Updates</h3>
+                    <div
+                        class="bg-slate-800 rounded-lg p-4 w-full h-[200px] flex flex-col justify-between weather-widget">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span id="current-icon" class="text-3xl mr-2 w-8">--</span>
+                                <span id="current-temp" class="text-2xl min-w-[60px]">--°C</span>
+                            </div>
+                            <span id="current-time" class="text-sm text-slate-400 min-w-[60px]">--:--</span>
+                        </div>
+                        <div class="h-24 overflow-hidden my-2">
+                            <div id="hourly-forecast" class="grid grid-cols-4 gap-2 h-full">
+                                <!-- Forecast slots will be populated by JS -->
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <p class="text-slate-300 text-sm">Dibrugarh, Assam</p>
+                            <span class="text-xs text-slate-400">Live Updates</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 mt-8 pt-8 text-center leading-loose">
+                <p class="text-base">&copy; 2025 <b>Centre for Computer Science and Applications</b>. All rights
+                    reserved.</p>
+                <p class="text-base">Powered by <a href="https://dssdu.in" target="_blank"><span
+                            class="text-yellow-200 font-semibold">Digital Solution Cell, Dibrugarh University</span></a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Back to Top Button -->
+        <!--button id="back-to-top" 
+            class="hidden fixed bottom-8 right-8 z-50 p-3 bg-yellow-500 text-slate-900 rounded-full shadow-lg transition-opacity duration-300 hover:bg-yellow-600"
+            title="Back to top">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+        </button-->
+    </footer>
+
+    <!--script>
+        const backToTopBtn = document.getElementById('back-to-top');
+    
+        // Add an event listener for scrolling
+        window.addEventListener('scroll', () => {
+            // Show the button after scrolling 200px
+            if (window.scrollY > 200) {
+                backToTopBtn.classList.remove('hidden');
+            } else {
+                backToTopBtn.classList.add('hidden');
+            }
+        });
+    
+        // Scroll to the top when the button is clicked
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script-->
+
+
+
+    <script>
+document.getElementById('contactForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.disabled = true;
+
+    try {
+
+        // Generate reCAPTCHA token
+        const token = await grecaptcha.execute('6LeEW94sAAAAAPFa_NXd8WemwqWn-SLlNjpnN0CH', {
+            action: 'submit'
+        });
+
+        const formData = {
+            name: this.elements.name.value,
+            email: this.elements.email.value,
+            message: this.elements.message.value,
+            'g-recaptcha-response': token
+        };
+
+        const response = await fetch('https://formspree.io/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            alert('Message sent successfully!');
+            this.reset();
+        } else {
+            throw new Error('Failed to send message');
+        }
+
+    } catch (error) {
+        alert('Error sending message. Please try again.');
+        console.error(error);
+    }
+
+    submitBtn.disabled = false;
+});
+</script>
+
+<script>
+async function fetchNotices() {
+    const apiUrl = "https://www.ccsdu.in/admin/api.php?entity=notifications";
+    const noticeWrapper = document.getElementById('notice-wrapper');
+    const noNotices = document.getElementById('no-notices');
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Authorization": "RRDS_714d8f4d29d486db6235a8568edf4baeaf61789874cb9aff5ed3fff1858b16db49b8efb9aec8826ecba3aad4bc88336c72419ac7a3d63b4c27ffb3e57a3820e79f3d2538d86ecab3dbfcb282c06390f8120ba5e9154895f9d7be7cdb811ebc19c244a23d02d1b4013bd5cc4e27fb87faa4e92608e0da312d538d064b6727fd7329ff3dddc5b452ad78fa66f7cd0b173f40758f99778d3859c33dc215f80f850058969a87565b22a9ee81cd55d4013613c449fa891acf8bc031a33ce91c7c27cb4b5213f9cf76faea54e77011cc0d24205b856a55baf996c1d5075247e7e6cc4c2c2ef3f67c3309c997b75525bf80ecb885711db45092fa45028f34d0408bd171",
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        const notices = result.data || [];
+        notices.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        if (notices.length === 0) {
+            noNotices.textContent = "No notices available at the moment.";
+            noNotices.classList.remove('hidden');
+            return;
+        }
+
+        noticeWrapper.innerHTML = '';
+
+        notices.forEach(notice => {
+            const formattedDate = notice.createdAt
+                ? new Date(notice.createdAt).toLocaleDateString()
+                : "Date not available";
+
+            const fileUrl = notice.file_path;
+            const fileSrc = notice.file_url;
+
+            const noticeElement = document.createElement('div');
+            noticeElement.className = 'p-4 hover:bg-gray-50/50 transition-colors';
+            noticeElement.innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-medium text-gray-800">${notice.title}</h3>
+                        <span class="text-sm text-gray-500">${formattedDate}</span>
+                    </div>
+                    <p class="text-gray-600 text-sm">${notice.description}</p>
+                    ${fileUrl ? `
+                        <a href="https://www.ccsdu.in/admin/${fileUrl}" 
+                           class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm group"
+                           target="_blank" rel="noopener noreferrer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span class="group-hover:underline">View Attachment</span>
+                        </a>
+                    ` : ''}
+                    ${fileSrc ? `
+                        <a href="${fileSrc}" 
+                           class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 text-sm group"
+                           target="_blank" rel="noopener noreferrer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                            <span class="group-hover:underline">View Link</span>
+                        </a>
+                    ` : ''}
+                </div>
+            `;
+            noticeWrapper.appendChild(noticeElement);
+        });
+
+    } catch (error) {
+        console.error('Error fetching notices:', error);
+        noNotices.textContent = "Failed to load notices. Please try again later!";
+        noNotices.classList.remove('hidden');
+    }
+}
+
+// Fetch notices when page loads
+fetchNotices();
+</script>
+
+
+    <script>
+        let currentSlide = 0;
+        const slider = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slide');
+        const slideCount = slides.length;
+        let slideInterval;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            updateDots();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slideCount;
+            updateSlider();
+        }
+
+        function createDots() {
+            const navDiv = document.createElement('div');
+            navDiv.className = 'absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-10';
+
+            slides.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = `w-3 h-3 rounded-full transition-all ${index === 0 ? 'bg-white' : 'bg-white/50 hover:bg-white/80'}`;
+                dot.onclick = () => {
+                    currentSlide = index;
+                    updateSlider();
+                    resetInterval();
+                };
+                navDiv.appendChild(dot);
+            });
+
+            slider.parentElement.appendChild(navDiv);
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.rounded-full');
+            dots.forEach((dot, index) => {
+                dot.className = `w-3 h-3 rounded-full transition-all ${index === currentSlide ? 'bg-white' : 'bg-white/50 hover:bg-white/80'
+                    }`;
+            });
+        }
+
+        function resetInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        createDots();
+        resetInterval();
+
+        slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        slider.addEventListener('mouseleave', resetInterval);
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileDropdowns = document.querySelectorAll('.mobile-dropdown');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileDropdowns.forEach(dropdown => {
+            const link = dropdown.querySelector('a');
+            const content = dropdown.querySelector('div');
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                content.classList.toggle('hidden');
+                const icon = link.querySelector('i.fa-chevron-down');
+                icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
+        });
+
+        // Enhanced download handling
+        document.querySelectorAll('.download-item').forEach(item => {
+            item.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const progress = item.querySelector('.download-progress');
+                const link = item.getAttribute('href');
+                const filename = item.dataset.filename;
+
+                try {
+                    const response = await fetch(link);
+                    const reader = response.body.getReader();
+                    const contentLength = +response.headers.get('Content-Length');
+
+                    let receivedLength = 0;
+                    const chunks = [];
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+
+                        if (done) break;
+
+                        chunks.push(value);
+                        receivedLength += value.length;
+
+                        const percentComplete = (receivedLength / contentLength) * 100;
+                        progress.style.width = percentComplete + '%';
+                    }
+
+                    const blob = new Blob(chunks);
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+
+                    // Reset progress after successful download
+                    setTimeout(() => {
+                        progress.style.width = '0%';
+                    }, 1000);
+
+                } catch (error) {
+                    console.error('Download failed:', error);
+                    progress.style.backgroundColor = '#ef4444';
+                }
+            });
+        });
+
+
+    </script>
+<!--    <script>-->
+<!--        const textElement = document.createElement('p');-->
+<!--textElement.className = 'text-xs sm:text-base font-medium text-white opacity-0 transition-opacity duration-1000';-->
+<!--document.querySelector('#text-animation-container').appendChild(textElement);-->
+
+<!--const texts = [-->
+<!--    "Dibrugarh University",-->
+<!--    "পৰিকলন বিজ্ঞান আৰু প্ৰয়োগ কেন্দ্ৰ",-->
+<!--    "ডিব্ৰুগড় বিশ্ববিদ্যালয়",    "AICTE Approved MCA Course"-->
+<!--];-->
+
+<!--let currentIndex = 1;-->
+
+<!--function updateText() {-->
+<!--    textElement.style.opacity = '0';-->
+    
+<!--    setTimeout(() => {-->
+<!--        textElement.textContent = texts[currentIndex];-->
+<!--        textElement.style.opacity = '1';-->
+<!--        currentIndex = (currentIndex + 1) % texts.length;-->
+<!--    }, 1000);-->
+<!--}-->
+
+<!--textElement.textContent = texts[0];-->
+
+<!--requestAnimationFrame(() => {-->
+<!--    textElement.style.opacity = '1';-->
+<!--});-->
+
+<!--setTimeout(() => {-->
+<!--    updateText();-->
+<!--    setInterval(updateText, 3000);-->
+<!--}, 3000);-->
+<!--    </script>-->
+    <script src="script.js"></script>
+</body>
+
+</html>

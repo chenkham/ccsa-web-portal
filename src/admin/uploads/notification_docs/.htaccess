@@ -1,0 +1,17 @@
+# Disable PHP execution in this directory
+<FilesMatch "\.php$">
+    Deny from all
+</FilesMatch>
+
+# Additional security - disable script execution
+AddType text/plain .php .php3 .php4 .php5 .phps .phtml
+
+# Prevent directory listing
+Options -Indexes
+
+# Disable .htaccess override
+<IfModule mod_authz_core.c>
+    <FilesMatch "\.htaccess$">
+        Require all denied
+    </FilesMatch>
+</IfModule>

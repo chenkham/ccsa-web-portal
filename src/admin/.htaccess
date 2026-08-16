@@ -1,0 +1,84 @@
+# Disable directory listing
+Options -Indexes
+
+# Block direct access to sensitive PHP files
+<FilesMatch "^(config|jwt_config|config-loader|security-validator|auth|check_session|session_logger)\.php$">
+    Order Allow,Deny
+    Deny from all
+    Allow from 127.0.0.1
+</FilesMatch>
+
+# Block access to config files
+<Files "config-local.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Protect JWT dist files
+<Directory "jwt_dist">
+    Order Allow,Deny
+    Deny from all
+</Directory>
+
+# Enhanced Security Headers
+<IfModule mod_headers.c>
+    # Prevent MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Prevent clickjacking (DENY for complete protection)
+    Header set X-Frame-Options "DENY"
+
+    # XSS Protection
+    Header set X-XSS-Protection "1; mode=block"
+
+    # Referrer Policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # HSTS - Force HTTPS (31536000 = 1 year)
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Content Security Policy is set dynamically in index.php with nonce
+    # (removed from here to allow PHP dynamic header)
+
+    # Disable caching for sensitive content
+    Header set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+
+    # Permissions Policy (formerly Feature Policy)
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+</IfModule>
+
+# Force HTTPS (uncomment when deployed with SSL)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Disable script execution in uploads directory
+<Directory "uploads">
+    <IfModule mod_php.c>
+        php_flag engine off
+    </IfModule>
+    AddType text/plain .php .phtml .php3 .php4 .php5 .phps .js .jsx .py
+
+    # Block direct access to uploaded files via script execution
+    <FilesMatch "\.(php|phtml|php3|php4|php5|phps|js)$">
+        Order Allow,Deny
+        Deny from all
+    </FilesMatch>
+</Directory>
+
+# Protect log directory
+<Directory "logs">
+    Order Allow,Deny
+    Deny from all
+</Directory>
+
+# Disable access to hidden files
+<FilesMatch "^\.|\.git">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
