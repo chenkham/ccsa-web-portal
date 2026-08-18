@@ -11,6 +11,22 @@ if (isset($pdo) && $pdo !== null) {
         error_log('Admin messages DB fetch failed: ' . $e->getMessage());
     }
 }
+
+$fallbackFile = __DIR__ . '/../../cache/messages_fallback.json';
+if (file_exists($fallbackFile)) {
+    $fallbackMessages = json_decode((string)file_get_contents($fallbackFile), true) ?: [];
+    if (!empty($fallbackMessages)) {
+        $seenEmailsAndTimes = array_map(function($m) {
+            return ($m['email'] ?? '') . '_' . ($m['createdAt'] ?? '');
+        }, $adminMessages);
+        foreach ($fallbackMessages as $fm) {
+            $key = ($fm['email'] ?? '') . '_' . ($fm['createdAt'] ?? '');
+            if (!in_array($key, $seenEmailsAndTimes, true)) {
+                $adminMessages[] = $fm;
+            }
+        }
+    }
+}
 ?>
 
 <div class="card p-5 sm:p-7 bg-white rounded-2xl shadow-sm border border-slate-200/90">

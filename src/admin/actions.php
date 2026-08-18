@@ -210,6 +210,16 @@ if ($action === 'delete_message') {
             error_log('Message delete failed: ' . $e->getMessage());
         }
     }
+
+    $fallbackFile = __DIR__ . '/../cache/messages_fallback.json';
+    if (file_exists($fallbackFile)) {
+        $fallbackMessages = json_decode((string)file_get_contents($fallbackFile), true) ?: [];
+        $fallbackMessages = array_filter($fallbackMessages, function($m) use ($id) {
+            return (int)($m['id'] ?? 0) !== $id;
+        });
+        file_put_contents($fallbackFile, json_encode(array_values($fallbackMessages), JSON_PRETTY_PRINT));
+    }
+
     header('Location: index.php?success=' . urlencode('Contact inquiry deleted.') . '&tab=messages');
     exit;
 }
