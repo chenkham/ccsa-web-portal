@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 // Database Configuration (Production MySQL Parameters)
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'ccsa_portal');
-define('DB_USER', getenv('DB_USER') ?: 'ccsa_dbuser');
+define('DB_NAME', getenv('DB_NAME') ?: 'ccsa_db');
+define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_CHARSET', 'utf8mb4');
 
