@@ -51,15 +51,6 @@ CREATE TABLE `notifications` (
   KEY `idx_category` (`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Seed official notices
-INSERT INTO `notifications` (`id`, `title`, `description`, `category`, `creator_email`, `file_path`, `file_url`, `is_pinned`, `createdAt`) VALUES
-(1, 'DUAT-2026: Dibrugarh University Admission Test Notice', 'Detailed schedule, application procedure and guidelines for DUAT-2026 for admission into BCA and MCA programmes.', 'Admission', 'admin@ccsdu.in', 'uploads/notification_docs/90298c59e8d525e4_DUAT_2026.pdf', '', 1, '2026-02-10 10:00:00'),
-(2, 'Class Routine (Feb - June 2025 Session)', 'Master time table and classroom allotment for Even Semester BCA, MCA, and PGDCA courses.', 'Academics', 'admin@ccsdu.in', 'uploads/notification_docs/67b4678d7d616_Class Routine, 25(Feb-June).pdf', '', 0, '2025-02-18 11:30:00'),
-(3, 'Course Fees Notification for Even Semester Students (2024-2025)', 'Notification regarding payment portal and last dates for semester fee submission.', 'Fees', 'admin@ccsdu.in', 'uploads/notification_docs/67b84189acdc2_Notification regarding the Course Fees for the Even Semester students for the session 2024-2025..pdf', '', 0, '2025-02-21 09:15:00'),
-(4, 'MCA 6th Semester Major Project Guidelines & Submission Schedule', 'Comprehensive instructions regarding synopsis approval, progress review, and final viva voce evaluation.', 'Examination', 'admin@ccsdu.in', 'uploads/notification_docs/682c500de4834_MCA MAJOR PROJECT.pdf', '', 0, '2025-05-20 14:00:00'),
-(5, 'Programme for Ph.D. Course Work Examination 2025', 'Official examination timetable for registered Ph.D. research scholars in Computer Science.', 'Examination', 'admin@ccsdu.in', 'uploads/notification_docs/682c528b96341_Programme_for_Ph._D._Course_Work_Examination_2025[1].pdf', '', 0, '2025-05-20 16:45:00'),
-(6, 'Google Gemini Ambassador Program Selection at CCSA', 'List of shortlisted student ambassadors representing Dibrugarh University in AI community outreach.', 'Events', 'admin@ccsdu.in', 'uploads/notification_docs/688dca2e2c26a_Google Gemini Ambassador Program.pdf', '', 0, '2025-08-02 12:00:00');
-
 -- ---------------------------------------------------------------------
 -- 3. Table structure for `teaching_staff` (Faculty Directory)
 -- ---------------------------------------------------------------------

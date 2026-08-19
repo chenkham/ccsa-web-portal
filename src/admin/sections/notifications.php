@@ -12,29 +12,6 @@ if (isset($pdo) && $pdo !== null) {
     }
 }
 
-if (empty($adminNotices)) {
-    $docsDir = __DIR__ . '/../uploads/notification_docs';
-    if (is_dir($docsDir)) {
-        $files = scandir($docsDir);
-        $idx = 1;
-        foreach ($files as $file) {
-            if ($file !== '.' && $file !== '..' && $file !== '.htaccess' && pathinfo($file, PATHINFO_EXTENSION) === 'pdf') {
-                $cleanTitle = preg_replace('/^[a-f0-9]+_/', '', pathinfo($file, PATHINFO_FILENAME));
-                $cleanTitle = str_replace('_', ' ', $cleanTitle);
-                $fileTime = date('Y-m-d H:i:s', filemtime($docsDir . '/' . $file));
-                $adminNotices[] = [
-                    'id' => $idx++,
-                    'title' => $cleanTitle,
-                    'description' => 'Official circular document published on portal.',
-                    'file_path' => 'uploads/notification_docs/' . $file,
-                    'file_url' => '',
-                    'is_pinned' => 0,
-                    'createdAt' => $fileTime
-                ];
-            }
-        }
-    }
-}
 ?>
 
 <div class="card p-5 sm:p-7 bg-white rounded-2xl shadow-sm border border-slate-200/90">

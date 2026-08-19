@@ -190,7 +190,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.innerHTML = '';
 
         if (!notices || notices.length === 0) {
-            if (noResults) noResults.classList.remove('hidden');
+            if (noResults) {
+                noResults.classList.remove('hidden');
+                noResults.innerHTML = '<i class="fas fa-bullhorn text-3xl text-slate-300 mb-2 block"></i><p class="font-medium text-slate-600">No announcements published yet.</p><p class="text-xs text-slate-400 mt-1">Official circulars, exam notices, and timetables will appear here once published.</p>';
+            }
             if (countBadge) countBadge.textContent = '0 Notices';
             return;
         }

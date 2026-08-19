@@ -13,7 +13,12 @@
    */
   const populateTicker = (notices) => {
     const tickerTrack = document.getElementById('tickerTrack');
-    if (!tickerTrack || notices.length === 0) return;
+    if (!tickerTrack) return;
+
+    if (!notices || notices.length === 0) {
+      tickerTrack.innerHTML = '<span class="ticker-item"><span class="ticker-dot"></span><span class="text-xs font-semibold">Welcome to Centre for Computer Science and Applications, Dibrugarh University</span></span>';
+      return;
+    }
 
     // Build ticker items HTML (duplicate for seamless loop)
     const buildItems = () => notices.map(n => {
