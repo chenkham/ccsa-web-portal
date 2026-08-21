@@ -56,23 +56,27 @@ include 'templates/header.php';
     </section>
 
     <!-- ═══ ANNOUNCEMENT TICKER BAR ═══ -->
-    <div id="announcementTicker" class="bg-white border-b border-slate-200/90 shadow-sm relative z-20">
-        <div class="container mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2.5 sm:gap-4 py-2 sm:py-2.5">
+    <div id="announcementTicker" class="bg-white border-y border-slate-200/90 shadow-xs relative z-20">
+        <div class="container mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2 sm:gap-3.5 py-2 sm:py-2.5">
             <!-- Live Badge -->
-            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <span class="w-2 h-2 rounded-full bg-red-600 live-dot"></span>
-                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider sm:tracking-widest text-[#1a365d]">Notices</span>
+            <div class="flex items-center gap-1.5 shrink-0 bg-red-50 text-red-700 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-red-200 shadow-xs">
+                <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse shrink-0"></span>
+                <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">NOTICES</span>
             </div>
-            <div class="h-3.5 sm:h-4 w-px bg-slate-200 flex-shrink-0"></div>
+            
+            <div class="h-3.5 sm:h-4 w-px bg-slate-200 shrink-0"></div>
+            
             <!-- Scrolling Headlines -->
-            <div class="ticker-bar flex-1 overflow-hidden" style="mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);">
+            <div class="ticker-bar flex-1 overflow-hidden min-w-0">
                 <div id="tickerTrack" class="ticker-track text-slate-700">
                     <span class="text-xs font-medium text-slate-400">Loading announcements...</span>
                 </div>
             </div>
+            
             <!-- View All Link -->
-            <a href="notices.php" class="text-[10px] font-bold uppercase tracking-wider text-slate-500 hover:text-[#1a365d] transition-colors flex-shrink-0 hidden sm:inline-flex items-center gap-1">
-                All Notices <i class="fas fa-arrow-right text-[8px]"></i>
+            <a href="notices.php" class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 hover:text-indigo-800 transition-colors shrink-0 hidden md:inline-flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-lg">
+                <span>All Notices</span>
+                <i class="fas fa-arrow-right text-[9px]"></i>
             </a>
         </div>
     </div>

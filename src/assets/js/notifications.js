@@ -31,7 +31,11 @@
     });
 
     if (activeNewNotices.length === 0) {
-      tickerTrack.innerHTML = '<span class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1.5"><span class="ticker-dot"></span><span class="text-xs font-semibold">Welcome to Centre for Computer Science and Applications (CCSA), Dibrugarh University • Admissions &amp; Academic Programmes</span></span>';
+      const defaultItem = `<a href="notices.php" class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1.5 transition-colors">
+        <span class="ticker-dot"></span>
+        <span class="text-xs font-semibold">Welcome to Centre for Computer Science and Applications (CCSA), Dibrugarh University</span>
+      </a>`;
+      tickerTrack.innerHTML = defaultItem + defaultItem + defaultItem;
       return;
     }
 
