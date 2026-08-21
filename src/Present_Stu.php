@@ -107,11 +107,8 @@ include 'templates/header.php';
             <!-- Header Section -->
             <div class="text-center mb-8 sm:mb-12">
                 <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black font-display text-[#1a365d] uppercase tracking-wide">
-                    Present Students Directory
+                    Present Students
                 </h1>
-                <p class="text-xs sm:text-base text-slate-500 font-medium mt-2 max-w-2xl mx-auto">
-                    Live student roster enrolled across undergraduate, postgraduate, and diploma programmes at CCSA, Dibrugarh University.
-                </p>
                 <div class="w-20 h-1 bg-[#fbbf24] mt-3 rounded-full mx-auto"></div>
             </div>
 
@@ -152,7 +149,7 @@ include 'templates/header.php';
             <div id="students-container" class="space-y-12">
                 <div class="text-center py-16">
                     <div class="inline-block w-10 h-10 border-4 border-[#1a365d] border-t-transparent rounded-full animate-spin mb-4"></div>
-                    <p class="text-slate-600 font-semibold text-sm">Loading student directory from Dibrugarh University...</p>
+                    <p class="text-slate-600 font-semibold text-sm">Loading students from Dibrugarh University...</p>
                 </div>
             </div>
         </div>

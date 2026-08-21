@@ -286,7 +286,7 @@ class Security
     }
 
     /**
-     * Records a security event in the audit_logs table.
+     * Records a security event in the audit_logs table and cache, automatically capping at 200 records.
      *
      * @param PDO|null $pdo
      * @param string $action
@@ -296,19 +296,45 @@ class Security
      */
     public static function logAudit(?PDO $pdo, string $action, string $details = '', ?string $userEmail = null): void
     {
-        if ($pdo === null) {
-            return;
-        }
-
         $email = $userEmail ?: ($_SESSION['user_email'] ?? 'guest');
         $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
         $ua = substr($_SERVER['HTTP_USER_AGENT'] ?? 'Unknown', 0, 255);
+        $timeStr = date('Y-m-d H:i:s');
 
+        if ($pdo !== null) {
+            try {
+                $stmt = $pdo->prepare('INSERT INTO audit_logs (user_email, ip_address, action, details, user_agent, created_at) VALUES (?, ?, ?, ?, ?, NOW())');
+                $stmt->execute([$email, $ip, $action, $details, $ua]);
+
+                // Automatically cap audit table at 200 records (resets/purges older past 200)
+                $pdo->exec('DELETE FROM audit_logs WHERE id NOT IN (SELECT id FROM (SELECT id FROM audit_logs ORDER BY id DESC LIMIT 200) AS t)');
+            } catch (Throwable $e) {
+                error_log('Audit log recording error: ' . $e->getMessage());
+            }
+        }
+
+        // Also persist to JSON cache for instant display
         try {
-            $stmt = $pdo->prepare('INSERT INTO audit_logs (user_email, ip_address, action, details, user_agent, created_at) VALUES (?, ?, ?, ?, ?, NOW())');
-            $stmt->execute([$email, $ip, $action, $details, $ua]);
+            $cacheDir = __DIR__ . '/../cache';
+            if (!is_dir($cacheDir)) {
+                mkdir($cacheDir, 0755, true);
+            }
+            $cacheFile = $cacheDir . '/audit_logs.json';
+            $logs = file_exists($cacheFile) ? (json_decode((string)file_get_contents($cacheFile), true) ?: []) : [];
+            array_unshift($logs, [
+                'id' => time() . rand(100, 999),
+                'user_email' => $email,
+                'ip_address' => $ip,
+                'action' => $action,
+                'details' => $details,
+                'user_agent' => $ua,
+                'created_at' => $timeStr
+            ]);
+            // Automatically cap at 200 records
+            $logs = array_slice($logs, 0, 200);
+            file_put_contents($cacheFile, json_encode($logs, JSON_PRETTY_PRINT));
         } catch (Throwable $e) {
-            error_log('Audit log recording error: ' . $e->getMessage());
+            error_log('Audit log JSON cache error: ' . $e->getMessage());
         }
     }
 }

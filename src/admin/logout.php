@@ -9,13 +9,13 @@ if (file_exists('session_logger.php')) {
     require_once 'session_logger.php';
 }
 
-if (isset($_SESSION['user_id']) && function_exists('logUserSession') && isset($pdo)) {
-    // Log the logout
-    try {
-        logUserSession($pdo, $_SESSION['user_id'], 'logout');
-    } catch (Throwable $e) {
-        error_log("Session logout logging failed: " . $e->getMessage());
-    }
+require_once __DIR__ . '/../includes/Security.php';
+
+$userEmail = $_SESSION['user_email'] ?? 'admin@ccsdu.in';
+if (isset($pdo)) {
+    Security::logAudit($pdo, 'LOGOUT', 'Administrator signed out successfully.', $userEmail);
+} else {
+    Security::logAudit(null, 'LOGOUT', 'Administrator signed out successfully.', $userEmail);
 }
 
 // Secure session destruction

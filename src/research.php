@@ -325,7 +325,7 @@ include 'templates/header.php';
             <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 <div>
                     <div class="relative h-44 w-full overflow-hidden bg-slate-900">
-                        <img src="https://images.unsplash.com/photo-1678911820864-e2c567c655d7?auto=format&fit=crop&w=600&q=60" 
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=600&q=60" 
                             alt="Generative AI & LLMs" 
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85"
                             loading="lazy">

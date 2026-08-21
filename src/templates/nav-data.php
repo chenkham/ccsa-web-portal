@@ -121,7 +121,7 @@ $navItems = [
         'label' => 'Students',
         'href' => '#',
         'children' => [
-            ['label' => 'Present Students Directory', 'href' => 'Present_Stu.php'],
+            ['label' => 'Present Students', 'href' => 'Present_Stu.php'],
             ['label' => 'Alumni Network', 'href' => 'https://ccsaalumni.in/'],
         ],
     ],

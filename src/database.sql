@@ -44,11 +44,14 @@ CREATE TABLE `notifications` (
   `file_path` varchar(255) DEFAULT NULL,
   `file_url` varchar(500) DEFAULT NULL,
   `is_pinned` tinyint(1) NOT NULL DEFAULT 0,
+  `is_new` tinyint(1) NOT NULL DEFAULT 1,
+  `new_until` date DEFAULT NULL,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_created` (`createdAt`),
-  KEY `idx_category` (`category`)
+  KEY `idx_category` (`category`),
+  KEY `idx_new_until` (`new_until`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------

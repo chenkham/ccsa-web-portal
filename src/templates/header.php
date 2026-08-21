@@ -172,7 +172,12 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
     
     <!-- Swiper & Google reCAPTCHA -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <?php 
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    $isLocalhost = (strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false || strpos($host, '10.') === 0 || strpos($host, '192.168.') === 0);
+    if (!$isLocalhost): ?>
     <script src="https://www.google.com/recaptcha/api.js?render=6LeEW94sAAAAAPFa_NXd8WemwqWn-SLlNjpnN0CH"></script>
+    <?php endif; ?>
     
     <!-- Custom CSS (Special effects, keyframes, scrollbar) -->
     <link rel="stylesheet" href="assets/css/custom.css?v=<?php echo time(); ?>">

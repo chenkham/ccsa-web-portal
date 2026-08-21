@@ -1325,7 +1325,7 @@ a:hover .link-arrow svg,
   align-items: center;
   gap: 3rem;
   white-space: nowrap;
-  animation: tickerScroll 32s linear infinite;
+  animation: tickerScroll 60s linear infinite;
   will-change: transform;
 }
 

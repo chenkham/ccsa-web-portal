@@ -15,21 +15,40 @@
     const tickerTrack = document.getElementById('tickerTrack');
     if (!tickerTrack) return;
 
-    if (!notices || notices.length === 0) {
-      tickerTrack.innerHTML = '<span class="ticker-item"><span class="ticker-dot"></span><span class="text-xs font-semibold">Welcome to Centre for Computer Science and Applications, Dibrugarh University</span></span>';
+    // Filter notices to ONLY include active NEW announcements
+    const now = new Date();
+    const activeNewNotices = (notices || []).filter(n => {
+      if (n.is_new !== undefined && (n.is_new === 0 || n.is_new === false || n.is_new === '0')) {
+        return false;
+      }
+      if (n.new_until) {
+        return new Date(n.new_until + 'T23:59:59') >= now;
+      }
+      if (n.is_new == 1) {
+        return true;
+      }
+      return false;
+    });
+
+    if (activeNewNotices.length === 0) {
+      tickerTrack.innerHTML = '<span class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1.5"><span class="ticker-dot"></span><span class="text-xs font-semibold">Welcome to Centre for Computer Science and Applications (CCSA), Dibrugarh University • Admissions &amp; Academic Programmes</span></span>';
       return;
     }
 
     // Build ticker items HTML (duplicate for seamless loop)
-    const buildItems = () => notices.map(n => {
+    const buildItems = () => activeNewNotices.map(n => {
       const title = n.title || 'Notification';
       const d = n.createdAt ? new Date(n.createdAt) : null;
       const dateStr = d ? `${d.getDate()} ${MONTHS_SHORT[d.getMonth()]}` : '';
-      return `<span class="ticker-item">
+      const isPinned = n.is_pinned == 1;
+
+      return `<a href="notices.php" class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1.5 transition-colors">
         <span class="ticker-dot"></span>
+        ${isPinned ? '<i class="fas fa-thumbtack text-amber-500 text-[10px] -rotate-45"></i>' : ''}
+        <span class="bg-red-600 text-white text-[8px] font-black uppercase px-1.5 py-0.2 rounded shadow-sm animate-pulse">NEW</span>
         <span class="text-xs font-semibold">${escapeHtml(title)}</span>
-        ${dateStr ? `<span class="text-[10px] font-medium text-white/50 ml-1">(${dateStr})</span>` : ''}
-      </span>`;
+        ${dateStr ? `<span class="text-[10px] font-medium text-slate-400">(${dateStr})</span>` : ''}
+      </a>`;
     }).join('');
 
     // Duplicate content for seamless CSS animation loop
@@ -112,11 +131,20 @@
       }
 
       const isPinned = notice.is_pinned == 1;
+      let isNewActive = false;
+      if (notice.is_new !== undefined && (notice.is_new === 0 || notice.is_new === false || notice.is_new === '0')) {
+        isNewActive = false;
+      } else if (notice.new_until) {
+        isNewActive = new Date(notice.new_until + 'T23:59:59') >= new Date();
+      } else if (notice.is_new == 1) {
+        isNewActive = true;
+      }
 
       item.innerHTML = `
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-3">
-          <div class="flex items-center gap-2 flex-1">
-            ${isPinned ? '<span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-md inline-flex items-center gap-1 shrink-0"><i class="fas fa-thumbtack text-[9px] text-amber-600"></i> Pinned</span>' : ''}
+          <div class="flex items-start gap-2 flex-1">
+            ${isPinned ? '<i class="fas fa-thumbtack text-amber-500 text-xs shrink-0 mt-1 -rotate-45" title="Pinned Announcement"></i>' : ''}
+            ${isNewActive ? '<span class="bg-red-600 text-white text-[9px] font-black uppercase px-1.5 py-0.5 rounded shadow-sm animate-pulse shrink-0 tracking-wider mt-0.5">NEW</span>' : ''}
             <a href="${targetUrl}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''} class="text-xs sm:text-sm lg:text-base font-semibold text-slate-800 hover:text-indigo-600 transition-colors leading-snug">
               ${escapeHtml(title)}
             </a>
@@ -150,7 +178,7 @@
     if (!wrapper) return;
 
     try {
-      const response = await fetch(NOTIFICATIONS_URL);
+      const response = await fetch(NOTIFICATIONS_URL + '?t=' + Date.now());
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const result = await response.json();

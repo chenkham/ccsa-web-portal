@@ -79,11 +79,7 @@ $extraScripts = $extraScripts ?? '';
                    class="w-9 h-9 rounded-lg bg-slate-800/90 hover:bg-[#1877f2] border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-white text-sm transition-all hover:-translate-y-0.5 shadow-sm">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Official LinkedIn page"
-                   class="w-9 h-9 rounded-lg bg-slate-800/90 hover:bg-[#0a66c2] border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-white text-sm transition-all hover:-translate-y-0.5 shadow-sm">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Official Instagram handle"
+                <a href="https://www.instagram.com/ccsa_du?igsi=MXByNGIxMGFkZzVoaA==" target="_blank" rel="noopener noreferrer" aria-label="Official Instagram handle"
                    class="w-9 h-9 rounded-lg bg-slate-800/90 hover:bg-[#e4405f] border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-white text-sm transition-all hover:-translate-y-0.5 shadow-sm">
                     <i class="fab fa-instagram"></i>
                 </a>
@@ -191,7 +187,7 @@ $extraScripts = $extraScripts ?? '';
         { title: "Generative AI & LLMs Research", url: "research.php", category: "Research", desc: "Large Language Models, Prompt Engineering, RAG architectures" },
         { title: "Research Collaborations & Industry Partners", url: "research.php", category: "Research", desc: "Academic tie-ups, research facilities, contact for collaboration" },
         { title: "Research Publications & Papers", url: "publication.php", category: "Research", desc: "Indexed IEEE, Springer, ACM journals and conference papers" },
-        { title: "Present Enrolled Students Roster", url: "Present_Stu.php", category: "Students", desc: "Directory of current students across BCA, MCA, PGDCA, and Ph.D." },
+        { title: "Present Students", url: "Present_Stu.php", category: "Students", desc: "Enrolled students across BCA, MCA, and PGDCA at CCSA" },
         { title: "Announcements & Notice Board", url: "notices.php", category: "Notice Board", desc: "Official circulars, DUAT admission notices, timetables, and exam schedules" },
         { title: "DUAT 2026 Examination Notice", url: "notices.php", category: "Notice Board", desc: "Dibrugarh University Admission Test schedule and application procedure" },
         { title: "Contact CCSA Office & Location", url: "index.php#contact", category: "Contact", desc: "Office email ccsduoffice@gmail.com, inquiries, and campus location" },

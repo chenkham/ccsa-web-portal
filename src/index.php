@@ -14,69 +14,64 @@ $currentPage = 'home';
 include 'templates/header.php';
 ?>
 
-    <!-- Hero Slider Section -->
-    <section class="relative bg-[#1a365d] text-white">
-        <div class="h-64 sm:h-[480px] lg:h-[520px] relative overflow-hidden">
-            <div id="heroSlider" class="slider h-full flex transition-transform duration-700 ease-in-out">
-                <!-- Slide 1 -->
-                <div class="slide min-w-full h-full relative group">
-                    <img src="https://dibru.ac.in/assets/image/Centre-for-Computer-Science-and-Application-banner.jpg"
-                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        alt="Centre for Computer Science and Applications Banner">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500"></div>
+    <!-- Hero Video Section -->
+    <section class="relative bg-[#0f172a] text-white w-full overflow-hidden leading-none">
+        <div class="w-full relative h-[380px] xs:h-[410px] sm:h-[460px] md:h-auto md:aspect-[1280/530] overflow-hidden flex items-center justify-center">
+            <video 
+                id="heroDepartmentVideo"
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                preload="auto"
+                poster="assets/videos/ccsa_poster.jpg"
+                onloadedmetadata="this.playbackRate = 0.7;"
+                onplay="this.playbackRate = 0.7;"
+                class="h-full w-auto min-w-full md:w-full md:h-auto max-w-none md:max-w-full object-cover object-center block">
+                <source src="assets/videos/ccsa_optimized.mp4" type="video/mp4">
+            </video>
+
+            <!-- Hero Headline & Outline Button (Oil India Style: Solid White, No Shadows, Clean Video View) -->
+            <div class="absolute inset-0 flex items-center z-10 pointer-events-none">
+                <div class="container mx-auto px-5 sm:px-8 lg:px-12 pointer-events-auto">
+                    <div class="max-w-[320px] xs:max-w-[360px] sm:max-w-md md:max-w-lg lg:max-w-xl space-y-3 sm:space-y-4">
+                        <h1 class="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black uppercase text-white tracking-tight leading-tight">
+                            Two Decades of<br>Computing Excellence
+                        </h1>
+
+                        <p class="text-xs sm:text-sm md:text-base font-normal text-white uppercase tracking-wider leading-relaxed">
+                            Centre for Computer Science and Applications<br>Dibrugarh University
+                        </p>
+
+                        <div class="pt-2 sm:pt-3 flex items-center">
+                            <a href="#programs" 
+                                class="inline-flex items-center justify-center px-6 py-2.5 rounded-full border-2 border-white bg-transparent hover:bg-white hover:text-slate-950 text-white text-xs sm:text-sm font-bold transition-all duration-200">
+                                <span>Academic Programmes</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Slide 2 -->
-                <div class="slide min-w-full h-full relative group">
-                    <img src="https://admin.ccsaalumni.in/storage/sliders/VPn3DiUMcBRipEQv7JgCzcanPBcLNosV9FxeNcVY.jpg"
-                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        alt="CCSA Alumni Event">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500"></div>
-                </div>
-
-                <!-- Slide 3 -->
-                <div class="slide min-w-full h-full relative group">
-                    <img src="https://dibru.ac.in/assets/image/Centre-for-Computer-Science-and-Application-banner.jpg"
-                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        alt="CCSA Department Campus">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500"></div>
-                </div>
-            </div>
-
-            <!-- Slider Navigation Arrows -->
-            <button onclick="prevSlide()" aria-label="Previous Slide" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-all z-10">
-                <i class="fas fa-chevron-left text-sm"></i>
-            </button>
-            <button onclick="nextSlide()" aria-label="Next Slide" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-all z-10">
-                <i class="fas fa-chevron-right text-sm"></i>
-            </button>
-
-            <!-- Slider Dots -->
-            <div class="absolute bottom-4 right-8 flex gap-2 z-10">
-                <span class="slider-dot w-3 h-3 rounded-full bg-white transition-all cursor-pointer" onclick="goToSlide(0)"></span>
-                <span class="slider-dot w-3 h-3 rounded-full bg-white/50 transition-all cursor-pointer" onclick="goToSlide(1)"></span>
-                <span class="slider-dot w-3 h-3 rounded-full bg-white/50 transition-all cursor-pointer" onclick="goToSlide(2)"></span>
             </div>
         </div>
     </section>
 
     <!-- ═══ ANNOUNCEMENT TICKER BAR ═══ -->
-    <div id="announcementTicker" class="bg-[#1a365d] relative z-20">
+    <div id="announcementTicker" class="bg-white border-b border-slate-200/90 shadow-sm relative z-20">
         <div class="container mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2.5 sm:gap-4 py-2 sm:py-2.5">
             <!-- Live Badge -->
             <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <span class="w-2 h-2 rounded-full bg-[#fbbf24] live-dot"></span>
-                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider sm:tracking-widest text-[#fbbf24]">Notices</span>
+                <span class="w-2 h-2 rounded-full bg-red-600 live-dot"></span>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider sm:tracking-widest text-[#1a365d]">Notices</span>
             </div>
-            <div class="h-3.5 sm:h-4 w-px bg-white/20 flex-shrink-0"></div>
+            <div class="h-3.5 sm:h-4 w-px bg-slate-200 flex-shrink-0"></div>
             <!-- Scrolling Headlines -->
             <div class="ticker-bar flex-1 overflow-hidden" style="mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);">
-                <div id="tickerTrack" class="ticker-track text-white">
-                    <span class="text-xs font-medium text-white/60">Loading announcements...</span>
+                <div id="tickerTrack" class="ticker-track text-slate-700">
+                    <span class="text-xs font-medium text-slate-400">Loading announcements...</span>
                 </div>
             </div>
             <!-- View All Link -->
-            <a href="notices.php" class="text-[10px] font-bold uppercase tracking-wider text-white/60 hover:text-[#fbbf24] transition-colors flex-shrink-0 hidden sm:inline-flex items-center gap-1">
+            <a href="notices.php" class="text-[10px] font-bold uppercase tracking-wider text-slate-500 hover:text-[#1a365d] transition-colors flex-shrink-0 hidden sm:inline-flex items-center gap-1">
                 All Notices <i class="fas fa-arrow-right text-[8px]"></i>
             </a>
         </div>
@@ -1130,47 +1125,19 @@ include 'templates/header.php';
         </div>
     </section>
 
-    <!-- Slider JavaScript -->
     <script>
-    // Hero Slider Logic
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('#heroSlider .slide');
-    const dots = document.querySelectorAll('.slider-dot');
-    const slider = document.getElementById('heroSlider');
-
-    function updateSlider() {
-        if (!slider) return;
-        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-        dots.forEach((dot, idx) => {
-            if (idx === currentSlide) {
-                dot.classList.remove('bg-white/50');
-                dot.classList.add('bg-white', 'w-6');
-            } else {
-                dot.classList.remove('bg-white', 'w-6');
-                dot.classList.add('bg-white/50');
-            }
-        });
-    }
-
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slides.length;
-        updateSlider();
-    }
-
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        updateSlider();
-    }
-
-    function goToSlide(idx) {
-        currentSlide = idx;
-        updateSlider();
-    }
-
-    setInterval(nextSlide, 5000);
+    document.addEventListener('DOMContentLoaded', () => {
+        const vid = document.getElementById('heroDepartmentVideo');
+        if (vid) {
+            vid.playbackRate = 0.7;
+            vid.addEventListener('play', () => { vid.playbackRate = 0.7; });
+            vid.addEventListener('canplay', () => { vid.playbackRate = 0.7; });
+            vid.addEventListener('seeked', () => { vid.playbackRate = 0.7; });
+        }
+    });
     </script>
 
 <?php
-$extraScripts = '<script src="assets/js/notifications.js"></script><script src="assets/js/contact.js"></script>';
+$extraScripts = '<script src="assets/js/notifications.js?v=' . time() . '"></script><script src="assets/js/contact.js?v=' . time() . '"></script>';
 include 'templates/footer.php';
 ?>

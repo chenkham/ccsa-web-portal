@@ -20,6 +20,7 @@ desktop.ini
 *.tmp
 *.bak
 src/cache/*.json
+src/cache/*.cache
 !src/cache/.htaccess
 
 # Environment & Private Keys

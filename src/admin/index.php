@@ -156,7 +156,7 @@ $currentTab = $_GET['tab'] ?? 'notifications';
         
         <!-- Toast Feedback -->
         <?php if ($success): ?>
-            <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold rounded-2xl flex items-center justify-between shadow-sm">
+            <div class="admin-toast mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold rounded-2xl flex items-center justify-between shadow-sm transition-all duration-500">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-check-circle text-emerald-600 text-base"></i>
                     <span><?php echo htmlspecialchars($success); ?></span>
@@ -166,7 +166,7 @@ $currentTab = $_GET['tab'] ?? 'notifications';
         <?php endif; ?>
 
         <?php if ($error): ?>
-            <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 text-sm font-semibold rounded-2xl flex items-center justify-between shadow-sm">
+            <div class="admin-toast mb-6 p-4 bg-red-50 border border-red-200 text-red-800 text-sm font-semibold rounded-2xl flex items-center justify-between shadow-sm transition-all duration-500">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-exclamation-triangle text-red-600 text-base"></i>
                     <span><?php echo htmlspecialchars($error); ?></span>
@@ -244,6 +244,14 @@ $currentTab = $_GET['tab'] ?? 'notifications';
         const urlParams = new URLSearchParams(window.location.search);
         const tabParam = urlParams.get('tab') || sessionStorage.getItem('activeAdminTab') || 'notifications';
         switchTab(tabParam);
+
+        document.querySelectorAll('.admin-toast').forEach(toast => {
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-8px)';
+                setTimeout(() => toast.remove(), 500);
+            }, 3500);
+        });
     });
     </script>
 </body>
