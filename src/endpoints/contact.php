@@ -6,6 +6,13 @@ require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/Security.php';
 require_once __DIR__ . '/../includes/Mailer.php';
 
+/**
+ * Public Contact Form Endpoint
+ * 
+ * Takes inquiries, sanitizes against malicious payloads,
+ * checks spam rate limits, and safely stores or dispatches alert emails.
+ */
+
 Session::start();
 
 header('Content-Type: application/json');
@@ -14,7 +21,7 @@ header('X-Frame-Options: DENY');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['error' => 'Method Not Allowed']);
+    echo json_encode(['error' => 'Method Not Allowed. POST requests only, please.']);
     exit;
 }
 
@@ -23,7 +30,7 @@ $data = json_decode($input, true);
 
 if (!is_array($data)) {
     http_response_code(400);
-    echo json_encode(['error' => 'Invalid JSON input']);
+    echo json_encode(['error' => 'Invalid JSON input. Humans usually send valid JSON.']);
     exit;
 }
 
@@ -40,9 +47,10 @@ if (!Security::validateCsrfToken($csrfToken)) {
 }
 
 // Anti-Spam Rate Limiting: Max 10 messages per 5 minutes
+// Even the most enthusiastic students don't type 10 messages in 5 minutes!
 if (!Security::checkRateLimit('public_contact', 10, 300)) {
     http_response_code(429);
-    echo json_encode(['error' => 'Too many message submissions. Please wait a few minutes before submitting again.']);
+    echo json_encode(['error' => 'You are sending messages faster than our server can read! Please take a 5-minute breather.']);
     exit;
 }
 

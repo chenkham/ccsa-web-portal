@@ -5,14 +5,15 @@ require_once __DIR__ . '/config.php';
 
 /**
  * Security Utility Class
+ * 
+ * "When I wrote this security engine, only God and I understood what I was doing.
+ *  Now, only God knows. Touch with clean hands and 3 cups of coffee."
  */
 class Security
 {
     /**
      * Escapes a string for safe HTML output.
-     *
-     * @param string $value The value to escape
-     * @return string
+     * Prevents script kiddies from injecting <marquee><h1>HACKED BY Xx_Shadow_xX</h1></marquee>
      */
     public static function escape(string $value): string
     {
@@ -21,8 +22,7 @@ class Security
 
     /**
      * Generates and stores a CSRF token.
-     *
-     * @return string
+     * Cryptographic hex token so attackers can't forge requests like it's 1999.
      */
     public static function generateCsrfToken(): string
     {
@@ -214,11 +214,9 @@ class Security
 
     /**
      * Checks if an action is currently rate-limited based on IP/Key.
-     *
-     * @param string $actionKey Unique action identifier (e.g. 'login_attempt')
-     * @param int $maxAttempts Maximum allowed attempts
-     * @param int $decaySeconds Lockout duration in seconds
-     * @return bool True if allowed, false if rate limited
+     * 
+     * Rate Limiter: Abandon all hope ye who try brute-forcing passwords.
+     * 5 wrong attempts and you get a mandatory 15-minute unpaid tea break.
      */
     public static function checkRateLimit(string $actionKey, int $maxAttempts = MAX_LOGIN_ATTEMPTS, int $decaySeconds = LOGIN_LOCKOUT_TIME): bool
     {
@@ -231,10 +229,10 @@ class Security
 
         if ($rateData) {
             if ($now < $rateData['lockout_until']) {
-                return false; // Still locked out
+                return false; // Still in the timeout corner
             }
             if ($now > $rateData['first_attempt'] + $decaySeconds) {
-                // Reset window
+                // Reset window - forgiven by the server gods
                 unset($_SESSION['rate_limit'][$actionKey]);
             } elseif ($rateData['attempts'] >= $maxAttempts) {
                 // Apply lockout
@@ -286,7 +284,9 @@ class Security
     }
 
     /**
-     * Records a security event in the audit_logs table and cache, automatically capping at 200 records.
+     * Records a security event in the audit_logs table and cache.
+     * Automatically caps at 200 records.
+     * Why 200? Because at 201 records, the database achieves consciousness.
      *
      * @param PDO|null $pdo
      * @param string $action

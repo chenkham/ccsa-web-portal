@@ -5,6 +5,8 @@ require_once __DIR__ . '/config.php';
 
 /**
  * PDO Singleton Database Class
+ * 
+ * "There can be only one." - Highlander, and this Singleton connection.
  */
 class Database
 {
@@ -12,14 +14,14 @@ class Database
     private static ?\PDO $instance = null;
 
     /**
-     * Private constructor to prevent direct instantiation.
+     * Private constructor: Direct instantiation is strictly forbidden by the elders.
      */
     private function __construct()
     {
     }
 
     /**
-     * Prevent cloning.
+     * Prevent cloning. Clones are for Star Wars, not database singletons.
      */
     private function __clone()
     {
@@ -27,8 +29,7 @@ class Database
 
     /**
      * Get the PDO instance.
-     *
-     * @return \PDO
+     * If MySQL is on a coffee break, callers fall back to JSON cache. Zero panic.
      */
     public static function getInstance(): \PDO
     {
@@ -38,13 +39,13 @@ class Database
             $options = [
                 \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                \PDO::ATTR_EMULATE_PREPARES   => false,
+                \PDO::ATTR_EMULATE_PREPARES   => false, // Real prepared statements, no fake emulations
             ];
 
             try {
                 self::$instance = new \PDO($dsn, DB_USER, DB_PASS, $options);
             } catch (\PDOException $e) {
-                // In production, do not echo the exact error message
+                // Don't leak DB credentials or stack traces to curious eyes
                 throw new \RuntimeException('Database connection failed.');
             }
         }

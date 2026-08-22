@@ -5,6 +5,9 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/security-validator.php';
 require_once __DIR__ . '/../includes/Security.php';
 
+// Admin Authentication Gatekeeper.
+// If you are a script kiddie trying admin' OR '1'='1 -- please close your terminal and read a textbook.
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
     exit;
@@ -17,9 +20,10 @@ if (!SecurityValidator::validateCSRFToken($csrf_token)) {
     exit;
 }
 
-// 2. Check Brute-Force Rate Limiting (5 attempts max, 15-min lockout)
+// 2. Check Brute-Force Rate Limiting (5 attempts max, 15-min timeout)
 if (!Security::checkRateLimit('admin_login', MAX_LOGIN_ATTEMPTS, LOGIN_LOCKOUT_TIME)) {
-    Security::logAudit($pdo, 'LOGIN_LOCKED_OUT', 'Too many failed login attempts from this IP.', $_POST['email'] ?? 'unknown');
+    // 5 strikes and you're out. Time for a mandatory meditation break.
+    Security::logAudit($pdo, 'LOGIN_LOCKED_OUT', 'Rate limit exceeded: 5 failed login attempts. Mandatory 15-min coffee break applied.', $_POST['email'] ?? 'unknown');
     header('Location: index.php?error=' . urlencode('Too many failed login attempts. Account temporarily locked for 15 minutes.'));
     exit;
 }

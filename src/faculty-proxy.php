@@ -1,6 +1,9 @@
+
+
+
 <?php
 header('Content-Type: application/javascript');
-
+//proxy might change later so keep an eye on the main dibru.ac.in website for any changes in the API endpoint or structure
 // Restrict CORS to allowed origins
 $allowed_origins = ['https://www.ccsdu.in', 'https://ccsdu.in'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';

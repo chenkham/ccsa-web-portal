@@ -1,6 +1,7 @@
 /* 
  * Custom CSS for CCSA Website — Centre for Computer Science and Applications
  * Modern animations, tech aesthetic, glowing borders, smooth tickers, and glassmorphism.
+ * if you want to override Tailwind defaults, do it in tailwind.config.js instead of here.
  */
 
 /* Smooth scroll */
@@ -397,6 +398,7 @@ html, body {
 /* ═══════════════════════════════════════════════════════════════════
    HOMEPAGE 2.0 — DESIGN SYSTEM
    Tokens, hero stack, spotlight cards, timeline, scrollspy rail, toast
+   Took a lot of time thinking about this design if you are going to revamp it, do with care.
    ═══════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -471,14 +473,8 @@ html, body {
   color: transparent;
 }
 
-/* ── HERO ───────────────────────────────────────────────────────────
-   Layer order (bottom → top):
-   1. .hero-media      crossfading photography, desaturated + darkened
-   2. .hero-aurora     slow-drifting colour bloom
-   3. .hero-mesh       perspective grid (the "compute lattice")
-   4. .hero-veil       navy gradient that guarantees text contrast
-   5. content
-   ────────────────────────────────────────────────────────────────── */
+/* ── HERO ───────────────────────────────────────────────────────────*/
+
 .hero {
   position: relative;
   isolation: isolate;
@@ -512,7 +508,7 @@ html, body {
   filter: saturate(0.55) contrast(1.05) brightness(0.62);
 }
 
-/* Aurora bloom — three offset radial gradients drifting independently */
+/* Aurora bloom */
 .hero-aurora::before,
 .hero-aurora::after {
   content: '';
@@ -638,12 +634,7 @@ html, body {
   100% { transform: translateY(0.95rem); opacity: 0; }
 }
 
-/* ── SPOTLIGHT CARD ─────────────────────────────────────────────────
-   One shared interaction primitive used by programme cards, achievement
-   cards and quick-access tiles. A conic gradient border is revealed on
-   hover, plus a pointer-following radial wash. Both driven by
-   --cx/--cy custom properties written from JS.
-   ────────────────────────────────────────────────────────────────── */
+/* ── SPOTLIGHT CARD ─────────────────────────────────────────────────*/
 .spot-card {
   position: relative;
   isolation: isolate;
@@ -808,11 +799,7 @@ a:hover .link-arrow svg,
   transform: translateX(0.3rem);
 }
 
-/* ── HERITAGE TIMELINE ──────────────────────────────────────────────
-   1976 → 2004 → 2018 → today. Horizontal scroll-snap on mobile,
-   vertical spine on desktop. The progress line fills as the section
-   enters the viewport (class toggled by home.js).
-   ────────────────────────────────────────────────────────────────── */
+/* ── TIMELINE ──────────────────────────────────────────────*/
 .timeline {
   position: relative;
 }

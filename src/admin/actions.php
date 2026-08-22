@@ -6,9 +6,17 @@ require_once __DIR__ . '/security-validator.php';
 require_once __DIR__ . '/check_session.php';
 require_once __DIR__ . '/../includes/Security.php';
 
+/**
+ * CCSA Admin Action Dispatcher
+ * 
+ * "Welcome to the Grand Central Station of admin actions.
+ *  If this file breaks, please blame caffeine deprivation, not the architecture."
+ */
+
 check_auth();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    // GET requests here? Nice try, crawler bot.
     header('Location: index.php');
     exit;
 }
@@ -25,6 +33,7 @@ $userRole = (string)($_SESSION['user_role'] ?? 'admin');
 
 function require_role(string $currentRole, array $allowedRoles, string $redirectTab = 'notifications'): void {
     if (!in_array($currentRole, $allowedRoles, true)) {
+        // "You shall not pass!" - Gandalf, and this RBAC middleware
         header('Location: index.php?error=' . urlencode('Access Denied: Your role (' . htmlspecialchars($currentRole) . ') does not have permission for this operation.') . '&tab=' . urlencode($redirectTab));
         exit;
     }

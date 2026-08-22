@@ -21,6 +21,18 @@
     document.documentElement.removeAttribute('data-contrast');
   } catch (e) {}
 
+  // ── DEVELOPER CONSOLE EASTER EGG ──────────────────────────────────────────
+  try {
+    console.log(
+      "%c⚡ CCSA DIBRUGARH UNIVERSITY ⚡\n" +
+      "%cHey curious developer! 👀 Looking for bugs or easter eggs?\n" +
+      "If you find one, remember: it's not a bug, it's an undocumented feature! 😉\n" +
+      "Interested in building high-performance software & AI? Explore our MCA, BCA & Ph.D. programmes: https://ccsdu.in/programs.php",
+      "color: #0f172a; font-size: 15px; font-weight: 900; background: linear-gradient(90deg, #fbbf24, #f59e0b); padding: 5px 12px; border-radius: 6px;",
+      "color: #4f46e5; font-size: 12px; font-weight: 600; line-height: 1.6; padding-top: 4px;"
+    );
+  } catch (e) {}
+
   /**
    * Apply font scaling to root html element
    */

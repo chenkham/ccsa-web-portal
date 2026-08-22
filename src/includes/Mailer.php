@@ -4,6 +4,13 @@ declare(strict_types=1);
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/Security.php';
 
+/**
+ * Mailer Utility Class
+ * 
+ * Hand-crafted Raw TCP Socket SMTP Client.
+ * Built from scratch because who needs 50MB of Composer dependencies
+ * when you have insomnia, RFC 5321 specs, and strong Assam tea?
+ */
 class Mailer
 {
     public static function getSmtpConfig(): array

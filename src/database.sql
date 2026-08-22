@@ -2,6 +2,7 @@
 -- CCSA Dibrugarh University - Complete MySQL Database Schema
 -- Centre for Computer Science and Applications
 -- Database Engine: InnoDB | Character Set: utf8mb4 | Collation: utf8mb4_unicode_ci
+-- created by: chenkham chowlu(2026/bca 5thsem)
 -- =====================================================================
 
 SET FOREIGN_KEY_CHECKS = 0;

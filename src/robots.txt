@@ -1,7 +1,11 @@
+# 🤖 Dear Web Crawler: Please crawl gently. Our server runs on electricity and good vibes.
+# 👤 Dear Human: If you are reading this in a browser, congrats on finding the secret back-alley!
+
 User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /cache/
 Disallow: /includes/
 
+# "The robots will inherit the earth, yes, but only after they solve merge conflicts."
 Sitemap: https://ccsdu.in/sitemap.xml
