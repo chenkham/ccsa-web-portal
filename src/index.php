@@ -57,26 +57,26 @@ include 'templates/header.php';
 
     <!-- ═══ ANNOUNCEMENT TICKER BAR ═══ -->
     <div id="announcementTicker" class="bg-white border-y border-slate-200/90 shadow-xs relative z-20">
-        <div class="container mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2 sm:gap-3.5 py-2 sm:py-2.5">
+        <div class="container mx-auto px-2.5 sm:px-4 lg:px-10 flex items-center gap-1.5 sm:gap-3 py-1 sm:py-2">
             <!-- Live Badge -->
-            <div class="flex items-center gap-1.5 shrink-0 bg-red-50 text-red-700 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-red-200 shadow-xs">
-                <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse shrink-0"></span>
-                <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider">NOTICES</span>
+            <div class="flex items-center gap-1 shrink-0 bg-red-50 text-red-700 px-1.5 sm:px-2.5 py-0.5 rounded-full border border-red-200/80 shadow-xs">
+                <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-red-600 animate-pulse shrink-0"></span>
+                <span class="text-[9px] sm:text-xs font-black uppercase tracking-wider">NOTICES</span>
             </div>
             
-            <div class="h-3.5 sm:h-4 w-px bg-slate-200 shrink-0"></div>
+            <div class="h-3 sm:h-4 w-px bg-slate-200 shrink-0"></div>
             
             <!-- Scrolling Headlines -->
             <div class="ticker-bar flex-1 overflow-hidden min-w-0">
                 <div id="tickerTrack" class="ticker-track text-slate-700">
-                    <span class="text-xs font-medium text-slate-400">Loading announcements...</span>
+                    <span class="text-[11px] sm:text-xs font-medium text-slate-400">Loading announcements...</span>
                 </div>
             </div>
             
             <!-- View All Link -->
-            <a href="notices.php" class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 hover:text-indigo-800 transition-colors shrink-0 hidden md:inline-flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-lg">
+            <a href="notices.php" class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-indigo-600 hover:text-indigo-800 transition-colors shrink-0 hidden md:inline-flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 px-2 py-0.5 sm:py-1 rounded-lg">
                 <span>All Notices</span>
-                <i class="fas fa-arrow-right text-[9px]"></i>
+                <i class="fas fa-arrow-right text-[8px]"></i>
             </a>
         </div>
     </div>

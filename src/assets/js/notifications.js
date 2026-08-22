@@ -31,9 +31,9 @@
     });
 
     if (activeNewNotices.length === 0) {
-      const defaultItem = `<a href="notices.php" class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1.5 transition-colors">
+      const defaultItem = `<a href="notices.php" class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1 sm:gap-1.5 transition-colors">
         <span class="ticker-dot"></span>
-        <span class="text-xs font-semibold">Welcome to Centre for Computer Science and Applications (CCSA), Dibrugarh University</span>
+        <span class="text-[11px] sm:text-xs font-semibold leading-tight">Welcome to Centre for Computer Science and Applications (CCSA), Dibrugarh University</span>
       </a>`;
       tickerTrack.innerHTML = defaultItem + defaultItem + defaultItem;
       return;
@@ -46,12 +46,12 @@
       const dateStr = d ? `${d.getDate()} ${MONTHS_SHORT[d.getMonth()]}` : '';
       const isPinned = n.is_pinned == 1;
 
-      return `<a href="notices.php" class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1.5 transition-colors">
+      return `<a href="notices.php" class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1 sm:gap-1.5 transition-colors">
         <span class="ticker-dot"></span>
-        ${isPinned ? '<i class="fas fa-thumbtack text-amber-500 text-[10px] -rotate-45"></i>' : ''}
-        <span class="bg-red-600 text-white text-[8px] font-black uppercase px-1.5 py-0.2 rounded shadow-sm animate-pulse">NEW</span>
-        <span class="text-xs font-semibold">${escapeHtml(title)}</span>
-        ${dateStr ? `<span class="text-[10px] font-medium text-slate-400">(${dateStr})</span>` : ''}
+        ${isPinned ? '<i class="fas fa-thumbtack text-amber-500 text-[9px] sm:text-[10px] -rotate-45"></i>' : ''}
+        <span class="bg-red-600 text-white text-[7px] sm:text-[8px] font-black uppercase px-1 sm:px-1.5 py-0.2 rounded shadow-xs animate-pulse shrink-0">NEW</span>
+        <span class="text-[11px] sm:text-xs font-semibold leading-tight">${escapeHtml(title)}</span>
+        ${dateStr ? `<span class="text-[9px] sm:text-[10px] font-medium text-slate-400">(${dateStr})</span>` : ''}
       </a>`;
     }).join('');
 
