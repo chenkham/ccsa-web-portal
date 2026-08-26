@@ -21,6 +21,6 @@ if (isset($pdo)) {
 // Secure session destruction
 Session::destroy();
 
-// Redirect to index page
-header('Location: index.php');
+// Redirect to admin login page
+header('Location: /admin/index.php');
 exit;

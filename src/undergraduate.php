@@ -114,7 +114,7 @@ include 'templates/header.php';
                 <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
                     <div class="flex items-center gap-3 flex-wrap">
                         <span class="bg-[#fbbf24] text-slate-900 text-xs font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider">Undergraduate Degree</span>
-                        <span class="bg-white/20 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">3 Years &bull; 6 Semesters</span>
+                        <span class="bg-white/20 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">4 Years &bull; 8 Semesters</span>
                     </div>
                     <button onclick="window.print()" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white/15 hover:bg-white/25 backdrop-blur-md rounded-xl text-xs font-bold text-white border border-white/20 transition-all cursor-pointer shadow-sm">
                         <i class="fas fa-print"></i>
@@ -134,8 +134,8 @@ include 'templates/header.php';
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8">
             <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm text-center">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">Duration</span>
-                <span class="text-lg sm:text-xl font-extrabold text-[#1a365d]">3 Years</span>
-                <span class="text-[11px] text-slate-500 block">6 Semesters</span>
+                <span class="text-lg sm:text-xl font-extrabold text-[#1a365d]">4 Years</span>
+                <span class="text-[11px] text-slate-500 block">8 Semesters</span>
             </div>
             <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm text-center">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">Intake Capacity</span>
@@ -163,7 +163,7 @@ include 'templates/header.php';
                         <i class="fas fa-info-circle text-[#fbbf24]"></i> About the Programme
                     </h2>
                     <p class="text-slate-700 text-sm sm:text-[15px] leading-relaxed mb-4">
-                        The Bachelor of Computer Applications (BCA) is a Three (03) Year Degree Program structured across Six (06) Semesters. Selection procedure for the BCA program is strictly conducted on a <strong class="text-slate-900 font-bold">Merit Basis</strong>.
+                        The Bachelor of Computer Applications (BCA) is a Four (04) Year Degree Program structured across Eight (08) Semesters under NEP 2020. Selection procedure for the BCA program is strictly conducted on a <strong class="text-slate-900 font-bold">Merit Basis</strong>.
                     </p>
                     <p class="text-slate-700 text-sm sm:text-[15px] leading-relaxed">
                         A BCA degree provides a solid foundation for a successful career in the modern IT industry. It equips students with essential technical expertise, algorithmic problem-solving abilities, and practical engineering experience needed to excel in software engineering, full-stack development, cloud computing, and post-graduate studies.
@@ -268,6 +268,14 @@ include 'templates/header.php';
                                     <td class="px-4 py-2.5">6<sup>th</sup> Semester</td>
                                     <td class="px-4 py-2.5 font-bold text-slate-900 text-right">Rs. 7,800</td>
                                 </tr>
+                                <tr class="hover:bg-slate-50 bg-amber-50/40">
+                                    <td class="px-4 py-2.5 font-semibold text-slate-800">7<sup>th</sup> Semester</td>
+                                    <td class="px-4 py-2.5 font-bold text-amber-700 text-right">Coming Soon</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 bg-amber-50/40">
+                                    <td class="px-4 py-2.5 font-semibold text-slate-800">8<sup>th</sup> Semester</td>
+                                    <td class="px-4 py-2.5 font-bold text-amber-700 text-right">Coming Soon</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -282,6 +290,49 @@ include 'templates/header.php';
         </div>
     </div>
 </section>
+
+    <!-- Admissions FAQ Section -->
+    <section class="py-12 sm:py-16 bg-slate-50 border-t border-slate-200/80">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-12 max-w-4xl">
+            <div class="text-center mb-10">
+                <span class="inline-block px-3.5 py-1 bg-indigo-50 text-indigo-700 font-bold text-xs uppercase tracking-wider rounded-full border border-indigo-200/60 mb-2">Got Questions?</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1a365d] tracking-tight">Frequently Asked Questions</h2>
+                <p class="text-slate-600 text-sm mt-1">Honest, straightforward answers for future BCA students &amp; parents.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Q1 -->
+                <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
+                        <span class="text-indigo-600 font-black">Q.</span> Do I need prior coding or computer science experience before joining BCA?
+                    </h3>
+                    <p class="text-slate-600 text-sm mt-2.5 leading-relaxed pl-6">
+                        <strong>Not at all!</strong> You just need curiosity, problem-solving enthusiasm, and an eagerness to learn. Our professors start from absolute computer fundamentals (Logic Building, C Programming, and Discrete Mathematics) in the first semester, guiding you step-by-step into advanced software engineering, AI, and web development.
+                    </p>
+                </div>
+
+                <!-- Q2 -->
+                <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
+                        <span class="text-indigo-600 font-black">Q.</span> How much practical lab time will I get?
+                    </h3>
+                    <p class="text-slate-600 text-sm mt-2.5 leading-relaxed pl-6">
+                        Over <strong>60% of the BCA curriculum is hands-on laboratory practice</strong>. Every programming and database course is paired with dedicated lab hours in our air-conditioned computer labs with high-speed internet, dedicated workstations, and open-source development tools.
+                    </p>
+                </div>
+
+                <!-- Q3 -->
+                <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
+                        <span class="text-indigo-600 font-black">Q.</span> Can I pursue MCA or higher studies after completing BCA at Dibrugarh University?
+                    </h3>
+                    <p class="text-slate-600 text-sm mt-2.5 leading-relaxed pl-6">
+                        Yes! A BCA degree from Dibrugarh University is fully recognized nationally and internationally. You can transition directly into our AICTE-approved 2-Year MCA programme, M.Sc. in Computer Science/IT, MBA in IT, or directly step into campus placements with IT recruiters.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 
 <?php
 include 'templates/footer.php';

@@ -1,6 +1,10 @@
 /**
  * Notifications Fetcher Module
  * Populates: (1) Announcement Ticker Bar, (2) Notices & Announcements grid section
+ * 
+ * @author Chenkham Chowlu
+ * @copyright (c) 2024-2026 Chenkham Chowlu
+ * @signature Q2hlbmtoYW0gQ2hvd2x1
  */
 (() => {
   'use strict';
@@ -8,55 +12,80 @@
   const NOTIFICATIONS_URL = 'endpoints/notifications.php';
   const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+  const parseSafeDate = (dateStr) => {
+    if (!dateStr) return null;
+    const str = String(dateStr).trim();
+    // Try ISO format
+    let d = new Date(str.replace(' ', 'T'));
+    if (!isNaN(d.getTime())) return d;
+    // Fallback to slash format
+    d = new Date(str.replace(/-/g, '/'));
+    return isNaN(d.getTime()) ? null : d;
+  };
+
+  const isNoticeNewActive = (notice) => {
+    if (!notice) return false;
+    // Explicitly disabled
+    if (notice.is_new !== undefined && (notice.is_new === 0 || notice.is_new === false || notice.is_new === '0')) {
+      return false;
+    }
+    // Check expiry date
+    if (notice.new_until) {
+      const untilStr = String(notice.new_until).split('T')[0] + 'T23:59:59';
+      const untilDate = parseSafeDate(untilStr);
+      if (untilDate) {
+        return untilDate.getTime() >= Date.now();
+      }
+    }
+    return (notice.is_new == 1 || notice.is_new === true || notice.is_new === '1');
+  };
+
   /**
-   * Build the scrolling ticker bar content
+   * Build the scrolling ticker bar content (Single item without duplicate when count is 0 or 1)
    */
   const populateTicker = (notices) => {
     const tickerTrack = document.getElementById('tickerTrack');
     if (!tickerTrack) return;
 
     // Filter notices to ONLY include active NEW announcements
-    const now = new Date();
-    const activeNewNotices = (notices || []).filter(n => {
-      if (n.is_new !== undefined && (n.is_new === 0 || n.is_new === false || n.is_new === '0')) {
-        return false;
-      }
-      if (n.new_until) {
-        return new Date(n.new_until + 'T23:59:59') >= now;
-      }
-      if (n.is_new == 1) {
-        return true;
-      }
-      return false;
-    });
+    const activeNewNotices = (notices || []).filter(n => isNoticeNewActive(n));
 
+    // Case 0: No active new announcements -> Show exactly once, static
     if (activeNewNotices.length === 0) {
-      const defaultItem = `<a href="notices.php" class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1 sm:gap-1.5 transition-colors">
-        <span class="ticker-dot"></span>
-        <span class="text-[11px] sm:text-xs font-semibold leading-tight">Welcome to Centre for Computer Science and Applications (CCSA), Dibrugarh University</span>
+      tickerTrack.style.animation = 'none';
+      tickerTrack.innerHTML = `<a href="notices.php" class="ticker-item text-slate-600 hover:text-red-600 inline-flex items-center gap-2 transition-colors">
+        <span class="ticker-dot bg-slate-400"></span>
+        <span class="text-[11px] sm:text-xs font-semibold leading-tight">No new announcement right now</span>
       </a>`;
-      tickerTrack.innerHTML = defaultItem + defaultItem + defaultItem;
       return;
     }
 
-    // Build ticker items HTML (duplicate for seamless loop)
-    const buildItems = () => activeNewNotices.map(n => {
+    const renderItemHtml = (n) => {
       const title = n.title || 'Notification';
-      const d = n.createdAt ? new Date(n.createdAt) : null;
+      const d = parseSafeDate(n.createdAt);
       const dateStr = d ? `${d.getDate()} ${MONTHS_SHORT[d.getMonth()]}` : '';
-      const isPinned = n.is_pinned == 1;
+      const isPinned = n.is_pinned == 1 || n.is_pinned === true || n.is_pinned === '1';
 
-      return `<a href="notices.php" class="ticker-item text-slate-700 hover:text-[#1a365d] inline-flex items-center gap-1 sm:gap-1.5 transition-colors">
-        <span class="ticker-dot"></span>
+      return `<a href="notices.php" class="ticker-item text-slate-800 hover:text-red-600 inline-flex items-center gap-2 transition-colors">
+        <span class="ticker-dot bg-slate-400"></span>
         ${isPinned ? '<i class="fas fa-thumbtack text-amber-500 text-[9px] sm:text-[10px] -rotate-45"></i>' : ''}
-        <span class="bg-red-600 text-white text-[7px] sm:text-[8px] font-black uppercase px-1 sm:px-1.5 py-0.2 rounded shadow-xs animate-pulse shrink-0">NEW</span>
+        <span class="bg-red-600 text-white text-[8px] sm:text-[9px] font-black uppercase px-1.5 py-0.5 rounded shadow-xs shrink-0">NEW</span>
         <span class="text-[11px] sm:text-xs font-semibold leading-tight">${escapeHtml(title)}</span>
         ${dateStr ? `<span class="text-[9px] sm:text-[10px] font-medium text-slate-400">(${dateStr})</span>` : ''}
       </a>`;
-    }).join('');
+    };
 
-    // Duplicate content for seamless CSS animation loop
-    tickerTrack.innerHTML = buildItems() + buildItems();
+    // Case 1: Exactly 1 announcement -> Show exactly once, static without duplicates
+    if (activeNewNotices.length === 1) {
+      tickerTrack.style.animation = 'none';
+      tickerTrack.innerHTML = renderItemHtml(activeNewNotices[0]);
+      return;
+    }
+
+    // Case 2: Multiple announcements -> Animate scroll with clean duplicated set for infinite marquee
+    tickerTrack.style.animation = '';
+    const itemsListHtml = activeNewNotices.map(renderItemHtml).join('');
+    tickerTrack.innerHTML = itemsListHtml + itemsListHtml;
   };
 
   /**
@@ -80,7 +109,7 @@
     const displayNotices = notices;
 
     displayNotices.forEach(notice => {
-      const d = notice.createdAt ? new Date(notice.createdAt) : null;
+      const d = parseSafeDate(notice.createdAt);
       const day = d ? d.getDate() : '';
       const month = d ? (d.getMonth() + 1) : '';
       const year = d ? d.getFullYear() : '';
@@ -134,15 +163,8 @@
         `;
       }
 
-      const isPinned = notice.is_pinned == 1;
-      let isNewActive = false;
-      if (notice.is_new !== undefined && (notice.is_new === 0 || notice.is_new === false || notice.is_new === '0')) {
-        isNewActive = false;
-      } else if (notice.new_until) {
-        isNewActive = new Date(notice.new_until + 'T23:59:59') >= new Date();
-      } else if (notice.is_new == 1) {
-        isNewActive = true;
-      }
+      const isPinned = notice.is_pinned == 1 || notice.is_pinned === true || notice.is_pinned === '1';
+      const isNewActive = isNoticeNewActive(notice);
 
       item.innerHTML = `
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-3">
@@ -175,12 +197,22 @@
   };
 
   /**
-   * Main init
+   * Main init with Stale-While-Revalidate caching for instant rendering
    */
   const initNotifications = async () => {
-    const wrapper = document.getElementById('notice-wrapper');
-    if (!wrapper) return;
+    // 1. Instant render from local storage cache if available
+    try {
+      const cached = localStorage.getItem('ccsa_cached_notices');
+      if (cached) {
+        const cachedNotices = JSON.parse(cached);
+        if (Array.isArray(cachedNotices) && cachedNotices.length > 0) {
+          populateTicker(cachedNotices);
+          populateNoticeGrid(cachedNotices);
+        }
+      }
+    } catch (e) {}
 
+    // 2. Fetch fresh data in the background (cache-busted for real-time updates)
     try {
       const response = await fetch(NOTIFICATIONS_URL + '?t=' + Date.now());
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -188,28 +220,35 @@
       const result = await response.json();
       const notices = Array.isArray(result) ? result : (result.data || []);
 
-      // Sort descending by createdAt
       const sortedNotices = notices.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-      // Populate both the ticker and the grid
+      // Update UI with fresh data
       populateTicker(sortedNotices);
       populateNoticeGrid(sortedNotices);
 
+      // Save to cache for next visit
+      try {
+        localStorage.setItem('ccsa_cached_notices', JSON.stringify(sortedNotices));
+      } catch (e) {}
+
     } catch (error) {
-      console.error('Error fetching notices:', error);
+      console.warn('Notice fetch notice:', error);
       const wrapper = document.getElementById('notice-wrapper');
       const noNotices = document.getElementById('no-notices');
-      if (wrapper) wrapper.innerHTML = '';
-      if (noNotices) {
-        noNotices.innerHTML = '<i class="fas fa-exclamation-triangle text-2xl text-slate-300 mb-3 block"></i><p>Failed to load notices. Please try again later!</p>';
-        noNotices.classList.remove('hidden');
-      }
 
-      // Show fallback ticker text
-      const tickerTrack = document.getElementById('tickerTrack');
-      if (tickerTrack) {
-        tickerTrack.innerHTML = '<span class="text-xs font-medium text-white/50">Visit notices.php for the latest announcements</span>';
-        tickerTrack.style.animation = 'none';
+      // Only show error if no cached data was rendered
+      if (wrapper && wrapper.children.length === 0) {
+        wrapper.innerHTML = '';
+        if (noNotices) {
+          noNotices.innerHTML = '<i class="fas fa-info-circle text-2xl text-slate-300 mb-3 block"></i><p>Visit notices page for recent announcements.</p>';
+          noNotices.classList.remove('hidden');
+        }
+
+        const tickerTrack = document.getElementById('tickerTrack');
+        if (tickerTrack) {
+          tickerTrack.innerHTML = '<span class="text-xs font-medium text-slate-500">Visit notices.php for recent announcements</span>';
+          tickerTrack.style.animation = 'none';
+        }
       }
     }
   };

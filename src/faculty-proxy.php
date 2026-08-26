@@ -1,95 +1,101 @@
-
-
-
 <?php
-header('Content-Type: application/javascript');
-//proxy might change later so keep an eye on the main dibru.ac.in website for any changes in the API endpoint or structure
-// Restrict CORS to allowed origins
-$allowed_origins = ['https://www.ccsdu.in', 'https://ccsdu.in'];
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-if (in_array($origin, $allowed_origins)) {
-    header("Access-Control-Allow-Origin: $origin");
-}
+declare(strict_types=1);
 
-// Cache control headers (cache for 1 hour)
+header('Content-Type: application/json; charset=UTF-8');
 header('Cache-Control: public, max-age=3600');
-header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 3600) . ' GMT');
-
-// Security headers
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 
+$allowedOrigins = ['https://www.ccsdu.in', 'https://ccsdu.in', 'http://localhost:8000', 'http://localhost:3000'];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
+
+$cacheDir = __DIR__ . '/cache';
+$cacheFile = $cacheDir . '/faculty_api_cache.json';
+
+// Return valid cache if younger than 1 hour
+if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < 3600)) {
+    $cached = file_get_contents($cacheFile);
+    if ($cached && strlen($cached) > 20) {
+        echo $cached;
+        exit;
+    }
+}
+
 $headers = [
-    'User-Agent: Mozilla/5.0 (compatible; DibruProxy/1.0)',
+    'User-Agent: Mozilla/5.0 (compatible; CCSAProxy/2.0)',
     'Referer: https://dibru.ac.in/',
     'Origin: https://dibru.ac.in',
     'Accept: application/json',
-    'Accept-Language: en-US,en;q=0.5'
+    'Accept-Language: en-US,en;q=0.9'
 ];
 
-function fetchData($url, $headers) {
-    $ch = curl_init();
-    
-    curl_setopt_array($ch, [
-        CURLOPT_URL => $url,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTPHEADER => $headers,
-        CURLOPT_ENCODING => "",
-        CURLOPT_TIMEOUT => 10, // 10 second timeout
-        CURLOPT_SSL_VERIFYPEER => true,
-        CURLOPT_FAILONERROR => true,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_MAXREDIRS => 3
+function fetchFacultyData(string $url, array $headers): ?string {
+    if (function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 3
+        ]);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response !== false && $httpCode === 200 && !empty($response)) {
+            return $response;
+        }
+    }
+
+    $headerLines = [];
+    foreach ($headers as $k => $v) {
+        $headerLines[] = is_int($k) ? $v : "$k: $v";
+    }
+
+    $ctx = stream_context_create([
+        'http' => [
+            'method' => 'GET',
+            'header' => implode("\r\n", $headerLines),
+            'timeout' => 8,
+            'ignore_errors' => true
+        ],
+        'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false
+        ]
     ]);
 
-    $response = curl_exec($ch);
-    
-    if (curl_errno($ch)) {
-        error_log('CURL Error: ' . curl_error($ch));
-        curl_close($ch);
-        return null;
-    }
-    
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-    
-    if ($httpCode !== 200) {
-        error_log("API returned HTTP code: $httpCode");
-        return null;
-    }
-
-    return json_decode($response, true);
+    $response = @file_get_contents($url, false, $ctx);
+    return ($response !== false && !empty($response)) ? $response : null;
 }
 
 try {
     $facultyUrl = 'https://lionfish-app-3a378.ondigitalocean.app/api/website/public/department-faculty-members?department_id=25&page_slug=';
-    
-    // Validate URL
-    if (!filter_var($facultyUrl, FILTER_VALIDATE_URL)) {
-        throw new Exception('Invalid API URL');
+    $raw = fetchFacultyData($facultyUrl, $headers);
+
+    if ($raw && strpos($raw, 'error') === false && strlen(trim($raw)) > 20) {
+        if (!is_dir($cacheDir)) {
+            @mkdir($cacheDir, 0755, true);
+        }
+        @file_put_contents($cacheFile, $raw);
+        echo $raw;
+        exit;
     }
 
-    $facultyData = fetchData($facultyUrl, $headers);
-    
-    // Basic data validation
-    if (!$facultyData || !is_array($facultyData)) {
-        throw new Exception('Invalid faculty data received from API');
+    // Fallback to existing cache if remote is temporarily down
+    if (file_exists($cacheFile)) {
+        echo file_get_contents($cacheFile);
+        exit;
     }
-    
-    // Sanitize output
-    $json = $facultyData;
-    
-    if ($json === false) {
-        throw new Exception('JSON encoding failed');
-    }
-    
-    echo json_encode($json, JSON_UNESCAPED_SLASHES);
 
-
-} catch (Exception $e) {
-    error_log('Proxy Error: ' . $e->getMessage());
-    http_response_code(500);
-    echo 'window.facultyData = [];';
-    echo 'console.error("Faculty data loading failed: ' . addslashes($e->getMessage()) . '");';
+    echo json_encode([]);
+} catch (\Throwable $e) {
+    error_log('Faculty proxy error: ' . $e->getMessage());
+    echo json_encode([]);
 }
-?>

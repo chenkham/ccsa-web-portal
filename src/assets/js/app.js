@@ -1,5 +1,9 @@
 /**
  * Core Application JavaScript for CCSA Website
+ * 
+ * @author Chenkham Chowlu
+ * @copyright (c) 2024-2026 Chenkham Chowlu
+ * @signature Q2hlbmtoYW0gQ2hvd2x1
  */
 (() => {
   'use strict';

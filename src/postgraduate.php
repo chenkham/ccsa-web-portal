@@ -273,6 +273,49 @@ include 'templates/header.php';
     </div>
 </section>
 
+<!-- Admissions FAQ Section -->
+<section class="py-12 sm:py-16 bg-slate-50 border-t border-slate-200/80">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-12 max-w-4xl">
+        <div class="text-center mb-10">
+            <span class="inline-block px-3.5 py-1 bg-indigo-50 text-indigo-700 font-bold text-xs uppercase tracking-wider rounded-full border border-indigo-200/60 mb-2">Got Questions?</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1a365d] tracking-tight">Frequently Asked Questions</h2>
+            <p class="text-slate-600 text-sm mt-1">Honest, straightforward answers for prospective MCA scholars &amp; parents.</p>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Q1 -->
+            <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
+                <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
+                    <span class="text-indigo-600 font-black">Q.</span> Is the MCA programme at CCSA Dibrugarh University AICTE approved?
+                </h3>
+                <p class="text-slate-600 text-sm mt-2.5 leading-relaxed pl-6">
+                    <strong>Yes, 100%.</strong> The Master of Computer Applications (MCA) programme at CCSA is approved by the All India Council for Technical Education (AICTE), New Delhi, and strictly complies with the National Education Policy (NEP 2020) guidelines.
+                </p>
+            </div>
+
+            <!-- Q2 -->
+            <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
+                <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
+                    <span class="text-indigo-600 font-black">Q.</span> What are the career and campus placement prospects after MCA?
+                </h3>
+                <p class="text-slate-600 text-sm mt-2.5 leading-relaxed pl-6">
+                    Graduates from our MCA programme work at leading multinational companies, top tech firms, and research institutions. The 4th semester includes a mandatory 6-month Industrial / Major Project Internship where students gain direct corporate experience.
+                </p>
+            </div>
+
+            <!-- Q3 -->
+            <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
+                <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
+                    <span class="text-indigo-600 font-black">Q.</span> How are admissions conducted for the MCA programme?
+                </h3>
+                <p class="text-slate-600 text-sm mt-2.5 leading-relaxed pl-6">
+                    Admissions are conducted through the <strong>Dibrugarh University Post Graduate Entrance Test (DUPGET)</strong> followed by merit counseling. Keep an eye on our Notice Board for live admission circulars and seat vacancy notifications.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <?php
 include 'templates/footer.php';
 ?>

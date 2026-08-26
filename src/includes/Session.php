@@ -2,27 +2,26 @@
 declare(strict_types=1);
 
 /**
- * Session Management Class
+ * Session Security and State Manager
  */
 class Session
 {
     /**
-     * Starts and configures the session securely.
-     *
-     * @return void
+     * Starts and configures the session securely with cookie flags.
      */
     public static function start(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
-            $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+            $isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+                       (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
 
             session_set_cookie_params([
                 'lifetime' => 0,
-                'path' => '/',
-                'domain' => '',
-                'secure' => $isHttps,
+                'path'     => '/',
+                'domain'   => '',
+                'secure'   => $isHttps,
                 'httponly' => true,
-                'samesite' => 'Strict'
+                'samesite' => 'Lax'
             ]);
 
             ini_set('session.use_strict_mode', '1');
@@ -33,9 +32,7 @@ class Session
     }
 
     /**
-     * Regenerates the session ID.
-     *
-     * @return void
+     * Regenerates the session ID to mitigate session fixation.
      */
     public static function regenerate(): void
     {
@@ -44,32 +41,31 @@ class Session
     }
 
     /**
-     * Destroys the session.
-     *
-     * @return void
+     * Destroys the current session and clears the session cookie.
      */
     public static function destroy(): void
     {
         self::start();
         $_SESSION = [];
-        
-        if (ini_get("session.use_cookies")) {
+
+        if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
             );
         }
-        
+
         session_destroy();
     }
 
     /**
-     * Sets a value in the session.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return void
+     * Sets a session variable.
      */
     public static function set(string $key, mixed $value): void
     {
@@ -78,11 +74,7 @@ class Session
     }
 
     /**
-     * Gets a value from the session.
-     *
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
+     * Gets a session variable.
      */
     public static function get(string $key, mixed $default = null): mixed
     {
@@ -91,10 +83,7 @@ class Session
     }
 
     /**
-     * Checks if a key exists in the session.
-     *
-     * @param string $key
-     * @return bool
+     * Checks if a session key exists.
      */
     public static function has(string $key): bool
     {
@@ -103,9 +92,7 @@ class Session
     }
 
     /**
-     * Checks if the user is authenticated.
-     *
-     * @return bool
+     * Checks if an authenticated user session exists.
      */
     public static function isAuthenticated(): bool
     {
@@ -114,9 +101,7 @@ class Session
     }
 
     /**
-     * Sets a fingerprint for the session based on IP and User-Agent.
-     *
-     * @return void
+     * Sets a cryptographic session fingerprint based on IP and User-Agent.
      */
     public static function setFingerprint(): void
     {
@@ -127,9 +112,7 @@ class Session
     }
 
     /**
-     * Validates the session fingerprint.
-     *
-     * @return bool
+     * Validates the session fingerprint against the current client request.
      */
     public static function validateFingerprint(): bool
     {
@@ -140,7 +123,7 @@ class Session
         $ip = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN_IP';
         $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'UNKNOWN_UA';
         $currentFingerprint = hash('sha256', $ip . $userAgent);
-        
+
         return hash_equals($_SESSION['fingerprint'], $currentFingerprint);
     }
 }

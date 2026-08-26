@@ -138,7 +138,7 @@ if (file_exists($localNoticeFile)) {
                                 class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold px-2.5 py-1.5 rounded-lg hover:bg-indigo-50 transition-colors mr-1">
                                 <i class="fas fa-edit mr-1"></i> Edit
                             </button>
-                            <form action="actions.php" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this notification?');">
+                            <form action="/admin/actions.php" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this notification?');">
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                                 <input type="hidden" name="action" value="delete_notification">
                                 <input type="hidden" name="id" value="<?php echo $notice['id']; ?>">
@@ -167,7 +167,7 @@ if (file_exists($localNoticeFile)) {
             <button onclick="document.getElementById('addNoticeModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-xl">&times;</button>
         </div>
 
-        <form action="actions.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+        <form action="/admin/actions.php" method="POST" enctype="multipart/form-data" class="space-y-4">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <input type="hidden" name="action" value="add_notification">
 
@@ -195,16 +195,85 @@ if (file_exists($localNoticeFile)) {
                     class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/90 space-y-2.5">
-                <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer">
-                    <input type="checkbox" name="show_new" id="showNewToggle" value="1" checked onchange="document.getElementById('newDateContainer').style.display = this.checked ? 'block' : 'none'" class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-                    <span class="text-red-600 font-extrabold uppercase text-[10px] bg-red-100 px-1.5 py-0.5 rounded">NEW</span>
-                    <span>Display 'NEW' Badge</span>
-                </label>
-                <div id="newDateContainer" class="pt-1">
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Badge Valid Until (Exact Expiry Date):</label>
-                    <input type="date" name="new_until" value="<?php echo date('Y-m-d', strtotime('+15 days')); ?>" min="<?php echo date('Y-m-d'); ?>"
-                        class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer select-none">
+                        <input type="checkbox" name="show_new" id="showNewToggle" value="1" checked onchange="document.getElementById('newDateContainer').style.display = this.checked ? 'block' : 'none'" class="rounded text-red-600 focus:ring-red-500 w-4 h-4 cursor-pointer">
+                        <span class="text-red-600 font-extrabold uppercase text-[10px] bg-red-100 px-1.5 py-0.5 rounded">NEW</span>
+                        <span>Display 'NEW' Badge</span>
+                    </label>
+                </div>
+
+                <div id="newDateContainer" class="pt-1 space-y-2.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                        <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">
+                            Badge Expiry Date:
+                        </label>
+                        <span id="addDatePreview" class="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2.5 py-0.5 rounded-lg inline-flex items-center gap-1.5 w-fit">
+                            <i class="far fa-calendar-check text-indigo-500"></i>
+                            <span id="addDatePreviewText">Expires in 15 days</span>
+                        </span>
+                    </div>
+
+                    <!-- Quick Duration Presets -->
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5">Quick Presets:</span>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" onclick="setNewBadgeDuration(7, 'add')" class="add-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all cursor-pointer shadow-xs">
+                                +7 Days
+                            </button>
+                            <button type="button" onclick="setNewBadgeDuration(15, 'add')" class="add-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-indigo-500 bg-indigo-50 text-indigo-700 transition-all cursor-pointer shadow-xs">
+                                +15 Days (Default)
+                            </button>
+                            <button type="button" onclick="setNewBadgeDuration(30, 'add')" class="add-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all cursor-pointer shadow-xs">
+                                +30 Days (1 Mo)
+                            </button>
+                            <button type="button" onclick="setNewBadgeDuration(60, 'add')" class="add-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all cursor-pointer shadow-xs">
+                                +60 Days (2 Mo)
+                            </button>
+                            <button type="button" onclick="setNewBadgeDuration(90, 'add')" class="add-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all cursor-pointer shadow-xs">
+                                +90 Days (3 Mo)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Direct Day / Month / Year Dropdowns -->
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Select Exact Date:</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-[10px] text-slate-400 font-semibold mb-0.5">Day</label>
+                                <select id="addDaySelect" onchange="syncDateFromDropdowns('add')" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                                    <?php for ($d = 1; $d <= 31; $d++): ?>
+                                        <option value="<?php echo sprintf('%02d', $d); ?>"><?php echo $d; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-slate-400 font-semibold mb-0.5">Month</label>
+                                <select id="addMonthSelect" onchange="syncDateFromDropdowns('add')" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                                    <?php 
+                                    $months = ['01'=>'January','02'=>'February','03'=>'March','04'=>'April','05'=>'May','06'=>'June','07'=>'July','08'=>'August','09'=>'September','10'=>'October','11'=>'November','12'=>'December'];
+                                    foreach ($months as $num => $name): ?>
+                                        <option value="<?php echo $num; ?>"><?php echo $name; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-slate-400 font-semibold mb-0.5">Year</label>
+                                <select id="addYearSelect" onchange="syncDateFromDropdowns('add')" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                                    <?php 
+                                    $currentYear = (int)date('Y');
+                                    for ($y = $currentYear; $y <= $currentYear + 5; $y++): ?>
+                                        <option value="<?php echo $y; ?>"><?php echo $y; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden ISO Date Input submitted with form -->
+                    <input type="hidden" name="new_until" id="addNewUntilInput" value="<?php echo date('Y-m-d', strtotime('+15 days')); ?>">
                     <p class="text-[10px] text-slate-400 mt-1">The red NEW badge will automatically disappear from the website after this date.</p>
                 </div>
             </div>
@@ -243,7 +312,7 @@ if (file_exists($localNoticeFile)) {
             <button onclick="document.getElementById('editNoticeModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-xl">&times;</button>
         </div>
 
-        <form action="actions.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+        <form action="/admin/actions.php" method="POST" enctype="multipart/form-data" class="space-y-4">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <input type="hidden" name="action" value="edit_notification">
             <input type="hidden" name="id" id="editNoticeId">
@@ -274,16 +343,85 @@ if (file_exists($localNoticeFile)) {
                     class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/90 space-y-2.5">
-                <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer">
-                    <input type="checkbox" name="show_new" id="editShowNewToggle" value="1" onchange="document.getElementById('editNewDateContainer').style.display = this.checked ? 'block' : 'none'" class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-                    <span class="text-red-600 font-extrabold uppercase text-[10px] bg-red-100 px-1.5 py-0.5 rounded">NEW</span>
-                    <span>Display 'NEW' Badge</span>
-                </label>
-                <div id="editNewDateContainer" class="pt-1">
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Badge Valid Until (Exact Expiry Date):</label>
-                    <input type="date" name="new_until" id="editNewUntilInput" min="<?php echo date('Y-m-d'); ?>"
-                        class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-red-500">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer select-none">
+                        <input type="checkbox" name="show_new" id="editShowNewToggle" value="1" onchange="document.getElementById('editNewDateContainer').style.display = this.checked ? 'block' : 'none'" class="rounded text-red-600 focus:ring-red-500 w-4 h-4 cursor-pointer">
+                        <span class="text-red-600 font-extrabold uppercase text-[10px] bg-red-100 px-1.5 py-0.5 rounded">NEW</span>
+                        <span>Display 'NEW' Badge</span>
+                    </label>
+                </div>
+
+                <div id="editNewDateContainer" class="pt-1 space-y-2.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                        <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">
+                            Badge Expiry Date:
+                        </label>
+                        <span id="editDatePreview" class="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2.5 py-0.5 rounded-lg inline-flex items-center gap-1.5 w-fit">
+                            <i class="far fa-calendar-check text-indigo-500"></i>
+                            <span id="editDatePreviewText">Expires in 15 days</span>
+                        </span>
+                    </div>
+
+                    <!-- Quick Duration Presets -->
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5">Quick Presets:</span>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" onclick="setNewBadgeDuration(7, 'edit')" class="edit-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all cursor-pointer shadow-xs">
+                                +7 Days
+                            </button>
+                            <button type="button" onclick="setNewBadgeDuration(15, 'edit')" class="edit-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-indigo-500 bg-indigo-50 text-indigo-700 transition-all cursor-pointer shadow-xs">
+                                +15 Days
+                            </button>
+                            <button type="button" onclick="setNewBadgeDuration(30, 'edit')" class="edit-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all cursor-pointer shadow-xs">
+                                +30 Days (1 Mo)
+                            </button>
+                            <button type="button" onclick="setNewBadgeDuration(60, 'edit')" class="edit-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all cursor-pointer shadow-xs">
+                                +60 Days (2 Mo)
+                            </button>
+                            <button type="button" onclick="setNewBadgeDuration(90, 'edit')" class="edit-preset-btn px-2.5 py-1 text-[11px] font-bold rounded-lg border border-slate-200 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all cursor-pointer shadow-xs">
+                                +90 Days (3 Mo)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Direct Day / Month / Year Dropdowns -->
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Select Exact Date:</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-[10px] text-slate-400 font-semibold mb-0.5">Day</label>
+                                <select id="editDaySelect" onchange="syncDateFromDropdowns('edit')" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                                    <?php for ($d = 1; $d <= 31; $d++): ?>
+                                        <option value="<?php echo sprintf('%02d', $d); ?>"><?php echo $d; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-slate-400 font-semibold mb-0.5">Month</label>
+                                <select id="editMonthSelect" onchange="syncDateFromDropdowns('edit')" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                                    <?php 
+                                    $months = ['01'=>'January','02'=>'February','03'=>'March','04'=>'April','05'=>'May','06'=>'June','07'=>'July','08'=>'August','09'=>'September','10'=>'October','11'=>'November','12'=>'December'];
+                                    foreach ($months as $num => $name): ?>
+                                        <option value="<?php echo $num; ?>"><?php echo $name; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-slate-400 font-semibold mb-0.5">Year</label>
+                                <select id="editYearSelect" onchange="syncDateFromDropdowns('edit')" class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                                    <?php 
+                                    $currentYear = (int)date('Y');
+                                    for ($y = $currentYear; $y <= $currentYear + 5; $y++): ?>
+                                        <option value="<?php echo $y; ?>"><?php echo $y; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden ISO Date Input submitted with form -->
+                    <input type="hidden" name="new_until" id="editNewUntilInput" value="<?php echo date('Y-m-d', strtotime('+15 days')); ?>">
                     <p class="text-[10px] text-slate-400 mt-1">Uncheck the box above or change the date to remove or extend the NEW badge.</p>
                 </div>
             </div>
@@ -312,6 +450,109 @@ if (file_exists($localNoticeFile)) {
 </div>
 
 <script>
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function formatISODate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+function updateDatePreview(mode, date) {
+    const previewTextEl = document.getElementById(`${mode}DatePreviewText`);
+    if (!previewTextEl) return;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const target = new Date(date);
+    target.setHours(0, 0, 0, 0);
+
+    const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+    const dayStr = target.getDate();
+    const monthStr = MONTH_NAMES[target.getMonth()];
+    const yearStr = target.getFullYear();
+
+    let text = `${dayStr} ${monthStr} ${yearStr}`;
+    if (diffDays > 0) {
+        text += ` (in ${diffDays} days)`;
+    } else if (diffDays === 0) {
+        text += ` (Expires today)`;
+    } else {
+        text += ` (Expired)`;
+    }
+
+    previewTextEl.textContent = text;
+}
+
+function updateDateDropdowns(mode, isoDateStr) {
+    if (!isoDateStr) return;
+    const parts = isoDateStr.split('-');
+    if (parts.length !== 3) return;
+
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+
+    const daySelect = document.getElementById(`${mode}DaySelect`);
+    const monthSelect = document.getElementById(`${mode}MonthSelect`);
+    const yearSelect = document.getElementById(`${mode}YearSelect`);
+    const hiddenInput = document.getElementById(`${mode}NewUntilInput`);
+
+    if (daySelect) daySelect.value = day;
+    if (monthSelect) monthSelect.value = month;
+    if (yearSelect) yearSelect.value = year;
+    if (hiddenInput) hiddenInput.value = isoDateStr;
+
+    const dateObj = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
+    updateDatePreview(mode, dateObj);
+}
+
+function syncDateFromDropdowns(mode) {
+    const daySelect = document.getElementById(`${mode}DaySelect`);
+    const monthSelect = document.getElementById(`${mode}MonthSelect`);
+    const yearSelect = document.getElementById(`${mode}YearSelect`);
+    const hiddenInput = document.getElementById(`${mode}NewUntilInput`);
+
+    if (!daySelect || !monthSelect || !yearSelect || !hiddenInput) return;
+
+    const day = daySelect.value;
+    const month = monthSelect.value;
+    const year = yearSelect.value;
+
+    const isoStr = `${year}-${month}-${day}`;
+    hiddenInput.value = isoStr;
+
+    // Reset active preset button styling
+    document.querySelectorAll(`.${mode}-preset-btn`).forEach(btn => {
+        btn.classList.remove('border-indigo-500', 'bg-indigo-50', 'text-indigo-700');
+        btn.classList.add('border-slate-200', 'bg-white', 'text-slate-700');
+    });
+
+    const dateObj = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
+    updateDatePreview(mode, dateObj);
+}
+
+function setNewBadgeDuration(days, mode) {
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + days);
+
+    const isoStr = formatISODate(targetDate);
+    updateDateDropdowns(mode, isoStr);
+
+    // Update active preset button highlight
+    document.querySelectorAll(`.${mode}-preset-btn`).forEach(btn => {
+        if (btn.textContent.includes(`+${days}`)) {
+            btn.classList.add('border-indigo-500', 'bg-indigo-50', 'text-indigo-700');
+            btn.classList.remove('border-slate-200', 'bg-white');
+        } else {
+            btn.classList.remove('border-indigo-500', 'bg-indigo-50', 'text-indigo-700');
+            btn.classList.add('border-slate-200', 'bg-white');
+        }
+    });
+}
+
 function openEditNoticeModal(notice) {
     document.getElementById('editNoticeId').value = notice.id || '';
     document.getElementById('editNoticeTitle').value = notice.title || '';
@@ -328,7 +569,6 @@ function openEditNoticeModal(notice) {
 
     document.getElementById('editIsPinned').checked = (notice.is_pinned == 1 || notice.is_pinned === true || notice.is_pinned === '1');
 
-    // Strict boolean check for is_new
     let isNewChecked = false;
     if (notice.is_new !== undefined && notice.is_new !== null) {
         isNewChecked = (notice.is_new == 1 || notice.is_new === true || notice.is_new === '1');
@@ -339,7 +579,7 @@ function openEditNoticeModal(notice) {
     document.getElementById('editShowNewToggle').checked = isNewChecked;
     
     const until = notice.new_until || '<?php echo date("Y-m-d", strtotime("+15 days")); ?>';
-    document.getElementById('editNewUntilInput').value = until;
+    updateDateDropdowns('edit', until);
     document.getElementById('editNewDateContainer').style.display = isNewChecked ? 'block' : 'none';
 
     document.getElementById('editNoticeModal').classList.remove('hidden');
@@ -354,4 +594,10 @@ function filterNoticesTable() {
         row.style.display = text.includes(filter) ? '' : 'none';
     });
 }
+
+// Initialize Add Notice date defaults on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const defaultAddUntil = '<?php echo date("Y-m-d", strtotime("+15 days")); ?>';
+    updateDateDropdowns('add', defaultAddUntil);
+});
 </script>

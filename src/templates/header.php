@@ -10,12 +10,18 @@ declare(strict_types=1);
  *   $extraHead  (string) — Optional additional <head> content
  */
 
+require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/Session.php';
 require_once __DIR__ . '/../includes/Security.php';
 require_once __DIR__ . '/nav-data.php';
 
 Session::start();
 $csrfToken = Security::generateCsrfToken();
+
+@header('X-Content-Type-Options: nosniff');
+@header('X-Frame-Options: SAMEORIGIN');
+@header('X-XSS-Protection: 1; mode=block');
+@header('Referrer-Policy: strict-origin-when-cross-origin');
 
 $pageTitle = $pageTitle ?? 'CCSA - Centre for Computer Science and Applications';
 $currentPage = $currentPage ?? '';
@@ -73,8 +79,10 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <link rel="icon" type="image/png" href="faculty/du.png" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" href="faculty/du.png" />
     <title><?php echo Security::escape($pageTitle); ?></title>
 
     <meta name="description" content="<?php echo Security::escape($metaDescription ?? 'Centre for Computer Science and Applications (CCSA), Dibrugarh University. Premier institute offering BCA, MCA, PGDCA, and Ph.D. in Computer Science, Generative AI, Cloud Computing, and Cybersecurity.'); ?>">
@@ -141,12 +149,22 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
     </script>
 
     
-    <!-- Google Fonts: Inter (Body) + Outfit & Plus Jakarta Sans (Headings & Display) -->
+    <!-- Preconnect & DNS-Prefetch for Fast CDN and Font Delivery -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    
+    <!-- Google Fonts: Inter (Body) + Outfit & Plus Jakarta Sans (Headings & Display) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Icons & Animations -->
+    <!-- Icons & Animation Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
@@ -171,18 +189,18 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
     </script>
     
     <!-- Swiper & Google reCAPTCHA -->
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
     <?php 
     $host = $_SERVER['HTTP_HOST'] ?? '';
-    $isLocalhost = (strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false || strpos($host, '10.') === 0 || strpos($host, '192.168.') === 0);
+    $isLocalhost = (strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false || strpos($host, '10.') === 0 || strpos($host, '192.168.') === 0 || strpos($host, '172.') === 0);
     if (!$isLocalhost): ?>
-    <script src="https://www.google.com/recaptcha/api.js?render=6LeEW94sAAAAAPFa_NXd8WemwqWn-SLlNjpnN0CH"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeEW94sAAAAAPFa_NXd8WemwqWn-SLlNjpnN0CH" async defer></script>
     <?php endif; ?>
     
-    <!-- Custom CSS (Special effects, keyframes, scrollbar) -->
-    <link rel="stylesheet" href="assets/css/custom.css?v=<?php echo time(); ?>">
-    <!-- UX4G Accessibility Module -->
-    <script src="assets/js/ux4g-accessibility.js" defer></script>
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="assets/css/custom.css?v=<?php echo ASSET_VERSION; ?>">
+    <!-- Accessibility Module -->
+    <script src="assets/js/ux4g-accessibility.js?v=<?php echo ASSET_VERSION; ?>" defer></script>
 
     <!-- Logo Badge + Shine Effect (inline for reliability) -->
     <style>
@@ -273,16 +291,16 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
 
 <body class="font-sans antialiased text-slate-800 bg-white min-h-screen flex flex-col">
 
-    <!-- ═══ UX4G & GIGW 3.0 ACCESSIBILITY: SKIP TO MAIN CONTENT ═══ -->
+    <!-- Accessibility Skip Link -->
     <a href="#main-content" 
         class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#1a365d] focus:text-[#fbbf24] focus:rounded-xl focus:font-extrabold focus:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#fbbf24] transition-all text-xs">
         Skip to main content
     </a>
 
-    <!-- Smart Header Wrapper (Static at top on mobile; Smart Auto-Hide/Reveal on desktop lg screens) -->
+    <!-- Smart Header Container -->
     <div id="smartHeader" class="relative lg:sticky lg:top-0 z-50 lg:transition-transform lg:duration-300 lg:ease-in-out">
         
-        <!-- ═══ SINGLE UNIFIED GREEN TOP BAR (ACCESSIBILITY, GOVT AFFILIATION & QUICK LINKS) ═══ -->
+        <!-- Top Accessibility & Quick Links Bar -->
         <header class="bg-teal-800 text-white text-xs relative overflow-hidden border-b border-teal-900/40">
             <!-- Faceted Accent Geometric Overlay -->
             <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
@@ -321,7 +339,7 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
                                 <i class="fas fa-shield-alt text-amber-300 text-xs"></i>
                                 <span>Anti-Ragging Helpline</span>
                             </button>
-                            <a href="https://ccsaalumni.in/" target="_blank" rel="noopener noreferrer" class="hover:text-[#fbbf24] transition-colors">Alumni</a>
+                            <a href="alumni.php" class="hover:text-[#fbbf24] transition-colors">Alumni</a>
                             <a href="https://placeccsa.wordpress.com/" target="_blank" rel="noopener noreferrer" class="hover:text-[#fbbf24] transition-colors">Placement Cell</a>
                         </div>
 
@@ -380,7 +398,7 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
                             <div class="relative flex-shrink-0 glow-effect">
                                 <div class="badge-container">
                                     <div class="badge-inner">
-                                        <img src="faculty/du.png" alt="Dibrugarh University Logo" class="h-16 w-16 object-cover">
+                                        <img src="faculty/du.png" alt="Dibrugarh University Logo" class="h-16 w-16 object-cover" onerror="this.onerror=null; this.src='assets/images/du.png';">
                                     </div>
                                 </div>
                             </div>
@@ -488,5 +506,5 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
         </nav>
     </div>
 
-    <!-- ═══ MAIN CONTENT LANDMARK (GIGW 3.0 & UX4G ACCESSIBILITY) ═══ -->
+    <!-- Main Content -->
     <main id="main-content" role="main" class="flex-1">

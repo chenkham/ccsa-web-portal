@@ -111,6 +111,6 @@ include 'templates/header.php';
 </main>
 
 <?php
-$extraScripts = '<script src="assets/js/faculty.js" defer></script>';
+$extraScripts = '<script src="assets/js/faculty.js?v=' . ASSET_VERSION . '" defer></script>';
 include 'templates/footer.php';
 ?>

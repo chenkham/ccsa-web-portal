@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-$isSuperAdmin = (($userrole ?? '') === 'super_admin');
+$isSuperAdmin = (($userRole ?? $userrole ?? $_SESSION['user_role'] ?? '') === 'super_admin');
 
 $adminUsers = [];
 if (isset($pdo) && $pdo !== null) {
@@ -14,9 +14,28 @@ if (isset($pdo) && $pdo !== null) {
     }
 }
 
+// 2. Load from JSON cache and merge
+$cacheFile = __DIR__ . '/../../cache/admin_users.json';
+if (file_exists($cacheFile)) {
+    $jsonUsers = json_decode((string)file_get_contents($cacheFile), true);
+    if (is_array($jsonUsers) && !empty($jsonUsers)) {
+        if (empty($adminUsers)) {
+            $adminUsers = $jsonUsers;
+        } else {
+            $existingEmails = array_map(function($u) { return strtolower($u['email'] ?? ''); }, $adminUsers);
+            foreach ($jsonUsers as $ju) {
+                if (!in_array(strtolower($ju['email'] ?? ''), $existingEmails, true)) {
+                    $adminUsers[] = $ju;
+                }
+            }
+        }
+    }
+}
+
+// 3. Fallback default
 if (empty($adminUsers)) {
     $adminUsers = [
-        ['id' => 1, 'name' => 'CCSA Super Admin', 'email' => 'admin@ccsdu.in', 'role' => 'super_admin', 'status' => 'active', 'createdAt' => '2026-01-01 00:00:00']
+        ['id' => 1, 'name' => 'CCSA Super Administrator', 'email' => 'ccsduoffice@gmail.com', 'role' => 'super_admin', 'status' => 'active', 'createdAt' => '2026-01-01 00:00:00']
     ];
 }
 ?>
@@ -28,13 +47,13 @@ if (empty($adminUsers)) {
                 <i class="fas fa-user-shield text-[#1a365d]"></i>
                 <span>Admin Account Controls</span>
             </h2>
-            <p class="text-xs text-slate-500 mt-1">Configure administrator accounts, credentials, and permission tiers</p>
+            <p class="text-xs text-slate-500 mt-1">Configure administrator accounts, credentials, and permission tiers (Super Admin, Admin, Editor)</p>
         </div>
         <?php if ($isSuperAdmin): ?>
         <button onclick="document.getElementById('addAdminModal').classList.remove('hidden')" 
-            class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all shadow hover:shadow-md">
+            class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all shadow hover:shadow-md cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
-            <span>Add Admin User</span>
+            <span>Add User Account</span>
         </button>
         <?php else: ?>
         <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1.5 rounded-xl font-semibold border border-slate-200">
@@ -50,7 +69,7 @@ if (empty($adminUsers)) {
                 <tr class="bg-slate-50 text-slate-600 text-xs uppercase border-b border-slate-200/80 font-bold">
                     <th class="py-3 px-4">Name</th>
                     <th class="py-3 px-4">Email</th>
-                    <th class="py-3 px-4">Role</th>
+                    <th class="py-3 px-4">Role Tier</th>
                     <th class="py-3 px-4">Created Date</th>
                     <th class="py-3 px-4 text-right">Actions</th>
                 </tr>
@@ -61,8 +80,17 @@ if (empty($adminUsers)) {
                     <td class="py-3.5 px-4 font-bold text-slate-800"><?php echo htmlspecialchars($user['name']); ?></td>
                     <td class="py-3.5 px-4 text-xs font-mono text-indigo-600"><?php echo htmlspecialchars($user['email']); ?></td>
                     <td class="py-3.5 px-4">
-                        <span class="<?php echo $user['role'] === 'super_admin' ? 'bg-purple-100 text-purple-800 border-purple-200' : 'bg-blue-100 text-blue-800 border-blue-200'; ?> font-bold text-[11px] px-2.5 py-0.5 rounded-full border">
-                            <?php echo htmlspecialchars($user['role']); ?>
+                        <?php 
+                        $r = $user['role'] ?? 'admin';
+                        $badgeClass = 'bg-blue-100 text-blue-800 border-blue-200';
+                        if ($r === 'super_admin') {
+                            $badgeClass = 'bg-purple-100 text-purple-800 border-purple-200';
+                        } elseif ($r === 'editor') {
+                            $badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                        }
+                        ?>
+                        <span class="<?php echo $badgeClass; ?> font-bold text-[11px] px-2.5 py-0.5 rounded-full border uppercase">
+                            <?php echo htmlspecialchars($r); ?>
                         </span>
                     </td>
                     <td class="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">
@@ -70,7 +98,7 @@ if (empty($adminUsers)) {
                     </td>
                     <td class="py-3.5 px-4 text-right">
                         <?php if ($isSuperAdmin && (int)$user['id'] !== 1 && (int)$user['id'] !== (int)($_SESSION['user_id'] ?? 0)): ?>
-                        <form action="actions.php" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to remove this admin account?');">
+                        <form action="/admin/actions.php" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to remove this admin account?');">
                             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                             <input type="hidden" name="action" value="delete_admin">
                             <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
@@ -91,7 +119,7 @@ if (empty($adminUsers)) {
     </div>
 </div>
 
-<!-- Add Admin Modal -->
+<!-- Add Admin Model -->
 <div id="addAdminModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100">
         <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
@@ -102,13 +130,13 @@ if (empty($adminUsers)) {
             <button onclick="document.getElementById('addAdminModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-xl">&times;</button>
         </div>
 
-        <form action="actions.php" method="POST" class="space-y-4">
+        <form action="/admin/actions.php" method="POST" class="space-y-4">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <input type="hidden" name="action" value="add_admin">
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Admin Full Name *</label>
-                <input type="text" name="name" required placeholder="e.g. Dr. John Doe" 
+                <input type="text" name="name" required placeholder="e.g. Dr. Paramananda Deka" 
                     class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 

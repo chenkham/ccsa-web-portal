@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "name": "Pranab Jyoti Dutta",
+    "program": "MCA",
+    "batch": "2007-2010",
+    "designation": "Principal Software Architect",
+    "organization": "Microsoft",
+    "location": "Bengaluru, India"
+  },
+  {
+    "id": 2,
+    "name": "Debabrat Borah",
+    "program": "MCA",
+    "batch": "2008-2011",
+    "designation": "Lead Cloud Infrastructure Engineer",
+    "organization": "Amazon Web Services (AWS)",
+    "location": "Hyderabad, India"
+  },
+  {
+    "id": 3,
+    "name": "Ananya Sharma",
+    "program": "BCA",
+    "batch": "2015-2018",
+    "designation": "Senior Full-Stack Developer",
+    "organization": "Tata Consultancy Services (TCS)",
+    "location": "Pune, India"
+  },
+  {
+    "id": 4,
+    "name": "Raktim Hazarika",
+    "program": "MCA",
+    "batch": "2012-2015",
+    "designation": "Cybersecurity Specialist & Penetration Tester",
+    "organization": "Infosys Security Labs",
+    "location": "Bengaluru, India"
+  },
+  {
+    "id": 5,
+    "name": "Nandita Saikia",
+    "program": "PGDCA",
+    "batch": "2018-2019",
+    "designation": "Senior IT & Systems Administrator",
+    "organization": "Oil India Limited (OIL)",
+    "location": "Duliajan, Assam"
+  },
+  {
+    "id": 6,
+    "name": "Bikash Ranjan Gogoi",
+    "program": "BCA",
+    "batch": "2014-2017",
+    "designation": "Lead AI / Data Engineer",
+    "organization": "Wipro Digital",
+    "location": "Kolkata, India"
+  },
+  {
+    "id": 7,
+    "name": "Jitu Mani Das",
+    "program": "MCA",
+    "batch": "2016-2019",
+    "designation": "DevOps & SRE Engineer",
+    "organization": "Cognizant",
+    "location": "Chennai, India"
+  },
+  {
+    "id": 8,
+    "name": "Priyanka Borpatragohain",
+    "program": "MCA",
+    "batch": "2017-2020",
+    "designation": "Machine Learning Engineer",
+    "organization": "Accenture AI Labs",
+    "location": "Gurugram, India"
+  },
+  {
+    "id": 9,
+    "name": "Deepjyoti Sonowal",
+    "program": "BCA",
+    "batch": "2016-2019",
+    "designation": "Software Development Engineer II",
+    "organization": "Oracle India",
+    "location": "Bengaluru, India"
+  },
+  {
+    "id": 10,
+    "name": "Pallabi Mahanta",
+    "program": "PGDCA",
+    "batch": "2019-2020",
+    "designation": "Database & ERP Analyst",
+    "organization": "Assam Gas Company Limited (AGCL)",
+    "location": "Duliajan, Assam"
+  },
+  {
+    "id": 11,
+    "name": "Kaushik Baruah",
+    "program": "MCA",
+    "batch": "2019-2022",
+    "designation": "Frontend Platform Engineer",
+    "organization": "Capgemini",
+    "location": "Noida, India"
+  },
+  {
+    "id": 12,
+    "name": "Himadri Sekhar Sarma",
+    "program": "BCA",
+    "batch": "2018-2021",
+    "designation": "Mobile Application Developer (iOS/Android)",
+    "organization": "Zoho Corporation",
+    "location": "Chennai, India"
+  }
+]

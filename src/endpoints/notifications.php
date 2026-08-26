@@ -1,16 +1,18 @@
 <?php
 declare(strict_types=1);
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('Cache-Control: no-cache, no-store, must-revalidate');
 header('Pragma: no-cache');
 header('Expires: 0');
 
-$allowed_origins = ['https://www.ccsdu.in', 'https://ccsdu.in', 'http://localhost:8000', 'http://localhost:3000'];
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/Database.php';
+
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-if (in_array($origin, $allowed_origins, true)) {
+if (in_array($origin, ALLOWED_ORIGINS, true)) {
     header('Access-Control-Allow-Origin: ' . $origin);
 }
 
@@ -20,21 +22,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/Database.php';
-
 $notices = [];
 
-try {
-    $pdo = Database::getInstance();
-    $stmt = $pdo->prepare('SELECT id, title, description, is_pinned, is_new, new_until, creator_email, file_path, file_url, createdAt, updatedAt FROM notifications ORDER BY is_pinned DESC, createdAt DESC LIMIT 50');
-    $stmt->execute();
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($rows)) {
-        $notices = $rows;
+if (isset($pdo) || true) {
+    try {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT id, title, description, is_pinned, is_new, new_until, creator_email, file_path, file_url, createdAt, updatedAt FROM notifications ORDER BY is_pinned DESC, createdAt DESC LIMIT 50');
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($rows)) {
+            $notices = $rows;
+        }
+    } catch (\Throwable $e) {
+        error_log('Database notice fetch error: ' . $e->getMessage());
     }
-} catch (Throwable $e) {
-    error_log('Database notice fetch notice: ' . $e->getMessage());
 }
 
 if (empty($notices)) {

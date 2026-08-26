@@ -118,134 +118,113 @@ include 'templates/header.php';
             <!-- 1. Dr. Utpala Borgohain -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="364">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/UtpolaMam.png" alt="Dr. Utpala Borgohain" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/UtpolaMam.png" alt="Dr. Utpala Borgohain" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Utpala Borgohain</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">NLP &amp; Data Mining</span>
                 </div>
             </div>
 
             <!-- 2. Dr. Rizwan Rehman -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="365">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/Rizwan_SIr.png" alt="Dr. Rizwan Rehman" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/Rizwan_SIr.png" alt="Dr. Rizwan Rehman" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Rizwan Rehman</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Cloud Computing &amp; ML</span>
                 </div>
             </div>
 
             <!-- 3. Dr. Toralima Bora -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="398">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/ToraliMam.png" alt="Dr. Toralima Bora" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/ToraliMam.png" alt="Dr. Toralima Bora" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Toralima Bora</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Information Systems</span>
                 </div>
             </div>
 
             <!-- 4. Dr. Ujjal Saikia -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="397">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/UjjalSir.png" alt="Dr. Ujjal Saikia" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/UjjalSir.png" alt="Dr. Ujjal Saikia" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Ujjal Saikia</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Image Processing &amp; CV</span>
                 </div>
             </div>
 
             <!-- 5. Ms. Kimasha Borah -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="396">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/KimashaMam.png" alt="Ms. Kimasha Borah" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/KimashaMam.png" alt="Ms. Kimasha Borah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Ms. Kimasha Borah</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Software Engineering</span>
                 </div>
             </div>
 
             <!-- 6. Dr. Pranjal Kumar Bora -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="393">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/PranjalSir.png" alt="Dr. Pranjal Kumar Bora" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/PranjalSir.png" alt="Dr. Pranjal Kumar Bora" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Pranjal Kumar Bora</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">WSN &amp; IoT</span>
                 </div>
             </div>
 
             <!-- 7. Mr. Ankumon Sarmah -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="394">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/AnkumonSir.png" alt="Mr. Ankumon Sarmah" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/AnkumonSir.png" alt="Mr. Ankumon Sarmah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Mr. Ankumon Sarmah</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Pattern Recognition</span>
                 </div>
             </div>
 
             <!-- 8. Ms. Kankana Dutta -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="395">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/KanKanMam.png" alt="Ms. Kankana Dutta" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/KanKanMam.png" alt="Ms. Kankana Dutta" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Ms. Kankana Dutta</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Data Analytics</span>
                 </div>
             </div>
 
             <!-- 9. Dr. Sumpi Saikia -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="399">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/SumpiMam.png" alt="Dr. Sumpi Saikia" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/SumpiMam.png" alt="Dr. Sumpi Saikia" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Sumpi Saikia</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Graph Algorithms</span>
                 </div>
             </div>
 
             <!-- 10. Ms. Pinakshi Konwar -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="4626">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/PinakshiMam.png" alt="Ms. Pinakshi Konwar" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
+                    <img src="faculty/PinakshiMam.png" alt="Ms. Pinakshi Konwar" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Ms. Pinakshi Konwar</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Database Systems</span>
                 </div>
             </div>
 
-            <!-- 11. Mr. Gunjan Malakar -->
-            <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="4629">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/Gunajn Sir.png" alt="Mr. Gunjan Malakar" class="w-full h-full object-cover object-top block" onerror="this.src='faculty/du.png'">
-                </div>
-                <div class="min-w-0 flex-1 text-left">
-                    <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Mr. Gunjan Malakar</h4>
-                    <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                    <span class="inline-block text-[10px] text-indigo-700 font-semibold truncate">Computer Networks</span>
-                </div>
-            </div>
         </div>
 
         <!-- Publications Filter and Container -->

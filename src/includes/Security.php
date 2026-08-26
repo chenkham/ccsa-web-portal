@@ -4,16 +4,12 @@ declare(strict_types=1);
 require_once __DIR__ . '/config.php';
 
 /**
- * Security Utility Class
- * 
- * "When I wrote this security engine, only God and I understood what I was doing.
- *  Now, only God knows. Touch with clean hands and 3 cups of coffee."
+ * Security and Data Sanitization Utilities
  */
 class Security
 {
     /**
      * Escapes a string for safe HTML output.
-     * Prevents script kiddies from injecting <marquee><h1>HACKED BY Xx_Shadow_xX</h1></marquee>
      */
     public static function escape(string $value): string
     {
@@ -21,13 +17,12 @@ class Security
     }
 
     /**
-     * Generates and stores a CSRF token.
-     * Cryptographic hex token so attackers can't forge requests like it's 1999.
+     * Generates and stores a cryptographic CSRF token in the session.
      */
     public static function generateCsrfToken(): string
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+            @session_start();
         }
         if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -36,27 +31,21 @@ class Security
     }
 
     /**
-     * Validates a CSRF token.
-     *
-     * @param string $token The token to validate
-     * @return bool
+     * Validates a submitted CSRF token using timing-safe comparison.
      */
     public static function validateCsrfToken(string $token): bool
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+            @session_start();
         }
-        if (empty($_SESSION['csrf_token'])) {
+        if (empty($_SESSION['csrf_token']) || empty($token)) {
             return false;
         }
         return hash_equals($_SESSION['csrf_token'], $token);
     }
 
     /**
-     * Validates an email address.
-     *
-     * @param string $email
-     * @return string|null
+     * Validates and returns a trimmed email address.
      */
     public static function validateEmail(string $email): ?string
     {
@@ -65,12 +54,7 @@ class Security
     }
 
     /**
-     * Validates a string based on length.
-     *
-     * @param string $value
-     * @param int $minLen
-     * @param int $maxLen
-     * @return string|null
+     * Validates a string's UTF-8 character length.
      */
     public static function validateString(string $value, int $minLen = 1, int $maxLen = 500): ?string
     {
@@ -83,12 +67,7 @@ class Security
     }
 
     /**
-     * Validates an integer based on range.
-     *
-     * @param mixed $value
-     * @param int $min
-     * @param int $max
-     * @return int|null
+     * Validates an integer within a given range.
      */
     public static function validateInteger(mixed $value, int $min = 0, int $max = PHP_INT_MAX): ?int
     {
@@ -99,14 +78,14 @@ class Security
     }
 
     /**
-     * Verifies a reCAPTCHA v3 token.
-     *
-     * @param string $token
-     * @param float $threshold
-     * @return bool
+     * Verifies a Google reCAPTCHA v3 response token.
      */
     public static function verifyRecaptcha(string $token, float $threshold = 0.5): bool
     {
+        if (empty(RECAPTCHA_SECRET)) {
+            return true;
+        }
+
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $data = [
             'secret'   => RECAPTCHA_SECRET,
@@ -118,44 +97,38 @@ class Security
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                 'method'  => 'POST',
                 'content' => http_build_query($data),
+                'timeout' => 5,
             ],
         ];
 
-        $context  = stream_context_create($options);
+        $context = stream_context_create($options);
         $result = @file_get_contents($url, false, $context);
         if ($result === false) {
             return false;
         }
 
         $response = json_decode($result, true);
-        if (isset($response['success'], $response['score']) && $response['success'] === true && $response['score'] >= $threshold) {
-            return true;
-        }
-
-        return false;
+        return isset($response['success'], $response['score']) &&
+               $response['success'] === true &&
+               $response['score'] >= $threshold;
     }
 
     /**
-     * Sanitizes a filename.
-     *
-     * @param string $filename
-     * @return string
+     * Sanitizes a filename by removing path traversal patterns and invalid characters.
      */
     public static function sanitizeFilename(string $filename): string
     {
-        // Remove path traversals and dangerous chars
         $filename = basename($filename);
-        $filename = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $filename);
-        return $filename;
+        return preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $filename);
     }
 
     /**
-     * Validates an uploaded file by extension, MIME content type, and byte size.
+     * Validates an uploaded file against allowed extensions, MIME types, and size limits.
      *
      * @param array $file $_FILES entry
-     * @param array $allowedExts Array of lowercase allowed extensions (e.g. ['pdf', 'jpg', 'png'])
-     * @param array $allowedMimes Array of allowed MIME types
-     * @param int $maxBytes Max file size in bytes (default 15MB)
+     * @param array $allowedExts Allowed lowercase extensions
+     * @param array $allowedMimes Allowed MIME types
+     * @param int $maxBytes Maximum file size in bytes
      * @return array{'valid': bool, 'error': string|null, 'ext': string}
      */
     public static function validateUploadedFile(
@@ -198,14 +171,14 @@ class Security
             return ['valid' => false, 'error' => 'File extension is not permitted.', 'ext' => ''];
         }
 
-        // Verify genuine MIME type using finfo
+        // Verify MIME type using finfo
         if (function_exists('finfo_open')) {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($finfo, $file['tmp_name']);
             finfo_close($finfo);
 
             if ($mime === false || !in_array($mime, $allowedMimes, true)) {
-                return ['valid' => false, 'error' => 'File content does not match allowed document/image MIME types.', 'ext' => ''];
+                return ['valid' => false, 'error' => 'File content does not match permitted document or image types.', 'ext' => ''];
             }
         }
 
@@ -213,30 +186,29 @@ class Security
     }
 
     /**
-     * Checks if an action is currently rate-limited based on IP/Key.
-     * 
-     * Rate Limiter: Abandon all hope ye who try brute-forcing passwords.
-     * 5 wrong attempts and you get a mandatory 15-minute unpaid tea break.
+     * Checks if an action is currently rate-limited by session and IP address.
      */
     public static function checkRateLimit(string $actionKey, int $maxAttempts = MAX_LOGIN_ATTEMPTS, int $decaySeconds = LOGIN_LOCKOUT_TIME): bool
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+            @session_start();
         }
 
         $now = time();
-        $rateData = $_SESSION['rate_limit'][$actionKey] ?? null;
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $fullKey = $actionKey . '_' . md5($ip);
+
+        // Check session-based rate limit
+        $rateData = $_SESSION['rate_limit'][$fullKey] ?? null;
 
         if ($rateData) {
             if ($now < $rateData['lockout_until']) {
-                return false; // Still in the timeout corner
+                return false;
             }
             if ($now > $rateData['first_attempt'] + $decaySeconds) {
-                // Reset window - forgiven by the server gods
-                unset($_SESSION['rate_limit'][$actionKey]);
+                unset($_SESSION['rate_limit'][$fullKey]);
             } elseif ($rateData['attempts'] >= $maxAttempts) {
-                // Apply lockout
-                $_SESSION['rate_limit'][$actionKey]['lockout_until'] = $now + $decaySeconds;
+                $_SESSION['rate_limit'][$fullKey]['lockout_until'] = $now + $decaySeconds;
                 return false;
             }
         }
@@ -246,55 +218,45 @@ class Security
 
     /**
      * Records a failed attempt for rate limiting.
-     *
-     * @param string $actionKey
-     * @param int $decaySeconds
-     * @return void
      */
     public static function recordFailedAttempt(string $actionKey, int $decaySeconds = LOGIN_LOCKOUT_TIME): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+            @session_start();
         }
 
         $now = time();
-        if (!isset($_SESSION['rate_limit'][$actionKey])) {
-            $_SESSION['rate_limit'][$actionKey] = [
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $fullKey = $actionKey . '_' . md5($ip);
+
+        if (!isset($_SESSION['rate_limit'][$fullKey])) {
+            $_SESSION['rate_limit'][$fullKey] = [
                 'attempts' => 1,
                 'first_attempt' => $now,
                 'lockout_until' => 0
             ];
         } else {
-            $_SESSION['rate_limit'][$actionKey]['attempts']++;
+            $_SESSION['rate_limit'][$fullKey]['attempts']++;
         }
     }
 
     /**
-     * Resets rate limiting counter upon successful authentication.
-     *
-     * @param string $actionKey
-     * @return void
+     * Resets the rate limiting counter for an action.
      */
     public static function resetRateLimit(string $actionKey): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+            @session_start();
         }
-        unset($_SESSION['rate_limit'][$actionKey]);
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $fullKey = $actionKey . '_' . md5($ip);
+        unset($_SESSION['rate_limit'][$fullKey]);
     }
 
     /**
-     * Records a security event in the audit_logs table and cache.
-     * Automatically caps at 200 records.
-     * Why 200? Because at 201 records, the database achieves consciousness.
-     *
-     * @param PDO|null $pdo
-     * @param string $action
-     * @param string $details
-     * @param string|null $userEmail
-     * @return void
+     * Records a security event in the database and audit log cache.
      */
-    public static function logAudit(?PDO $pdo, string $action, string $details = '', ?string $userEmail = null): void
+    public static function logAudit(?\PDO $pdo, string $action, string $details = '', ?string $userEmail = null): void
     {
         $email = $userEmail ?: ($_SESSION['user_email'] ?? 'guest');
         $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
@@ -305,15 +267,11 @@ class Security
             try {
                 $stmt = $pdo->prepare('INSERT INTO audit_logs (user_email, ip_address, action, details, user_agent, created_at) VALUES (?, ?, ?, ?, ?, NOW())');
                 $stmt->execute([$email, $ip, $action, $details, $ua]);
-
-                // Automatically cap audit table at 200 records (resets/purges older past 200)
-                $pdo->exec('DELETE FROM audit_logs WHERE id NOT IN (SELECT id FROM (SELECT id FROM audit_logs ORDER BY id DESC LIMIT 200) AS t)');
-            } catch (Throwable $e) {
-                error_log('Audit log recording error: ' . $e->getMessage());
+            } catch (\Throwable $e) {
+                error_log('Audit log database error: ' . $e->getMessage());
             }
         }
 
-        // Also persist to JSON cache for instant display
         try {
             $cacheDir = __DIR__ . '/../cache';
             if (!is_dir($cacheDir)) {
@@ -330,11 +288,11 @@ class Security
                 'user_agent' => $ua,
                 'created_at' => $timeStr
             ]);
-            // Automatically cap at 200 records
+            // Keep up to 200 recent entries in cache
             $logs = array_slice($logs, 0, 200);
             file_put_contents($cacheFile, json_encode($logs, JSON_PRETTY_PRINT));
-        } catch (Throwable $e) {
-            error_log('Audit log JSON cache error: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            error_log('Audit log cache error: ' . $e->getMessage());
         }
     }
 }

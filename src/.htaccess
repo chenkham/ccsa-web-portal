@@ -1,7 +1,8 @@
 # Centre for Computer Science and Applications (CCSA), Dibrugarh University
 # Production Server Configuration & Security Rules
 
-# 1. Disable Directory Indexing
+# 1. Directory Index & Fallback (Prioritize index.php)
+DirectoryIndex index.php index.html
 Options -Indexes
 
 # 2. Block Access to Hidden & Sensitive Files

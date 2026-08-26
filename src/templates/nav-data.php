@@ -122,7 +122,7 @@ $navItems = [
         'href' => '#',
         'children' => [
             ['label' => 'Present Students', 'href' => 'Present_Stu.php'],
-            ['label' => 'Alumni Network', 'href' => 'https://ccsaalumni.in/'],
+            ['label' => 'Alumni Network', 'href' => 'alumni.php'],
         ],
     ],
     [

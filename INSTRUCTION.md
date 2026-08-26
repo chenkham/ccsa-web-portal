@@ -148,4 +148,4 @@ To log in to the administrative control panel:
 
 For technical assistance or reporting issues:
 - **Email:** chenkhamchowlu@gmail.com
-- **Managed By:** Chenkham
+- **Managed By:** chenkham

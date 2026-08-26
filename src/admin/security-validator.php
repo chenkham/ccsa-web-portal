@@ -1,31 +1,37 @@
 <?php
-// Security utilities for input validation and sanitization
+declare(strict_types=1);
 
-class SecurityValidator {
+/**
+ * Admin Security and Input Validation Helpers
+ */
+class SecurityValidator
+{
     /**
-     * Validate and sanitize email
+     * Validates and returns a sanitized email.
      */
-    public static function email($email) {
-        $email = filter_var(trim($email), FILTER_VALIDATE_EMAIL);
-        return $email ? $email : null;
+    public static function email(string $email): ?string
+    {
+        $filtered = filter_var(trim($email), FILTER_VALIDATE_EMAIL);
+        return $filtered !== false ? $filtered : null;
     }
 
     /**
-     * Validate and sanitize string (max length)
+     * Validates string character length.
      */
-    public static function string($value, $maxLength = 255) {
+    public static function string(string $value, int $maxLength = 255): ?string
+    {
         $value = trim($value);
-        if (strlen($value) > $maxLength) {
+        if (mb_strlen($value, 'UTF-8') > $maxLength) {
             return null;
         }
         return $value;
     }
 
     /**
-     * Validate password strength
+     * Checks password complexity (minimum 8 chars, 1 uppercase, 1 lowercase, 1 digit).
      */
-    public static function password($password) {
-        // Minimum 8 characters, at least 1 uppercase, 1 lowercase, 1 number
+    public static function password(string $password): bool
+    {
         if (strlen($password) < 8) {
             return false;
         }
@@ -42,38 +48,47 @@ class SecurityValidator {
     }
 
     /**
-     * Generate CSRF token
+     * Generates or retrieves the session CSRF token.
      */
-    public static function generateCSRFToken() {
-        if (!isset($_SESSION['csrf_token'])) {
+    public static function generateCSRFToken(): string
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
         return $_SESSION['csrf_token'];
     }
 
     /**
-     * Validate CSRF token
+     * Validates a submitted CSRF token.
      */
-    public static function validateCSRFToken($token) {
-        if (!isset($_SESSION['csrf_token'])) {
+    public static function validateCSRFToken(string $token): bool
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['csrf_token']) || empty($token)) {
             return false;
         }
         return hash_equals($_SESSION['csrf_token'], $token);
     }
 
     /**
-     * Escape HTML safely
+     * Escapes a string for safe HTML display.
      */
-    public static function htmlEscape($value) {
+    public static function htmlEscape(string $value): string
+    {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
     }
 
     /**
-     * Validate integer
+     * Validates an integer.
      */
-    public static function integer($value) {
-        return filter_var($value, FILTER_VALIDATE_INT);
+    public static function integer(mixed $value): ?int
+    {
+        $filtered = filter_var($value, FILTER_VALIDATE_INT);
+        return $filtered !== false ? $filtered : null;
     }
 }
-
-?>

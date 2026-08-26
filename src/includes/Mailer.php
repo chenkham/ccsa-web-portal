@@ -5,14 +5,13 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/Security.php';
 
 /**
- * Mailer Utility Class
- * 
- * Hand-crafted Raw TCP Socket SMTP Client.
- * Built from scratch because who needs 50MB of Composer dependencies
- * when you have insomnia, RFC 5321 specs, and strong Assam tea?
+ * Socket SMTP Mailer and Notification Dispatcher
  */
 class Mailer
 {
+    /**
+     * Retrieves active SMTP configuration.
+     */
     public static function getSmtpConfig(): array
     {
         $configFile = __DIR__ . '/../cache/smtp_config.json';
@@ -23,13 +22,13 @@ class Mailer
             }
         }
         return [
-            'host' => getenv('SMTP_HOST') ?: '',
-            'port' => (int)(getenv('SMTP_PORT') ?: 587),
-            'secure' => getenv('SMTP_SECURE') ?: 'tls', // 'tls', 'ssl', or 'none'
-            'username' => getenv('SMTP_USER') ?: '',
-            'password' => getenv('SMTP_PASS') ?: '',
+            'host'       => getenv('SMTP_HOST') ?: '',
+            'port'       => (int)(getenv('SMTP_PORT') ?: 587),
+            'secure'     => getenv('SMTP_SECURE') ?: 'tls',
+            'username'   => getenv('SMTP_USER') ?: '',
+            'password'   => getenv('SMTP_PASS') ?: '',
             'from_email' => getenv('MAIL_FROM') ?: 'noreply@ccsdu.in',
-            'from_name' => 'CCSA Portal'
+            'from_name'  => 'CCSA Portal'
         ];
     }
 

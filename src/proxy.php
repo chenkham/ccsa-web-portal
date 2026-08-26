@@ -11,7 +11,7 @@ $endpoint = $_GET['endpoint'] ?? 'staff';
 $staff_id = isset($_GET['staff_id']) ? (int)$_GET['staff_id'] : 0;
 $department_id = isset($_GET['department_id']) ? (int)$_GET['department_id'] : 25;
 
-if ($endpoint === 'students') {
+if ($endpoint === 'students' || $endpoint === 'alumni') {
     header('Content-Type: application/json; charset=UTF-8');
 } else {
     header('Content-Type: application/javascript; charset=UTF-8');
@@ -99,6 +99,25 @@ try {
 
         if ($raw) {
             echo $raw;
+            exit;
+        }
+        echo json_encode([]);
+        exit;
+    }
+
+    if ($endpoint === 'alumni') {
+        $alumniUrl = 'https://lionfish-app-3a378.ondigitalocean.app/api/website/public/alumni?department_id=' . $department_id;
+        $raw = fetchRemoteUrl($alumniUrl, $staffHeaders);
+
+        if ($raw && strpos($raw, 'error') === false && strlen(trim($raw)) > 10) {
+            echo $raw;
+            exit;
+        }
+
+        // Fallback to local alumni dataset cache
+        $cacheFile = __DIR__ . '/cache/alumni_data.json';
+        if (file_exists($cacheFile)) {
+            echo file_get_contents($cacheFile);
             exit;
         }
         echo json_encode([]);

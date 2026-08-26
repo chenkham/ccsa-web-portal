@@ -45,7 +45,7 @@ $notificationRecipients = Mailer::getRecipients();
             </div>
         </div>
 
-        <form action="actions.php" method="POST" class="flex flex-col sm:flex-row gap-2.5 mb-4">
+        <form action="/admin/actions.php" method="POST" class="flex flex-col sm:flex-row gap-2.5 mb-4">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             <input type="hidden" name="action" value="add_notification_recipient">
             <div class="relative flex-1">
@@ -71,7 +71,7 @@ $notificationRecipients = Mailer::getRecipients();
                 <div class="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700">
                     <i class="fas fa-user-tie text-slate-400 text-[11px]"></i>
                     <span><?php echo htmlspecialchars($recipient); ?></span>
-                    <form action="actions.php" method="POST" class="inline" onsubmit="return confirm('Remove <?php echo htmlspecialchars($recipient); ?> from alert recipients?');">
+                    <form action="/admin/actions.php" method="POST" class="inline" onsubmit="return confirm('Remove <?php echo htmlspecialchars($recipient); ?> from alert recipients?');">
                         <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                         <input type="hidden" name="action" value="delete_notification_recipient">
                         <input type="hidden" name="recipient_email" value="<?php echo htmlspecialchars($recipient); ?>">
@@ -137,7 +137,7 @@ $notificationRecipients = Mailer::getRecipients();
                                     <i class="fas fa-reply text-[11px]"></i>
                                     <span>Reply</span>
                                 </a>
-                                <form action="actions.php" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                                <form action="/admin/actions.php" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this message?');">
                                     <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                                     <input type="hidden" name="action" value="delete_message">
                                     <input type="hidden" name="id" value="<?php echo $msg['id']; ?>">

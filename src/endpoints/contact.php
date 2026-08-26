@@ -7,21 +7,18 @@ require_once __DIR__ . '/../includes/Security.php';
 require_once __DIR__ . '/../includes/Mailer.php';
 
 /**
- * Public Contact Form Endpoint
- * 
- * Takes inquiries, sanitizes against malicious payloads,
- * checks spam rate limits, and safely stores or dispatches alert emails.
+ * Public Contact Form Submission Endpoint
  */
 
 Session::start();
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['error' => 'Method Not Allowed. POST requests only, please.']);
+    echo json_encode(['error' => 'Method Not Allowed. POST requests only.']);
     exit;
 }
 
@@ -30,7 +27,7 @@ $data = json_decode($input, true);
 
 if (!is_array($data)) {
     http_response_code(400);
-    echo json_encode(['error' => 'Invalid JSON input. Humans usually send valid JSON.']);
+    echo json_encode(['error' => 'Invalid JSON input.']);
     exit;
 }
 
@@ -47,10 +44,9 @@ if (!Security::validateCsrfToken($csrfToken)) {
 }
 
 // Anti-Spam Rate Limiting: Max 10 messages per 5 minutes
-// Even the most enthusiastic students don't type 10 messages in 5 minutes!
 if (!Security::checkRateLimit('public_contact', 10, 300)) {
     http_response_code(429);
-    echo json_encode(['error' => 'You are sending messages faster than our server can read! Please take a 5-minute breather.']);
+    echo json_encode(['error' => 'Too many requests. Please wait 5 minutes before submitting again.']);
     exit;
 }
 
@@ -88,8 +84,10 @@ try {
     $stmt = $pdo->prepare('INSERT INTO contact_messages (name, email, message, ip_address, createdAt) VALUES (?, ?, ?, ?, NOW())');
     $stmt->execute([$name, $email, $message, $ip]);
     $savedToDb = true;
+    Security::logAudit($pdo, 'CONTACT_INQUIRY', "Inquiry from " . substr($name, 0, 40) . " ($email)", $email);
 } catch (Throwable $e) {
     error_log('Contact form DB insert notice: ' . $e->getMessage());
+    Security::logAudit(null, 'CONTACT_INQUIRY', "Inquiry from " . substr($name, 0, 40) . " ($email)", $email);
 }
 
 $cacheDir = __DIR__ . '/../cache';

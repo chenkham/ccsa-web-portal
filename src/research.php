@@ -140,28 +140,25 @@ include 'templates/header.php';
             </div>
         </div>
 
-        <!-- Research Areas Graphic Cards Grid -->
+        <!-- Research Areas Gradient Cards Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-14">
             <!-- 1. AI & ML -->
             <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 <div>
-                    <!-- Graphic Header Banner -->
-                    <div class="relative h-44 w-full overflow-hidden bg-slate-900">
-                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=60" 
-                            alt="Artificial Intelligence & Machine Learning" 
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85"
-                            loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
-                        <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-9 h-9 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center text-sm font-black shadow-md">
-                                    <i class="fas fa-brain"></i>
-                                </span>
-                                <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight">
-                                    AI &amp; Machine Learning
-                                </h3>
-                            </div>
+                    <!-- Black Shiny Gradient Header Banner -->
+                    <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] p-6 flex flex-col justify-between border-b border-slate-800">
+                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <span class="w-10 h-10 rounded-xl bg-[#fbbf24] text-slate-950 flex items-center justify-center text-base font-black shadow-md">
+                                <i class="fas fa-brain"></i>
+                            </span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/15 text-white backdrop-blur-sm border border-white/20">
+                                Domain 01
+                            </span>
                         </div>
+                        <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight relative z-10">
+                            AI &amp; Machine Learning
+                        </h3>
                     </div>
 
                     <!-- Card Body -->
@@ -190,23 +187,20 @@ include 'templates/header.php';
             <!-- 2. Data Science -->
             <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 <div>
-                    <!-- Graphic Header Banner -->
-                    <div class="relative h-44 w-full overflow-hidden bg-slate-900">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=60" 
-                            alt="Data Science & Big Data" 
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85"
-                            loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
-                        <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-9 h-9 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center text-sm font-black shadow-md">
-                                    <i class="fas fa-database"></i>
-                                </span>
-                                <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight">
-                                    Data Science &amp; Analytics
-                                </h3>
-                            </div>
+                    <!-- Black Shiny Gradient Header Banner -->
+                    <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] p-6 flex flex-col justify-between border-b border-slate-800">
+                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <span class="w-10 h-10 rounded-xl bg-[#fbbf24] text-slate-950 flex items-center justify-center text-base font-black shadow-md">
+                                <i class="fas fa-database"></i>
+                            </span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/15 text-white backdrop-blur-sm border border-white/20">
+                                Domain 02
+                            </span>
                         </div>
+                        <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight relative z-10">
+                            Data Science &amp; Analytics
+                        </h3>
                     </div>
 
                     <!-- Card Body -->
@@ -232,41 +226,38 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 3. Cybersecurity -->
+            <!-- 3. Networking & Cybersecurity -->
             <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 <div>
-                    <!-- Graphic Header Banner -->
-                    <div class="relative h-44 w-full overflow-hidden bg-slate-900">
-                        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=60" 
-                            alt="Cybersecurity & Network Defense" 
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85"
-                            loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
-                        <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-9 h-9 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center text-sm font-black shadow-md">
-                                    <i class="fas fa-shield-alt"></i>
-                                </span>
-                                <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight">
-                                    Cybersecurity &amp; Cryptography
-                                </h3>
-                            </div>
+                    <!-- Black Shiny Gradient Header Banner -->
+                    <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] p-6 flex flex-col justify-between border-b border-slate-800">
+                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <span class="w-10 h-10 rounded-xl bg-[#fbbf24] text-slate-950 flex items-center justify-center text-base font-black shadow-md">
+                                <i class="fas fa-network-wired"></i>
+                            </span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/15 text-white backdrop-blur-sm border border-white/20">
+                                Domain 03
+                            </span>
                         </div>
+                        <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight relative z-10">
+                            Networking &amp; Cybersecurity
+                        </h3>
                     </div>
 
                     <!-- Card Body -->
                     <div class="p-6">
                         <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-4">
-                            Exploring robust network security protocols, cryptographic primitives, threat detection models, and privacy preservation.
+                            Exploring computer networking architectures, routing protocols, cryptographic primitives, threat detection models, and wireless communication.
                         </p>
                         <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700">
                             <li class="flex items-center gap-2 font-medium">
                                 <i class="fas fa-check-circle text-amber-500 text-xs flex-shrink-0"></i>
-                                <span>Network Security &amp; Firewalls</span>
+                                <span>Advanced Computer Networking &amp; Wireless Systems</span>
                             </li>
                             <li class="flex items-center gap-2 font-medium">
                                 <i class="fas fa-check-circle text-amber-500 text-xs flex-shrink-0"></i>
-                                <span>Modern Applied Cryptography</span>
+                                <span>Network Protocols &amp; Firewall Security</span>
                             </li>
                             <li class="flex items-center gap-2 font-medium">
                                 <i class="fas fa-check-circle text-amber-500 text-xs flex-shrink-0"></i>
@@ -280,23 +271,20 @@ include 'templates/header.php';
             <!-- 4. Cloud Computing -->
             <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 <div>
-                    <!-- Graphic Header Banner -->
-                    <div class="relative h-44 w-full overflow-hidden bg-slate-900">
-                        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=60" 
-                            alt="Cloud Computing & Distributed Systems" 
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85"
-                            loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
-                        <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-9 h-9 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center text-sm font-black shadow-md">
-                                    <i class="fas fa-cloud"></i>
-                                </span>
-                                <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight">
-                                    Cloud &amp; Distributed Systems
-                                </h3>
-                            </div>
+                    <!-- Black Shiny Gradient Header Banner -->
+                    <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] p-6 flex flex-col justify-between border-b border-slate-800">
+                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <span class="w-10 h-10 rounded-xl bg-[#fbbf24] text-slate-950 flex items-center justify-center text-base font-black shadow-md">
+                                <i class="fas fa-cloud"></i>
+                            </span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/15 text-white backdrop-blur-sm border border-white/20">
+                                Domain 04
+                            </span>
                         </div>
+                        <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight relative z-10">
+                            Cloud &amp; Distributed Systems
+                        </h3>
                     </div>
 
                     <!-- Card Body -->
@@ -322,24 +310,23 @@ include 'templates/header.php';
                 </div>
             </div>
 
+            <!-- 5. Generative AI -->
             <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 <div>
-                    <div class="relative h-44 w-full overflow-hidden bg-slate-900">
-                        <img src="https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=600&q=60" 
-                            alt="Generative AI & LLMs" 
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85"
-                            loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
-                        <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-9 h-9 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center text-sm font-black shadow-md">
-                                    <i class="fas fa-wand-magic-sparkles"></i>
-                                </span>
-                                <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight">
-                                    Generative AI
-                                </h3>
-                            </div>
+                    <!-- Black Shiny Gradient Header Banner -->
+                    <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] p-6 flex flex-col justify-between border-b border-slate-800">
+                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <span class="w-10 h-10 rounded-xl bg-[#fbbf24] text-slate-950 flex items-center justify-center text-base font-black shadow-md">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                            </span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/15 text-white backdrop-blur-sm border border-white/20">
+                                Domain 05
+                            </span>
                         </div>
+                        <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight relative z-10">
+                            Generative AI &amp; Foundational Models
+                        </h3>
                     </div>
 
                     <div class="p-6">
@@ -364,42 +351,41 @@ include 'templates/header.php';
                 </div>
             </div>
 
+            <!-- 6. Game Theory, Graph Theory & Algorithms -->
             <div class="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 <div>
-                    <div class="relative h-44 w-full overflow-hidden bg-slate-900">
-                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=60" 
-                            alt="Software Engineering & Agile" 
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85"
-                            loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
-                        <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-9 h-9 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center text-sm font-black shadow-md">
-                                    <i class="fas fa-code"></i>
-                                </span>
-                                <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight">
-                                    Software Engineering
-                                </h3>
-                            </div>
+                    <!-- Black Shiny Gradient Header Banner -->
+                    <div class="relative h-40 w-full overflow-hidden bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] p-6 flex flex-col justify-between border-b border-slate-800">
+                        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <span class="w-10 h-10 rounded-xl bg-[#fbbf24] text-slate-950 flex items-center justify-center text-base font-black shadow-md">
+                                <i class="fas fa-project-diagram"></i>
+                            </span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/15 text-white backdrop-blur-sm border border-white/20">
+                                Domain 06
+                            </span>
                         </div>
+                        <h3 class="text-lg font-bold font-display text-white tracking-wide leading-tight relative z-10">
+                            Game Theory, Graph Theory &amp; Algorithms
+                        </h3>
                     </div>
 
                     <div class="p-6">
                         <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-4">
-                            Rigorous inquiry in automated software testing, software quality metrics, agile architectures, and formal verification.
+                            Rigorous inquiry in strategic game theory, algorithmic graph modeling, discrete mathematics, network optimization, and combinatorial algorithms.
                         </p>
                         <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700">
                             <li class="flex items-center gap-2 font-medium">
                                 <i class="fas fa-check-circle text-amber-500 text-xs flex-shrink-0"></i>
-                                <span>Automated Software Testing</span>
+                                <span>Algorithmic Game Theory &amp; Mechanism Design</span>
                             </li>
                             <li class="flex items-center gap-2 font-medium">
                                 <i class="fas fa-check-circle text-amber-500 text-xs flex-shrink-0"></i>
-                                <span>Quality Assurance &amp; Verification</span>
+                                <span>Graph Theory &amp; Network Topologies</span>
                             </li>
                             <li class="flex items-center gap-2 font-medium">
                                 <i class="fas fa-check-circle text-amber-500 text-xs flex-shrink-0"></i>
-                                <span>Agile &amp; DevOps Engineering</span>
+                                <span>Optimization &amp; Formal Verification</span>
                             </li>
                         </ul>
                     </div>

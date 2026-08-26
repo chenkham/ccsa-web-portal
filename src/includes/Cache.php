@@ -2,22 +2,13 @@
 declare(strict_types=1);
 
 /**
- * File-based Cache Class
+ * File-Based Key-Value Cache
  */
 class Cache
 {
-    /** @var string */
     private string $cacheDir;
-
-    /** @var int */
     private int $defaultTtl;
 
-    /**
-     * Constructor
-     *
-     * @param string $cacheDir Directory to store cache files
-     * @param int $defaultTtl Default time to live in seconds
-     */
     public function __construct(string $cacheDir, int $defaultTtl = 3600)
     {
         $this->cacheDir = rtrim($cacheDir, '/\\');
@@ -25,16 +16,13 @@ class Cache
 
         if (!is_dir($this->cacheDir)) {
             if (!mkdir($this->cacheDir, 0755, true) && !is_dir($this->cacheDir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $this->cacheDir));
+                throw new \RuntimeException(sprintf('Cache directory "%s" could not be created.', $this->cacheDir));
             }
         }
     }
 
     /**
-     * Retrieves data from the cache.
-     *
-     * @param string $key
-     * @return mixed|null
+     * Retrieves cached data if present and not expired.
      */
     public function get(string $key): mixed
     {
@@ -52,14 +40,12 @@ class Cache
             fclose($fp);
 
             if ($content !== false && $content !== '') {
-                $payload = unserialize($content);
+                $payload = json_decode($content, true);
                 if (is_array($payload) && isset($payload['expiry'], $payload['data'])) {
                     if (time() < $payload['expiry']) {
                         return $payload['data'];
-                    } else {
-                        // Cache expired
-                        $this->invalidate($key);
                     }
+                    $this->invalidate($key);
                 }
             }
         }
@@ -68,12 +54,7 @@ class Cache
     }
 
     /**
-     * Saves data to the cache.
-     *
-     * @param string $key
-     * @param mixed $data
-     * @param int|null $ttl
-     * @return void
+     * Stores data in the file cache with an expiration timestamp.
      */
     public function set(string $key, mixed $data, ?int $ttl = null): void
     {
@@ -81,10 +62,14 @@ class Cache
         $ttl = $ttl ?? $this->defaultTtl;
         $expiry = time() + $ttl;
 
-        $payload = serialize([
+        $payload = json_encode([
             'expiry' => $expiry,
             'data'   => $data
-        ]);
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        if ($payload === false) {
+            return;
+        }
 
         $fp = @fopen($path, 'c');
         if ($fp) {
@@ -98,10 +83,7 @@ class Cache
     }
 
     /**
-     * Deletes a cache entry.
-     *
-     * @param string $key
-     * @return void
+     * Removes a specific cache key.
      */
     public function invalidate(string $key): void
     {
@@ -112,13 +94,11 @@ class Cache
     }
 
     /**
-     * Clears all cache files.
-     *
-     * @return void
+     * Clears all cached items.
      */
     public function clear(): void
     {
-        $files = glob($this->cacheDir . '/*');
+        $files = glob($this->cacheDir . '/*.cache');
         if ($files !== false) {
             foreach ($files as $file) {
                 if (is_file($file)) {
@@ -128,12 +108,6 @@ class Cache
         }
     }
 
-    /**
-     * Gets the full path for a cache key.
-     *
-     * @param string $key
-     * @return string
-     */
     private function getPath(string $key): string
     {
         return $this->cacheDir . DIRECTORY_SEPARATOR . md5($key) . '.cache';

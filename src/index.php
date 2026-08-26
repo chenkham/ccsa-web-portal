@@ -14,9 +14,9 @@ $currentPage = 'home';
 include 'templates/header.php';
 ?>
 
-    <!-- Hero Video Section -->
-    <section class="relative bg-[#0f172a] text-white w-full overflow-hidden leading-none">
-        <div class="w-full relative h-[380px] xs:h-[410px] sm:h-[460px] md:h-auto md:aspect-[1280/530] overflow-hidden flex items-center justify-center">
+    <!-- Hero Video Section with Text & Action Overlay -->
+    <section class="relative text-white w-full overflow-hidden" style="background:#1b2a3d; margin:0; padding:0; line-height:0;">
+        <div class="w-full relative overflow-hidden" style="height:70vh; min-height:420px;">
             <video 
                 id="heroDepartmentVideo"
                 autoplay 
@@ -27,26 +27,24 @@ include 'templates/header.php';
                 poster="assets/videos/ccsa_poster.jpg"
                 onloadedmetadata="this.playbackRate = 0.7;"
                 onplay="this.playbackRate = 0.7;"
-                class="h-full w-auto min-w-full md:w-full md:h-auto max-w-none md:max-w-full object-cover object-center block">
+                class="absolute inset-0 w-full h-full object-cover object-center block"
+                style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
                 <source src="assets/videos/ccsa_optimized.mp4" type="video/mp4">
             </video>
 
-            <!-- Hero Headline & Outline Button (Oil India Style: Solid White, No Shadows, Clean Video View) -->
-            <div class="absolute inset-0 flex items-center z-10 pointer-events-none">
-                <div class="container mx-auto px-5 sm:px-8 lg:px-12 pointer-events-auto">
-                    <div class="max-w-[320px] xs:max-w-[360px] sm:max-w-md md:max-w-lg lg:max-w-xl space-y-3 sm:space-y-4">
-                        <h1 class="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black uppercase text-white tracking-tight leading-tight">
-                            Two Decades of<br>Computing Excellence
+            <!-- 🌟 Clean Text & Action Button Overlay -->
+            <div class="absolute inset-0 z-10 flex items-end sm:items-center pb-24 sm:pb-0 pointer-events-none" style="line-height:normal;">
+                <div class="container mx-auto px-5 sm:px-6 lg:px-12">
+                    <div class="max-w-[85%] sm:max-w-xl">
+                        <h1 class="text-[26px] sm:text-4xl md:text-5xl lg:text-6xl font-black font-display text-white tracking-tight uppercase leading-[1.1] sm:leading-[1.05]">
+                            TWO DECADES OF<br>COMPUTING<br>EXCELLENCE
                         </h1>
-
-                        <p class="text-xs sm:text-sm md:text-base font-normal text-white uppercase tracking-wider leading-relaxed">
-                            Centre for Computer Science and Applications<br>Dibrugarh University
+                        <p class="text-[11px] sm:text-xs md:text-sm lg:text-base font-bold uppercase tracking-wider text-white/90 mt-2 sm:mt-4 leading-snug">
+                            CENTRE FOR COMPUTER SCIENCE AND APPLICATIONS<br>DIBRUGARH UNIVERSITY
                         </p>
-
-                        <div class="pt-2 sm:pt-3 flex items-center">
-                            <a href="#programs" 
-                                class="inline-flex items-center justify-center px-6 py-2.5 rounded-full border-2 border-white bg-transparent hover:bg-white hover:text-slate-950 text-white text-xs sm:text-sm font-bold transition-all duration-200">
-                                <span>Academic Programmes</span>
+                        <div class="mt-4 sm:mt-6">
+                            <a href="#programs" class="pointer-events-auto inline-flex items-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 border-white/80 bg-black/30 hover:bg-white hover:text-slate-900 text-white text-xs sm:text-sm font-bold tracking-wide transition-all shadow-sm">
+                                Academic Programmes
                             </a>
                         </div>
                     </div>
@@ -54,40 +52,42 @@ include 'templates/header.php';
             </div>
         </div>
     </section>
+    <!-- Desktop aspect ratio override -->
+    <style>
+        @media (min-width: 640px) {
+            #heroDepartmentVideo { width:100% !important; height:100% !important; }
+            section:has(#heroDepartmentVideo) > div { height:auto !important; aspect-ratio:21/9; min-height:400px; max-height:580px; }
+        }
+    </style>
 
-    <!-- ═══ ANNOUNCEMENT TICKER BAR ═══ -->
-    <div id="announcementTicker" class="bg-white border-y border-slate-200/90 shadow-xs relative z-20">
-        <div class="container mx-auto px-2.5 sm:px-4 lg:px-10 flex items-center gap-1.5 sm:gap-3 py-1 sm:py-2">
-            <!-- Live Badge -->
-            <div class="flex items-center gap-1 shrink-0 bg-red-50 text-red-700 px-1.5 sm:px-2.5 py-0.5 rounded-full border border-red-200/80 shadow-xs">
-                <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-red-600 animate-pulse shrink-0"></span>
-                <span class="text-[9px] sm:text-xs font-black uppercase tracking-wider">NOTICES</span>
+    <!-- Announcement Ticker Bar -->
+    <div id="announcementTicker" class="bg-white border-b border-slate-200/90 relative z-20 shadow-xs">
+        <div class="container mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2.5 sm:gap-4 py-2 sm:py-2.5">
+            <!-- Notices Badge -->
+            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-red-50 text-red-600 border border-red-200 text-[10px] sm:text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 shadow-xs">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <span>NOTICES</span>
+                </span>
             </div>
-            
-            <div class="h-3 sm:h-4 w-px bg-slate-200 shrink-0"></div>
-            
+            <div class="h-3.5 sm:h-4 w-px bg-slate-300 flex-shrink-0"></div>
             <!-- Scrolling Headlines -->
-            <div class="ticker-bar flex-1 overflow-hidden min-w-0">
-                <div id="tickerTrack" class="ticker-track text-slate-700">
-                    <span class="text-[11px] sm:text-xs font-medium text-slate-400">Loading announcements...</span>
+            <div class="ticker-bar flex-1 overflow-hidden" style="mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);">
+                <div id="tickerTrack" class="ticker-track text-slate-800">
+                    <span class="text-xs font-medium text-slate-500">Loading announcements...</span>
                 </div>
             </div>
-            
             <!-- View All Link -->
-            <a href="notices.php" class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-indigo-600 hover:text-indigo-800 transition-colors shrink-0 hidden md:inline-flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 px-2 py-0.5 sm:py-1 rounded-lg">
-                <span>All Notices</span>
-                <i class="fas fa-arrow-right text-[8px]"></i>
+            <a href="notices.php" class="px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 text-[10px] sm:text-xs font-bold uppercase tracking-wider flex-shrink-0 hidden sm:inline-flex items-center gap-1 transition-colors">
+                <span>ALL NOTICES</span>
+                <i class="fas fa-arrow-right text-[9px]"></i>
             </a>
         </div>
     </div>
 
-    <!-- ═══ OVERVIEW & ANNOUNCEMENTS (Combined 2-Column Section) ═══ -->
+    <!-- Department Overview and Announcements -->
     <section id="aboutus" class="py-12 sm:py-16 bg-[#fafbfd] relative overflow-hidden border-b border-slate-200/80">
-        <!-- ╔═══════════════════════════════════════════════════════════════════╗
-             ║  PREMIUM CS & AI DOODLE PATTERN BACKGROUND                      ║
-             ║  25+ hand-drawn icons · 480×520 tile · organic rotations        ║
-             ║  Covers: AI, ML, Data Science, Cybersecurity, Cloud, Coding     ║
-             ╚═══════════════════════════════════════════════════════════════════╝ -->
+        <!-- Background Pattern -->
         <div class="absolute inset-0 pointer-events-none opacity-[0.06] select-none">
             <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -370,7 +370,7 @@ include 'templates/header.php';
                         <!-- Header with Badge & Icon -->
                         <div class="flex items-center justify-between mb-5">
                             <span class="px-3.5 py-1 rounded-full bg-black/20 border border-white/30 text-white text-xs font-bold uppercase tracking-wider">
-                                Undergraduate
+                                Undergraduate | AICTE
                             </span>
                             <div class="w-11 h-11 rounded-xl bg-white/20 text-white flex items-center justify-center text-lg font-bold">
                                 <i class="fas fa-laptop-code"></i>
@@ -383,8 +383,8 @@ include 'templates/header.php';
 
                         <!-- Metadata Row -->
                         <div class="flex items-center gap-4 text-xs text-white font-bold mb-4 pb-3 border-b border-white/30">
-                            <span class="flex items-center gap-1.5"><i class="fas fa-calendar-alt text-white"></i> 3 Years (6 Sem)</span>
-                            <span class="flex items-center gap-1.5"><i class="fas fa-user-graduate text-white"></i> 60 Seats</span>
+                            <span class="flex items-center gap-1.5"><i class="fas fa-calendar-alt text-white"></i> 4 Years (8 Sem)</span>
+                            <span class="flex items-center gap-1.5"><i class="fas fa-check-double text-white"></i> AICTE Approved</span>
                         </div>
 
                         <p class="text-white text-xs sm:text-sm leading-relaxed mb-6 font-medium">
@@ -465,7 +465,7 @@ include 'templates/header.php';
                     </div>
 
                     <!-- Solid White Button -->
-                    <a href="postgraduate.php"
+                    <a href="pgdca.php"
                         class="inline-flex items-center justify-center w-full px-5 py-3 rounded-xl bg-white hover:bg-slate-100 text-slate-900 transition-all duration-200 text-xs sm:text-sm font-bold tracking-wide shadow-sm group">
                         <span class="text-slate-900 font-bold">Programme Details</span>
                         <i class="fas fa-arrow-right ml-2 text-xs text-slate-900 group-hover:translate-x-1 transition-transform"></i>
@@ -572,6 +572,8 @@ include 'templates/header.php';
                         
                         <img src="faculty/Chairperson_cutout.png" 
                             alt="Prof. Paramananda Deka - Chairperson, CCSA" 
+                            loading="lazy"
+                            decoding="async"
                             class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
                             onerror="this.src='faculty/Chairperson.jpg'">
                     </div>
@@ -620,7 +622,7 @@ include 'templates/header.php';
         </div>
     </section>
 
-    <!-- ═══ PLACEMENTS & RECRUITERS SECTION (Shadowy Design & Doodle Art) ═══ -->
+    <!-- Placements and Industry Recruiters -->
     <section id="placements" class="py-16 sm:py-20 bg-slate-100/80 border-y border-slate-200/90 relative overflow-hidden shadow-[inset_0_15px_30px_-10px_rgba(15,23,42,0.07),inset_0_-15px_30px_-10px_rgba(15,23,42,0.07)]">
         <!-- 💼 Career & Industry SVG Doodle Background Pattern -->
         <div class="absolute inset-0 pointer-events-none opacity-[0.07] select-none">
@@ -1142,6 +1144,6 @@ include 'templates/header.php';
     </script>
 
 <?php
-$extraScripts = '<script src="assets/js/notifications.js?v=' . time() . '"></script><script src="assets/js/contact.js?v=' . time() . '"></script>';
+$extraScripts = '<script src="assets/js/notifications.js?v=' . ASSET_VERSION . '"></script><script src="assets/js/contact.js?v=' . ASSET_VERSION . '"></script>';
 include 'templates/footer.php';
 ?>

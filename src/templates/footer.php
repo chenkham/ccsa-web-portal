@@ -34,7 +34,7 @@ $extraScripts = $extraScripts ?? '';
                         <li><a href="https://erp.dibru.work/dibru/student/login" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-external-link-alt text-[10px] text-white"></i> Student Portal</a></li>
                         <li><a href="https://dibru.ac.in/library" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-external-link-alt text-[10px] text-white"></i> Library</a></li>
                         <li><a href="https://dibru.ac.in/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-external-link-alt text-[10px] text-white"></i> Dibrugarh University</a></li>
-                        <li><a href="https://ccsaalumni.in/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-external-link-alt text-[10px] text-white"></i> Alumni</a></li>
+                        <li><a href="alumni.php" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-user-graduate text-[10px] text-amber-400"></i> Alumni Network</a></li>
                         <li><button type="button" onclick="openHelplineModal()" class="hover:text-[#fbbf24] transition-colors flex items-center gap-2 text-left cursor-pointer"><i class="fas fa-shield-alt text-[10px] text-amber-400"></i> Anti-Ragging Helpline</button></li>
                         <li><a href="https://placeccsa.wordpress.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-briefcase text-[10px] text-white"></i> Placement Cell</a></li>
                     </ul>
@@ -192,7 +192,7 @@ $extraScripts = $extraScripts ?? '';
         { title: "DUAT 2026 Examination Notice", url: "notices.php", category: "Notice Board", desc: "Dibrugarh University Admission Test schedule and application procedure" },
         { title: "Contact CCSA Office & Location", url: "index.php#contact", category: "Contact", desc: "Office email ccsduoffice@gmail.com, inquiries, and campus location" },
         { title: "Student ERP Portal Login", url: "https://erp.dibru.work/dibru/student/login", category: "Quick Links", desc: "Dibrugarh University student ERP portal login" },
-        { title: "Alumni Association Platform", url: "https://ccsaalumni.in/", category: "Quick Links", desc: "CCSA Alumni network and community platform" },
+        { title: "Alumni Network", url: "alumni.php", category: "Alumni", desc: "CCSA Alumni network across BCA, MCA, and PGDCA batches" },
         { title: "Placement Cell & Career Highlights", url: "https://placeccsa.wordpress.com/", category: "Quick Links", desc: "Student recruitment records and company placement drives" },
         { title: "Dibrugarh University Central Library", url: "https://dibru.ac.in/library", category: "Quick Links", desc: "Lakshminath Bezbaroa Central Library resources and journals" },
         { title: "Anti-Ragging & Grievance Helpline", url: "javascript:openHelplineModal()", category: "Helpline", desc: "24x7 National Toll-Free Helpline 1800-180-5522 and DU Proctor contact" }
@@ -251,10 +251,10 @@ $extraScripts = $extraScripts ?? '';
 
     function selectSearchResult(url, title, category, desc) {
         saveRecentSearch({ title, url, category, desc });
-        if (url.startsWith('javascript:')) {
-            closeSpotlightSearch();
-            eval(url.replace('javascript:', ''));
-        } else {
+        closeSpotlightSearch();
+        if (url === 'action:helpline' || url.includes('openHelplineModal') || url === '#helpline') {
+            openHelplineModal();
+        } else if (url && !url.startsWith('javascript:')) {
             window.location.href = url;
         }
     }
@@ -352,9 +352,10 @@ $extraScripts = $extraScripts ?? '';
     });
     </script>
 
+    <?php $v = defined('ASSET_VERSION') ? ASSET_VERSION : '2.5.0'; ?>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/weather.js"></script>
+    <script src="assets/js/app.js?v=<?php echo $v; ?>"></script>
+    <script src="assets/js/weather.js?v=<?php echo $v; ?>"></script>
     <?php echo $extraScripts; ?>
 
 </body>

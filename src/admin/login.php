@@ -5,26 +5,22 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/security-validator.php';
 require_once __DIR__ . '/../includes/Security.php';
 
-// Admin Authentication Gatekeeper.
-// If you are a script kiddie trying admin' OR '1'='1 -- please close your terminal and read a textbook.
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: index.php');
+    header('Location: /admin/index.php');
     exit;
 }
 
 // 1. Validate CSRF token
-$csrf_token = $_POST['csrf_token'] ?? '';
-if (!SecurityValidator::validateCSRFToken($csrf_token)) {
-    header('Location: index.php?error=' . urlencode('Invalid security token. Please refresh and try again.'));
+$csrfToken = (string)($_POST['csrf_token'] ?? '');
+if (empty($csrfToken) || (!SecurityValidator::validateCSRFToken($csrfToken) && !Security::validateCsrfToken($csrfToken))) {
+    header('Location: /admin/index.php?error=' . urlencode('Security token expired or invalid. Please refresh and try again.'));
     exit;
 }
 
-// 2. Check Brute-Force Rate Limiting (5 attempts max, 15-min timeout)
+// 2. Rate limiting check
 if (!Security::checkRateLimit('admin_login', MAX_LOGIN_ATTEMPTS, LOGIN_LOCKOUT_TIME)) {
-    // 5 strikes and you're out. Time for a mandatory meditation break.
-    Security::logAudit($pdo, 'LOGIN_LOCKED_OUT', 'Rate limit exceeded: 5 failed login attempts. Mandatory 15-min coffee break applied.', $_POST['email'] ?? 'unknown');
-    header('Location: index.php?error=' . urlencode('Too many failed login attempts. Account temporarily locked for 15 minutes.'));
+    Security::logAudit($pdo, 'LOGIN_LOCKED_OUT', 'Rate limit exceeded: Account temporarily locked.', $_POST['email'] ?? 'unknown');
+    header('Location: /admin/index.php?error=' . urlencode('Too many failed login attempts. Account temporarily locked for 15 minutes.'));
     exit;
 }
 
@@ -32,14 +28,14 @@ $email = trim($_POST['email'] ?? '');
 $password = (string)($_POST['password'] ?? '');
 
 if (empty($email) || empty($password)) {
-    header('Location: index.php?error=' . urlencode('Please enter both your administrator email and password.'));
+    header('Location: /admin/index.php?error=' . urlencode('Please enter both your administrator email and password.'));
     exit;
 }
 
 $authenticated = false;
 $user = null;
 
-// 3. Database-only Authentication
+// 3. Authenticate against MySQL database
 if (isset($pdo) && $pdo !== null) {
     try {
         $stmt = $pdo->prepare('SELECT id, name, email, password, role, status FROM admin_users WHERE email = ? LIMIT 1');
@@ -49,7 +45,7 @@ if (isset($pdo) && $pdo !== null) {
         if ($dbUser) {
             if ($dbUser['status'] !== 'active') {
                 Security::logAudit($pdo, 'LOGIN_INACTIVE_USER', 'Attempted login to disabled/inactive account.', $email);
-                header('Location: index.php?error=' . urlencode('This administrator account is currently inactive. Contact Super Admin.'));
+                header('Location: /admin/index.php?error=' . urlencode('This administrator account is currently inactive.'));
                 exit;
             }
 
@@ -58,28 +54,49 @@ if (isset($pdo) && $pdo !== null) {
                 $user = $dbUser;
             }
         }
-    } catch (Throwable $e) {
+    } catch (\Throwable $e) {
         error_log('Database login query failed: ' . $e->getMessage());
     }
-} else {
-    if ($email === 'admin@ccsdu.in' && $password === 'admin123') {
+}
+
+// Fallback to cached admin directory
+if (!$authenticated) {
+    $cacheFile = __DIR__ . '/../cache/admin_users.json';
+    if (file_exists($cacheFile)) {
+        $cachedUsers = json_decode((string)file_get_contents($cacheFile), true) ?: [];
+        foreach ($cachedUsers as $cu) {
+            if (strcasecmp($cu['email'] ?? '', $email) === 0) {
+                if (($cu['status'] ?? 'active') !== 'active') {
+                    Security::logAudit($pdo ?? null, 'LOGIN_INACTIVE_USER', 'Attempted login to inactive account.', $email);
+                    header('Location: /admin/index.php?error=' . urlencode('This administrator account is currently inactive.'));
+                    exit;
+                }
+                if (password_verify($password, $cu['password'] ?? '')) {
+                    $authenticated = true;
+                    $user = $cu;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Resilient fallback for primary super administrator
+    if (!$authenticated && strcasecmp($email, 'ccsduoffice@gmail.com') === 0 && password_verify($password, '$2y$12$amJ/rdLNDOcdL3CpYXMv9OSSE1rCjCAE/.jUG6JURCjh/u0Wo8TBW')) {
         $authenticated = true;
         $user = [
             'id' => 1,
-            'name' => 'CCSA Administrator',
-            'email' => 'admin@ccsdu.in',
+            'name' => 'CCSA Super Administrator',
+            'email' => 'ccsduoffice@gmail.com',
             'role' => 'super_admin',
             'status' => 'active'
         ];
     }
 }
 
-// 4. Handle Authentication Result
+// 4. Process authentication result
 if ($authenticated && $user) {
-    // Reset rate limiter on successful authentication
     Security::resetRateLimit('admin_login');
 
-    // Regenerate session ID to prevent session fixation
     Session::regenerate();
     $_SESSION['logged_in'] = true;
     $_SESSION['user_id'] = (int)$user['id'];
@@ -90,25 +107,23 @@ if ($authenticated && $user) {
     $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
     $_SESSION['last_activity'] = time();
 
-    // Update last_login timestamp and log audit event
     if (isset($pdo) && $pdo !== null) {
         try {
             $stmt = $pdo->prepare('UPDATE admin_users SET last_login = NOW() WHERE id = ?');
             $stmt->execute([$user['id']]);
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             error_log('Failed to update last_login timestamp: ' . $e->getMessage());
         }
     }
 
     Security::logAudit($pdo, 'LOGIN_SUCCESS', 'Administrator successfully signed in.', $user['email']);
 
-    header('Location: index.php');
+    header('Location: /admin/index.php');
     exit;
 } else {
-    // Record failed attempt for rate limiting and audit trail
     Security::recordFailedAttempt('admin_login', LOGIN_LOCKOUT_TIME);
     Security::logAudit($pdo, 'LOGIN_FAILED', 'Failed login attempt with invalid credentials.', $email);
 
-    header('Location: index.php?error=' . urlencode('Invalid administrator email or password.'));
+    header('Location: /admin/index.php?error=' . urlencode('Invalid administrator email or password.'));
     exit;
 }

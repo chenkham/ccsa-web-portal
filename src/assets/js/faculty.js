@@ -145,7 +145,7 @@
       card.innerHTML = `
         <!-- Custom Academic Crest Silhouette Frame -->
         <div class="faculty-crest-frame w-32 h-36 sm:w-36 sm:h-40 flex-shrink-0 overflow-hidden bg-slate-100 border border-slate-200 flex items-end justify-center shadow-inner rounded-xl">
-          <img src="${imgSrc}" alt="${name}" class="w-full h-full object-cover object-top transition-transform duration-500" onerror="this.src='faculty/du.png'">
+          <img src="${imgSrc}" alt="${name}" loading="lazy" decoding="async" class="w-full h-full object-cover object-top transition-transform duration-500" onerror="this.src='faculty/du.png'">
         </div>
 
         <!-- Faculty Details (Reference Styling) -->
@@ -183,17 +183,8 @@
     const container = document.getElementById('students-container');
     if (!container) return;
 
-    // Show skeletons while loading
-    container.innerHTML = Array(6).fill(0).map(() => `
-      <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 flex flex-col sm:flex-row items-center gap-4 animate-pulse">
-        <div class="w-32 h-36 rounded-xl bg-slate-200 flex-shrink-0"></div>
-        <div class="flex-1 space-y-3 w-full">
-          <div class="h-5 bg-slate-200 rounded w-3/4"></div>
-          <div class="h-4 bg-slate-200 rounded w-1/2"></div>
-          <div class="h-3 bg-slate-200 rounded w-5/6"></div>
-        </div>
-      </div>
-    `).join('');
+    // Render local fallback immediately for 0ms initial load
+    renderFaculty(fallbackFaculty);
 
     try {
       const response = await fetch('proxy/faculty.php');

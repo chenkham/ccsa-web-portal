@@ -2,7 +2,9 @@
 -- CCSA Dibrugarh University - Complete MySQL Database Schema
 -- Centre for Computer Science and Applications
 -- Database Engine: InnoDB | Character Set: utf8mb4 | Collation: utf8mb4_unicode_ci
--- created by: chenkham chowlu(2026/bca 5thsem)
+-- Architect & Developer: Chenkham Chowlu
+-- Copyright (c) 2024-2026 Chenkham Chowlu. All rights reserved.
+-- Signature: Q2hlbmtoYW0gQ2hvd2x1
 -- =====================================================================
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -28,9 +30,9 @@ CREATE TABLE `admin_users` (
   UNIQUE KEY `idx_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Seed default Super Admin (Email: admin@ccsdu.in | Password: admin123)
+-- Seed default Super Admin (Email: ccsduoffice@gmail.com | Password: 786004@Ccs)
 INSERT INTO `admin_users` (`id`, `name`, `email`, `password`, `role`, `status`, `createdAt`) VALUES
-(1, 'CCSA Administrator', 'admin@ccsdu.in', '$2y$12$0giIjsnBt7QQWNjI1hhft.XP.fz.ifV2vTi6TbpxopRygW60/IjAG', 'super_admin', 'active', NOW());
+(1, 'CCSA Administrator', 'ccsduoffice@gmail.com', '$2y$12$amJ/rdLNDOcdL3CpYXMv9OSSE1rCjCAE/.jUG6JURCjh/u0Wo8TBW', 'super_admin', 'active', NOW());
 
 -- ---------------------------------------------------------------------
 -- 2. Table structure for `notifications` (Official Announcements)

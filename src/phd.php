@@ -125,7 +125,7 @@ include 'templates/header.php';
                     Ph.D. Programme in Computer Science
                 </h1>
                 <p class="text-blue-100 text-xs sm:text-base max-w-3xl leading-relaxed">
-                    Six-Monthly Pre-Registration Coursework and Frontier Doctoral Research covering Artificial Intelligence, Generative AI, Cloud Security, Data Analytics, and Theoretical Computer Science.
+                    Six-Monthly Pre-Registration Coursework and Frontier Doctoral Research covering Game Theory, Networking, Graph Theory, Image Processing, Artificial Intelligence, Generative AI, Cloud Security, and Data Analytics.
                 </p>
             </div>
         </div>
@@ -149,8 +149,8 @@ include 'templates/header.php';
             </div>
             <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm text-center">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">Research Areas</span>
-                <span class="text-lg sm:text-xl font-extrabold text-[#1a365d]">AI &bull; ML &bull; NLP</span>
-                <span class="text-[11px] text-slate-500 block">Funded Labs</span>
+                <span class="text-sm sm:text-base font-extrabold text-[#1a365d]">AI &bull; ML &bull; NLP &bull; Networking</span>
+                <span class="text-[11px] text-slate-500 block">Game &amp; Graph Theory</span>
             </div>
         </div>
 
@@ -165,6 +165,15 @@ include 'templates/header.php';
                     <p class="text-slate-700 text-sm sm:text-[15px] leading-relaxed mb-4">
                         This is a mandatory <strong class="text-slate-900 font-bold">Six-Month Pre-Registration Course Work</strong> for scholars pursuing a doctoral degree in Computer Science. The coursework ensures candidates develop rigorous research methodology, critical literature review synthesis, and advanced domain expertise before submitting their formal research proposal.
                     </p>
+                    <div class="mb-4">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-[#1a365d] mb-2">Core Doctoral Research Thrust Areas:</h3>
+                        <div class="grid grid-cols-2 gap-2 text-xs text-slate-700 font-semibold">
+                            <span class="p-2 bg-blue-50/60 rounded-lg border border-blue-100 flex items-center gap-1.5"><i class="fas fa-chess text-indigo-600 text-[11px]"></i> Game Theory</span>
+                            <span class="p-2 bg-blue-50/60 rounded-lg border border-blue-100 flex items-center gap-1.5"><i class="fas fa-network-wired text-blue-600 text-[11px]"></i> Networking</span>
+                            <span class="p-2 bg-blue-50/60 rounded-lg border border-blue-100 flex items-center gap-1.5"><i class="fas fa-project-diagram text-emerald-600 text-[11px]"></i> Graph Theory</span>
+                            <span class="p-2 bg-blue-50/60 rounded-lg border border-blue-100 flex items-center gap-1.5"><i class="fas fa-image text-purple-600 text-[11px]"></i> Image Processing</span>
+                        </div>
+                    </div>
                     <p class="text-slate-700 text-sm sm:text-[15px] leading-relaxed">
                         The coursework features advanced scholarly seminars, peer presentations, journal assessments, and thesis formulation under recognized university research supervisors.
                     </p>

@@ -1,6 +1,16 @@
 <?php
 declare(strict_types=1);
 
+// Ensure /admin has a trailing slash so relative paths and form actions resolve properly
+$requestUri = $_SERVER['REQUEST_URI'] ?? '';
+$urlPath = parse_url($requestUri, PHP_URL_PATH) ?? '';
+if (rtrim($urlPath, '/') === '/admin' && !str_ends_with($urlPath, '/')) {
+    $queryString = parse_url($requestUri, PHP_URL_QUERY);
+    $targetUrl = '/admin/' . ($queryString ? '?' . $queryString : '');
+    header('Location: ' . $targetUrl, true, 301);
+    exit;
+}
+
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/security-validator.php';
 require_once __DIR__ . '/check_session.php';
@@ -34,7 +44,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         <div class="login-card max-w-md w-full bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
             <div class="text-center mb-8">
                 <div class="inline-flex p-3 rounded-2xl bg-indigo-50 border border-indigo-100 mb-3">
-                    <img src="../faculty/du.png" alt="Dibrugarh University" class="w-16 h-16 object-contain">
+                    <img src="/faculty/du.png" alt="Dibrugarh University" class="w-16 h-16 object-contain" onerror="this.src='../faculty/du.png'">
                 </div>
                 <h1 class="text-2xl font-extrabold text-[#1a365d]">CCSA Admin Portal</h1>
                 <p class="text-xs text-slate-500 mt-1">Centre for Computer Science and Applications</p>
@@ -54,7 +64,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 </div>
             <?php endif; ?>
 
-            <form method="POST" action="login.php" class="space-y-4">
+            <form method="POST" action="/admin/login.php" class="space-y-4">
                 <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
 
                 <div>
@@ -98,11 +108,26 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 check_auth();
 
 $username = htmlspecialchars($_SESSION['user_name'] ?? 'Administrator');
-$userrole = htmlspecialchars($_SESSION['user_role'] ?? 'super_admin');
-$useremail = htmlspecialchars($_SESSION['user_email'] ?? 'admin@ccsdu.in');
+$userRole = (string)($_SESSION['user_role'] ?? 'super_admin');
+$userrole = htmlspecialchars($userRole);
+$useremail = htmlspecialchars($_SESSION['user_email'] ?? 'ccsduoffice@gmail.com');
+$userEmail = (string)($_SESSION['user_email'] ?? 'ccsduoffice@gmail.com');
+$isSuperAdmin = ($userRole === 'super_admin');
 $csrf_token = SecurityValidator::generateCSRFToken();
 
+// Role-based allowed tabs: Editor gets ONLY Notices and Inquiries
+$allowedTabs = ['notifications', 'messages'];
+if ($userRole === 'super_admin' || $userRole === 'admin') {
+    $allowedTabs[] = 'logs';
+}
+if ($userRole === 'super_admin') {
+    $allowedTabs[] = 'admin';
+}
+
 $currentTab = $_GET['tab'] ?? 'notifications';
+if (!in_array($currentTab, $allowedTabs, true)) {
+    $currentTab = 'notifications';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -137,11 +162,16 @@ $currentTab = $_GET['tab'] ?? 'notifications';
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
                 <div class="text-right hidden sm:block">
                     <p class="text-xs font-bold text-white"><?php echo $username; ?></p>
                     <p class="text-[11px] text-blue-200"><?php echo $useremail; ?> (<?php echo $userrole; ?>)</p>
                 </div>
+                <button type="button" onclick="document.getElementById('changePasswordModal').classList.remove('hidden')" 
+                    class="bg-indigo-700/80 hover:bg-indigo-600 text-white text-xs font-bold px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 shadow border border-indigo-400/30 cursor-pointer">
+                    <i class="fas fa-key text-[11px]"></i>
+                    <span class="hidden sm:inline">Change Password</span>
+                </button>
                 <a href="logout.php" 
                     class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 shadow">
                     <i class="fas fa-sign-out-alt"></i>
@@ -150,6 +180,59 @@ $currentTab = $_GET['tab'] ?? 'notifications';
             </div>
         </div>
     </header>
+
+    <!-- Change Password Modal for All Roles (super_admin, admin, editor) -->
+    <div id="changePasswordModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-fadeIn">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-100 mb-5">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-base font-black">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-800">Change Account Password</h3>
+                        <p class="text-xs text-slate-500"><?php echo $useremail; ?></p>
+                    </div>
+                </div>
+                <button type="button" onclick="document.getElementById('changePasswordModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-700 text-2xl font-light">&times;</button>
+            </div>
+
+            <form method="POST" action="actions.php" class="space-y-4">
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <input type="hidden" name="action" value="change_password">
+
+                <div>
+                    <label for="current_password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Current Password</label>
+                    <input type="password" id="current_password" name="current_password" required placeholder="••••••••" 
+                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all">
+                </div>
+
+                <div>
+                    <label for="new_password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">New Password</label>
+                    <input type="password" id="new_password" name="new_password" required minlength="8" placeholder="At least 8 characters" 
+                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all">
+                </div>
+
+                <div>
+                    <label for="confirm_password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Confirm New Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required minlength="8" placeholder="Repeat new password" 
+                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white transition-all">
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="document.getElementById('changePasswordModal').classList.add('hidden')" 
+                        class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                        class="px-5 py-2.5 bg-[#1a365d] hover:bg-indigo-900 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+                        <i class="fas fa-check text-xs"></i>
+                        <span>Update Password</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Main Workspace Container -->
     <div class="container mx-auto px-4 sm:px-6 py-8 flex-1">
@@ -177,25 +260,29 @@ $currentTab = $_GET['tab'] ?? 'notifications';
 
         <nav class="bg-white rounded-2xl p-2 shadow-sm border border-slate-200/90 mb-8 flex flex-wrap gap-2">
             <button onclick="switchTab('notifications')" id="tab-btn-notifications" 
-                class="tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all text-center flex items-center justify-center gap-1.5 bg-[#1a365d] text-white shadow">
+                class="tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all text-center flex items-center justify-center gap-1.5 bg-[#1a365d] text-white shadow cursor-pointer">
                 <i class="fas fa-bullhorn text-xs"></i>
                 <span>Notices</span>
             </button>
             <button onclick="switchTab('messages')" id="tab-btn-messages" 
-                class="tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all text-center flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200">
+                class="tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all text-center flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
                 <i class="fas fa-envelope-open-text text-xs"></i>
                 <span>Inquiries</span>
             </button>
+            <?php if (in_array('logs', $allowedTabs, true)): ?>
             <button onclick="switchTab('logs')" id="tab-btn-logs" 
-                class="tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all text-center flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200">
+                class="tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all text-center flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
                 <i class="fas fa-shield-alt text-xs"></i>
                 <span>Audit Logs</span>
             </button>
+            <?php endif; ?>
+            <?php if (in_array('admin', $allowedTabs, true)): ?>
             <button onclick="switchTab('admin')" id="tab-btn-admin" 
-                class="tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all text-center flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200">
+                class="tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all text-center flex items-center justify-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
                 <i class="fas fa-users-cog text-xs"></i>
                 <span>Admins</span>
             </button>
+            <?php endif; ?>
         </nav>
 
         <div id="tab-notifications" class="tab-content active">
@@ -206,13 +293,17 @@ $currentTab = $_GET['tab'] ?? 'notifications';
             <?php include __DIR__ . '/sections/messages.php'; ?>
         </div>
 
+        <?php if (in_array('logs', $allowedTabs, true)): ?>
         <div id="tab-logs" class="tab-content">
             <?php include __DIR__ . '/sections/logs.php'; ?>
         </div>
+        <?php endif; ?>
 
+        <?php if (in_array('admin', $allowedTabs, true)): ?>
         <div id="tab-admin" class="tab-content">
             <?php include __DIR__ . '/sections/admin_users.php'; ?>
         </div>
+        <?php endif; ?>
     </div>
 
     <!-- Footer -->
