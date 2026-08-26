@@ -260,13 +260,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
-            const isPinned = !!notice.is_pinned;
+            const isPinned = (notice.is_pinned == 1 || notice.is_pinned === true || notice.is_pinned === '1');
             let isNewActive = false;
             if (notice.is_new !== undefined && (notice.is_new === 0 || notice.is_new === false || notice.is_new === '0')) {
                 isNewActive = false;
             } else if (notice.new_until) {
                 isNewActive = new Date(notice.new_until + 'T23:59:59') >= new Date();
-            } else if (notice.is_new == 1) {
+            } else if (notice.is_new == 1 || notice.is_new === '1') {
                 isNewActive = true;
             }
 
@@ -386,7 +386,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         allNotices = Array.isArray(data) ? data : (data.data || []);
-        allNotices.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        allNotices.sort((a, b) => {
+            const isPinnedA = (a.is_pinned == 1 || a.is_pinned === true || a.is_pinned === '1') ? 1 : 0;
+            const isPinnedB = (b.is_pinned == 1 || b.is_pinned === true || b.is_pinned === '1') ? 1 : 0;
+            if (isPinnedB !== isPinnedA) return isPinnedB - isPinnedA;
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
         filteredNotices = [...allNotices];
         renderPage();
     } catch (err) {
@@ -423,7 +428,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 });
-</script>
 </script>
 
 <?php
