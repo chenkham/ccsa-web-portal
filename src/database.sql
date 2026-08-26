@@ -1,10 +1,9 @@
 -- =====================================================================
--- CCSA Dibrugarh University - Complete MySQL Database Schema
+-- CCSA Dibrugarh University - Complete MySQL Database Schema (v2.5.2)
 -- Centre for Computer Science and Applications
 -- Database Engine: InnoDB | Character Set: utf8mb4 | Collation: utf8mb4_unicode_ci
 -- Architect & Developer: Chenkham Chowlu
 -- Copyright (c) 2024-2026 Chenkham Chowlu. All rights reserved.
--- Signature: Q2hlbmtoYW0gQ2hvd2x1
 -- =====================================================================
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -15,8 +14,7 @@ SET time_zone = "+05:30";
 -- ---------------------------------------------------------------------
 -- 1. Table structure for `admin_users`
 -- ---------------------------------------------------------------------
-DROP TABLE IF EXISTS `admin_users`;
-CREATE TABLE `admin_users` (
+CREATE TABLE IF NOT EXISTS `admin_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `email` varchar(150) NOT NULL,
@@ -31,19 +29,18 @@ CREATE TABLE `admin_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Seed default Super Admin (Email: ccsduoffice@gmail.com | Password: 786004@Ccs)
-INSERT INTO `admin_users` (`id`, `name`, `email`, `password`, `role`, `status`, `createdAt`) VALUES
-(1, 'CCSA Administrator', 'ccsduoffice@gmail.com', '$2y$12$amJ/rdLNDOcdL3CpYXMv9OSSE1rCjCAE/.jUG6JURCjh/u0Wo8TBW', 'super_admin', 'active', NOW());
+INSERT IGNORE INTO `admin_users` (`id`, `name`, `email`, `password`, `role`, `status`, `createdAt`) VALUES
+(1, 'CCSA Super Administrator', 'ccsduoffice@gmail.com', '$2y$12$amJ/rdLNDOcdL3CpYXMv9OSSE1rCjCAE/.jUG6JURCjh/u0Wo8TBW', 'super_admin', 'active', NOW());
 
 -- ---------------------------------------------------------------------
 -- 2. Table structure for `notifications` (Official Announcements)
 -- ---------------------------------------------------------------------
-DROP TABLE IF EXISTS `notifications`;
-CREATE TABLE `notifications` (
+CREATE TABLE IF NOT EXISTS `notifications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
   `category` varchar(50) NOT NULL DEFAULT 'General',
-  `creator_email` varchar(150) DEFAULT 'admin@ccsdu.in',
+  `creator_email` varchar(150) DEFAULT 'ccsduoffice@gmail.com',
   `file_path` varchar(255) DEFAULT NULL,
   `file_url` varchar(500) DEFAULT NULL,
   `is_pinned` tinyint(1) NOT NULL DEFAULT 0,
@@ -57,40 +54,50 @@ CREATE TABLE `notifications` (
   KEY `idx_new_until` (`new_until`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Seed essential department announcements
+INSERT IGNORE INTO `notifications` (`id`, `title`, `description`, `category`, `creator_email`, `is_pinned`, `is_new`, `new_until`, `createdAt`) VALUES
+(1, 'Notification regarding MCA, BCA and PGDCA Odd Semester Examinations 2026', 'Examination schedules, registration details, and instructions for all candidates appearing for the Odd Semester Examinations.', 'Examination', 'ccsduoffice@gmail.com', 1, 1, DATE_ADD(CURDATE(), INTERVAL 30 DAY), NOW()),
+(2, 'Workshop on Machine Learning and Big Data Analytics at CCSA', 'Department of Computer Science invites students and scholars to a 3-day hands-on workshop on modern AI techniques.', 'Workshop', 'ccsduoffice@gmail.com', 0, 1, DATE_ADD(CURDATE(), INTERVAL 15 DAY), NOW()),
+(3, 'Centre for Computer Science and Applications - Official Web Portal Live', 'The official CCSA Dibrugarh University portal is now active for notifications, academic schedules, and faculty resources.', 'General', 'ccsduoffice@gmail.com', 1, 0, NULL, NOW());
+
 -- ---------------------------------------------------------------------
--- 3. Table structure for `teaching_staff` (Faculty Directory)
+-- 3. Table structure for `teaching_staff` (Faculty Directory with Official DigitalOcean CDN Photos)
 -- ---------------------------------------------------------------------
-DROP TABLE IF EXISTS `teaching_staff`;
-CREATE TABLE `teaching_staff` (
+CREATE TABLE IF NOT EXISTS `teaching_staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `staff_id` int(11) DEFAULT NULL,
   `employee_id` varchar(50) DEFAULT NULL,
   `full_name` varchar(150) NOT NULL,
   `position` varchar(100) NOT NULL,
-  `department` varchar(150) NOT NULL,
+  `department` varchar(150) NOT NULL DEFAULT 'Centre for Computer Science and Applications',
   `email` varchar(150) NOT NULL,
-  `photo` varchar(255) DEFAULT 'faculty/default.png',
+  `photo` varchar(500) NOT NULL,
   `qualification` varchar(100) DEFAULT 'Ph.D.',
-  `specialization` varchar(255) DEFAULT NULL,
+  `specialization` text DEFAULT NULL,
   `phone` varchar(30) DEFAULT NULL,
+  `order_num` int(11) DEFAULT 0,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_staff_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Seed teaching faculty
-INSERT INTO `teaching_staff` (`id`, `employee_id`, `full_name`, `position`, `department`, `email`, `photo`, `qualification`, `specialization`) VALUES
-(1, 'DU_CCSA_01', 'Dr. Rizwan Rehman', 'Assistant Professor', 'Cloud Computing & Big Data', 'rizwan@dibru.ac.in', 'faculty/Rizwan_SIr.png', 'Ph.D., M.Tech', 'Cloud Computing, Distributed Systems & Big Data'),
-(2, 'DU_CCSA_02', 'Dr. Utpala Borgohain', 'Assistant Professor', 'Data Mining & NLP', 'uborgohain@dibru.ac.in', 'faculty/UtpolaMam.png', 'Ph.D., MCA', 'Data Mining, Machine Learning, Natural Language Processing'),
-(3, 'DU_CCSA_03', 'Dr. Ujjal Saikia', 'Assistant Professor', 'Computer Vision & Image Processing', 'ujjalsaikia@dibru.ac.in', 'faculty/UjjalSir.png', 'Ph.D., M.Tech', 'Digital Image Processing, Pattern Recognition & AI'),
-(4, 'DU_CCSA_04', 'Dr. Pranjal Kumar Bora', 'Assistant Professor', 'Wireless Networks & IoT', 'pranjalkumarbora@dibru.ac.in', 'faculty/PranjalSir.png', 'Ph.D., M.Tech', 'Wireless Sensor Networks, IoT & Embedded Systems'),
-(5, 'DU_CCSA_05', 'Ms. Kimasha Borah', 'Assistant Professor', 'Programming & Web Technologies', 'kimasha@dibru.ac.in', 'faculty/KimashaMam.png', 'M.Tech, MCA', 'Software Engineering, Web Technologies & Algorithms'),
-(6, 'DU_CCSA_06', 'Dr. Toralima Bora', 'Assistant Professor', 'Algorithms & Cryptography', 'toralima@dibru.ac.in', 'faculty/ToraliMam.png', 'Ph.D., M.Tech', 'Information Security, Cryptography & Computational Complexity');
+-- Seed All 10 Assistant Professors + Chairperson with Official DigitalOcean University CDN URLs
+INSERT IGNORE INTO `teaching_staff` (`id`, `staff_id`, `employee_id`, `full_name`, `position`, `department`, `email`, `photo`, `qualification`, `specialization`, `order_num`) VALUES
+(1, 364, 'DU_CCSA_01', 'Dr. Utpala Borgohain', 'Assistant Professor', 'Centre for Computer Science and Applications', 'utpolaborgohain@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/sj2Z0O1slmkpyxCR7FdzBDs5U9GjeWjKuM7IBssn.png', 'Ph.D., MCA', 'Wireless communication network, Artificial Intelligence, Cognitive Radio Network, Cooperative Game Theory', 1),
+(2, 365, 'DU_CCSA_02', 'Dr. Rizwan Rehman', 'Assistant Professor', 'Centre for Computer Science and Applications', 'rizwanrehman@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/WtWED8hVWYdBI5MFpYjwrCUdgVzXx7pstQBrPyxE.png', 'Ph.D., M.Tech, B.E.', 'Deep Learning (NLP, Computer Vision, Computational Biology), Programming (C/C++/Java/Python/R/MERN/PHP), Data Structures', 2),
+(3, 398, 'DU_CCSA_03', 'Dr. Toralima Bora', 'Assistant Professor', 'Centre for Computer Science and Applications', 'toralibora@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/Wyh0od9HyPZ1inzyv8dFS8UHCmwPCHzVj40viQZd.png', 'Ph.D., M.Tech', 'Fuzzy Mathematics, Numerical Methods, C Programming, Matlab', 3),
+(4, 397, 'DU_CCSA_04', 'Dr. Ujjal Saikia', 'Assistant Professor', 'Centre for Computer Science and Applications', 'ujjalsaikia@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/9inBJ2Udzt0YCp9DY92xcXFdHL7PLeQ6WJLY2QKg.png', 'Ph.D., MCA', 'Relational Database Management System, Statistical Methods, Web & Mobile Technologies, Data Analysis using R Programming', 4),
+(5, 396, 'DU_CCSA_05', 'Dr. Kimasha Borah', 'Assistant Professor', 'Centre for Computer Science and Applications', 'kimashaborah@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/U4mquF8hTiPkfIGsay0ygDE2FwcyxhEkKePf3mAB.png', 'Ph.D., MCA', 'Complex network, Social Network Analysis, Microprocessor, Digital System and Design', 5),
+(6, 393, 'DU_CCSA_06', 'Dr. Pranjal Kumar Bora', 'Assistant Professor', 'Centre for Computer Science and Applications', 'pranjalkumarbora@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/vVoEEIQjUFnC1MZQYEUTrtcwSg37cX7WYwKQvrbE.png', 'Ph.D., M.Tech', 'Machine Learning, Computational Biology, Graph theory, Complex Network', 6),
+(7, 394, 'DU_CCSA_07', 'Mr. Ankumon Sarmah', 'Assistant Professor', 'Centre for Computer Science and Applications', 'ankumonsarmah@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/6TNcXOg6UuHghb0NCpeWYffwugk6Px8N83QiHtHp.png', 'MCA', 'NLP, Speech Processing, Machine Learning', 7),
+(8, 395, 'DU_CCSA_08', 'Ms. Kankana Dutta', 'Assistant Professor', 'Centre for Computer Science and Applications', 'kankanadutta@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/8kleNUe0ajfrxoY0MB4v1WSjHrtFApiwJfe1h0E1.png', 'MCA', 'Machine Learning, Speech Processing', 8),
+(9, 399, 'DU_CCSA_09', 'Dr. Sumpi Saikia', 'Assistant Professor', 'Centre for Computer Science and Applications', 'sumpisaikia@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/1quSjPrHSlfJG6WnTaPC8fF3ZBI7SwKYEeaA3syd.png', 'Ph.D., MCA', 'Machine learning, Image processing', 9),
+(10, 4626, 'DU_CCSA_10', 'Ms. Pinakshi Konwar', 'Assistant Professor', 'Centre for Computer Science and Applications', 'pinakshikonwar@dibru.ac.in', 'https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/HGSPT0LLsriLLvcucNHxfQuhzWk5haZJyhCoGeTq.png', 'MCA', 'Machine Learning, Computational Biology', 10);
 
 -- ---------------------------------------------------------------------
 -- 4. Table structure for `current_students` (Student Directory)
 -- ---------------------------------------------------------------------
-DROP TABLE IF EXISTS `current_students`;
-CREATE TABLE `current_students` (
+CREATE TABLE IF NOT EXISTS `current_students` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `roll_no` varchar(50) NOT NULL,
   `full_name` varchar(150) NOT NULL,
@@ -105,8 +112,8 @@ CREATE TABLE `current_students` (
   KEY `idx_course_sem` (`course`, `semester`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Seed student roster
-INSERT INTO `current_students` (`id`, `roll_no`, `full_name`, `course`, `semester`, `batch_year`) VALUES
+-- Seed sample student roster
+INSERT IGNORE INTO `current_students` (`id`, `roll_no`, `full_name`, `course`, `semester`, `batch_year`) VALUES
 (1, '23MCA014', 'Ankur Jyoti Sharma', 'MCA', '4th Semester', '2023-2025'),
 (2, '22BCA032', 'Priyanka Das', 'BCA', '6th Semester', '2022-2025'),
 (3, '24PGDCA05', 'Nandita Saikia', 'PGDCA', '2nd Semester', '2024-2025'),
@@ -117,11 +124,12 @@ INSERT INTO `current_students` (`id`, `roll_no`, `full_name`, `course`, `semeste
 -- ---------------------------------------------------------------------
 -- 5. Table structure for `contact_messages` (Public Inquiries)
 -- ---------------------------------------------------------------------
-DROP TABLE IF EXISTS `contact_messages`;
-CREATE TABLE `contact_messages` (
+CREATE TABLE IF NOT EXISTS `contact_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `email` varchar(150) NOT NULL,
+  `phone` varchar(30) DEFAULT NULL,
+  `subject` varchar(200) DEFAULT NULL,
   `message` text NOT NULL,
   `ip_address` varchar(45) DEFAULT NULL,
   `is_read` tinyint(1) NOT NULL DEFAULT 0,
@@ -133,8 +141,7 @@ CREATE TABLE `contact_messages` (
 -- ---------------------------------------------------------------------
 -- 6. Table structure for `audit_logs` (Security & Activity Logs)
 -- ---------------------------------------------------------------------
-DROP TABLE IF EXISTS `audit_logs`;
-CREATE TABLE `audit_logs` (
+CREATE TABLE IF NOT EXISTS `audit_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_email` varchar(150) NOT NULL,
   `ip_address` varchar(45) NOT NULL,
@@ -147,8 +154,8 @@ CREATE TABLE `audit_logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Initial system audit log
-INSERT INTO `audit_logs` (`user_email`, `ip_address`, `action`, `details`) VALUES
-('system', '127.0.0.1', 'DATABASE_INITIALIZATION', 'CCSA Database schema initialized successfully with default records.');
+INSERT IGNORE INTO `audit_logs` (`user_email`, `ip_address`, `action`, `details`) VALUES
+('system', '127.0.0.1', 'DATABASE_INITIALIZATION', 'CCSA Database schema initialized successfully with modern tables and authentic faculty records.');
 
 SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;
