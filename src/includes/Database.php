@@ -33,12 +33,17 @@ class Database
             ];
 
             $attempts = [
-                ['host' => DB_HOST, 'name' => DB_NAME, 'user' => DB_USER, 'pass' => DB_PASS],
                 ['host' => 'localhost', 'name' => 'u332237642_ccs', 'user' => 'u332237642_ccs', 'pass' => '786004@Ccs'],
-                ['host' => 'localhost', 'name' => 'u332237642_ccsa', 'user' => 'u332237642_ccsa', 'pass' => '786004@Ccs']
+                ['host' => 'localhost', 'name' => 'u332237642_ccs', 'user' => 'u332237642_ccs', 'pass' => '786004@ccs'],
+                ['host' => 'localhost', 'name' => 'u332237642_ccs', 'user' => 'u332237642_ccsa', 'pass' => '786004@Ccs'],
+                ['host' => 'localhost', 'name' => 'u332237642_ccs', 'user' => 'u332237642_ccsa', 'pass' => '786004@ccs'],
+                ['host' => 'localhost', 'name' => 'u332237642_ccsa', 'user' => 'u332237642_ccsa', 'pass' => '786004@Ccs'],
+                ['host' => 'localhost', 'name' => 'u332237642_ccsa', 'user' => 'u332237642_ccs', 'pass' => '786004@Ccs'],
+                ['host' => DB_HOST, 'name' => DB_NAME, 'user' => DB_USER, 'pass' => DB_PASS]
             ];
 
             $lastError = null;
+            $allErrors = [];
             foreach ($attempts as $conn) {
                 try {
                     $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s', $conn['host'], $conn['name'], DB_CHARSET);
@@ -46,12 +51,13 @@ class Database
                     break;
                 } catch (\PDOException $e) {
                     $lastError = $e->getMessage();
+                    $allErrors[] = "User '{$conn['user']}' on '{$conn['name']}': {$e->getMessage()}";
                 }
             }
 
             if (self::$instance === null) {
                 error_log('Database connection error: ' . $lastError);
-                throw new \RuntimeException('Database connection failed: ' . $lastError);
+                throw new \RuntimeException('Database connection failed: ' . $lastError . ' | Details: ' . implode('; ', $allErrors));
             }
         }
 

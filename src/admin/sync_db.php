@@ -14,8 +14,8 @@ Session::start();
 
 // Authentication: Super admin or direct verification key
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-$authKey = $_GET['key'] ?? '';
-$isValidKey = ($authKey === '786004@Ccs' || $authKey === 'DU_CCSA_SECURE_API_KEY_2026');
+$authKey = $_GET['key'] ?? $_POST['key'] ?? '';
+$isValidKey = ($authKey === '786004@Ccs' || $authKey === '786004@ccs' || $authKey === 'DU_CCSA_SECURE_API_KEY_2026');
 
 if (!$isLoggedIn && !$isValidKey) {
     ?>
@@ -33,21 +33,48 @@ if (!$isLoggedIn && !$isValidKey) {
                 ⚡
             </div>
             <h2 class="text-xl font-bold text-white mb-2">CCSA Database Sync Tool</h2>
-            <p class="text-xs text-slate-400 mb-6">Please log in to your admin panel first, or enter the database access key below to synchronize local cache with MySQL.</p>
+            <p class="text-xs text-slate-400 mb-6">Please enter the master access key to synchronize server cache with MySQL.</p>
             <form method="GET" action="sync_db.php" class="space-y-4">
-                <input type="password" name="key" placeholder="Enter Database Access Key" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <input type="password" name="key" placeholder="Enter Master Access Key" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl transition shadow-lg cursor-pointer">
                     Authenticate &amp; Run Sync
                 </button>
             </form>
             <div class="mt-6 pt-4 border-t border-slate-700/60">
-                <a href="index.php" class="text-xs text-indigo-400 hover:underline">← Back to Admin Login</a>
+                <a href="index.php" class="text-xs text-indigo-400 hover:underline">← Back to Admin Panel</a>
             </div>
         </div>
     </body>
     </html>
     <?php
     exit;
+}
+
+// Handle Custom Credential Submission
+$customNotice = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_db_creds') {
+    $customUser = trim((string)($_POST['db_user'] ?? ''));
+    $customPass = (string)($_POST['db_pass'] ?? '');
+    $customDb   = trim((string)($_POST['db_name'] ?? ''));
+    $customHost = trim((string)($_POST['db_host'] ?? 'localhost'));
+
+    try {
+        $testDsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', $customHost, $customDb);
+        $testPdo = new PDO($testDsn, $customUser, $customPass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        
+        // Write to config.php
+        $configFile = __DIR__ . '/../includes/config.php';
+        if (file_exists($configFile) && is_writable($configFile)) {
+            $configContent = file_get_contents($configFile);
+            $configContent = preg_replace("/define\('DB_NAME',\s*.*?\);/", "define('DB_NAME', '$customDb');", $configContent);
+            $configContent = preg_replace("/define\('DB_USER',\s*.*?\);/", "define('DB_USER', '$customUser');", $configContent);
+            $configContent = preg_replace("/define\('DB_PASS',\s*.*?\);/", "define('DB_PASS', '" . addslashes($customPass) . "');", $configContent);
+            file_put_contents($configFile, $configContent);
+        }
+        $customNotice = "Credentials verified & saved successfully! Connected to $customDb.";
+    } catch (Throwable $e) {
+        $customNotice = "Test Connection Failed: " . $e->getMessage();
+    }
 }
 
 $results = [
@@ -253,7 +280,7 @@ try {
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <div class="flex items-center gap-2 mb-1">
-                    <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="w-3 h-3 rounded-full <?php echo $results['db_connected'] ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'; ?>"></span>
                     <h1 class="text-xl sm:text-2xl font-black tracking-wide text-white">Database Auto-Sync Engine</h1>
                 </div>
                 <p class="text-xs text-slate-400">Centre for Computer Science and Applications, Dibrugarh University</p>
@@ -263,6 +290,12 @@ try {
             </a>
         </div>
 
+        <?php if (!empty($customNotice)): ?>
+        <div class="p-4 rounded-2xl text-xs font-bold <?php echo strpos($customNotice, 'verified') !== false ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-red-500/20 text-red-300 border border-red-500/30'; ?>">
+            <?php echo htmlspecialchars($customNotice); ?>
+        </div>
+        <?php endif; ?>
+
         <!-- Connection Card -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
             <h2 class="text-sm font-bold uppercase tracking-wider text-indigo-400">Database Connection Status</h2>
@@ -271,12 +304,12 @@ try {
                     <p class="text-[11px] text-slate-500 uppercase font-semibold">MySQL Status</p>
                     <p class="text-base font-bold <?php echo $results['db_connected'] ? 'text-emerald-400' : 'text-red-400'; ?> flex items-center gap-1.5 mt-1">
                         <i class="fas <?php echo $results['db_connected'] ? 'fa-check-circle' : 'fa-times-circle'; ?>"></i>
-                        <span><?php echo $results['db_connected'] ? 'Connected' : 'Failed'; ?></span>
+                        <span><?php echo $results['db_connected'] ? 'Connected' : 'Access Denied / Failed'; ?></span>
                     </p>
                 </div>
                 <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
                     <p class="text-[11px] text-slate-500 uppercase font-semibold">Active Database</p>
-                    <p class="text-base font-bold text-white mt-1"><?php echo htmlspecialchars($results['db_name'] ?: 'None'); ?></p>
+                    <p class="text-base font-bold text-white mt-1"><?php echo htmlspecialchars($results['db_name'] ?: 'u332237642_ccs'); ?></p>
                 </div>
                 <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
                     <p class="text-[11px] text-slate-500 uppercase font-semibold">Total Notices in MySQL</p>
@@ -285,15 +318,44 @@ try {
             </div>
 
             <?php if (!empty($results['errors'])): ?>
-            <div class="bg-red-500/10 border border-red-500/30 text-red-300 p-4 rounded-2xl text-xs space-y-1">
-                <p class="font-bold">Errors encountered:</p>
+            <div class="bg-red-500/10 border border-red-500/30 text-red-300 p-4 rounded-2xl text-xs space-y-2">
+                <p class="font-bold text-red-200">Connection Details / Diagnostics:</p>
                 <?php foreach ($results['errors'] as $err): ?>
-                    <p>• <?php echo htmlspecialchars($err); ?></p>
+                    <p class="font-mono text-[11px] break-all leading-relaxed">⚠️ <?php echo htmlspecialchars($err); ?></p>
                 <?php endforeach; ?>
+            </div>
+
+            <!-- Manual Credential Fix Form -->
+            <div class="bg-slate-950/90 border border-indigo-500/30 p-5 rounded-2xl space-y-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-2">
+                    <i class="fas fa-wrench"></i> Quick Hostinger MySQL Credentials Fix
+                </h3>
+                <p class="text-xs text-slate-400">If your Hostinger MySQL user password differs, enter the database user & password below to connect and sync immediately:</p>
+                <form method="POST" action="sync_db.php?key=<?php echo urlencode($authKey); ?>" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input type="hidden" name="action" value="save_db_creds">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Database Name</label>
+                        <input type="text" name="db_name" value="u332237642_ccs" required class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Database User</label>
+                        <input type="text" name="db_user" value="u332237642_ccs" required class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white text-xs font-mono">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Database Password</label>
+                        <input type="text" name="db_pass" placeholder="Enter Hostinger Database Password" required class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white text-xs font-mono">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition shadow cursor-pointer">
+                            <i class="fas fa-plug mr-1"></i> Test &amp; Connect Live Database
+                        </button>
+                    </div>
+                </form>
             </div>
             <?php endif; ?>
         </div>
 
+        <?php if ($results['db_connected']): ?>
         <!-- Synced Administrator Accounts Table -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
             <div class="flex justify-between items-center">
@@ -342,6 +404,7 @@ try {
                 </table>
             </div>
         </div>
+        <?php endif; ?>
 
         <!-- Action Card -->
         <div class="bg-gradient-to-r from-indigo-900/40 via-slate-900 to-blue-900/40 border border-indigo-500/30 rounded-3xl p-6 text-center space-y-3">
@@ -350,7 +413,7 @@ try {
                 Any future accounts or notices added anywhere on the portal automatically sync directly into your MySQL database on every action.
             </p>
             <div class="pt-2 flex justify-center gap-3">
-                <a href="sync_db.php?key=786004@Ccs" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow cursor-pointer">
+                <a href="sync_db.php?key=<?php echo urlencode($authKey); ?>" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow cursor-pointer">
                     <i class="fas fa-sync-alt mr-1"></i> Re-Sync Database Now
                 </a>
                 <a href="index.php" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition border border-slate-700">
