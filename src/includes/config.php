@@ -6,11 +6,18 @@ declare(strict_types=1);
  * Centre for Computer Science and Applications, Dibrugarh University
  */
 
-// Database Connection
+// Database Connection Auto-Detection (Hostinger Live vs Local Dev)
+$isLiveHostinger = (
+    (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'ccsdu.in') !== false) ||
+    (isset($_SERVER['SERVER_NAME']) && strpos($_SERVER['SERVER_NAME'], 'ccsdu.in') !== false) ||
+    (isset($_SERVER['DOCUMENT_ROOT']) && strpos($_SERVER['DOCUMENT_ROOT'], 'u332237642') !== false) ||
+    is_dir('/home/u332237642')
+);
+
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'ccsa_db');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: ($isLiveHostinger ? 'u332237642_ccsa' : 'ccsa_db'));
+define('DB_USER', getenv('DB_USER') ?: ($isLiveHostinger ? 'u332237642_ccsa' : 'root'));
+define('DB_PASS', getenv('DB_PASS') ?: ($isLiveHostinger ? '786004@Ccs' : ''));
 define('DB_CHARSET', 'utf8mb4');
 
 // Asset Release Version (for efficient browser caching)
