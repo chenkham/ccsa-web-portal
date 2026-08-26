@@ -48,7 +48,11 @@ $extraScripts = $extraScripts ?? '';
                     <div class="bg-[#121b33] border border-slate-700/70 rounded-2xl p-4 weather-widget shadow-lg">
                         <div class="flex items-center justify-between pb-3 border-b border-slate-800">
                             <div class="flex items-center gap-2">
-                                <span id="current-icon" class="text-2xl w-7 text-center">☀️</span>
+                                <?php
+                                $curH = (int)date('G');
+                                $initIcon = ($curH >= 6 && $curH < 18) ? '🌤️' : '🌙';
+                                ?>
+                                <span id="current-icon" class="text-2xl w-7 text-center"><?php echo $initIcon; ?></span>
                                 <div>
                                     <span id="current-temp" class="text-xl font-extrabold text-white font-mono">--°C</span>
                                     <p class="text-[10px] text-slate-400 font-medium">Dibrugarh, Assam</p>
