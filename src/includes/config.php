@@ -15,8 +15,8 @@ $isLiveHostinger = (
 );
 
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: ($isLiveHostinger ? 'u332237642_ccsa' : 'ccsa_db'));
-define('DB_USER', getenv('DB_USER') ?: ($isLiveHostinger ? 'u332237642_ccsa' : 'root'));
+define('DB_NAME', getenv('DB_NAME') ?: ($isLiveHostinger ? 'u332237642_ccs' : 'ccsa_db'));
+define('DB_USER', getenv('DB_USER') ?: ($isLiveHostinger ? 'u332237642_ccs' : 'root'));
 define('DB_PASS', getenv('DB_PASS') ?: ($isLiveHostinger ? '786004@Ccs' : ''));
 define('DB_CHARSET', 'utf8mb4');
 

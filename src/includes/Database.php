@@ -26,19 +26,32 @@ class Database
     public static function getInstance(): \PDO
     {
         if (self::$instance === null) {
-            $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s', DB_HOST, DB_NAME, DB_CHARSET);
-
             $options = [
                 \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
                 \PDO::ATTR_EMULATE_PREPARES   => false,
             ];
 
-            try {
-                self::$instance = new \PDO($dsn, DB_USER, DB_PASS, $options);
-            } catch (\PDOException $e) {
-                error_log('Database connection error: ' . $e->getMessage());
-                throw new \RuntimeException('Database connection failed.');
+            $attempts = [
+                ['host' => DB_HOST, 'name' => DB_NAME, 'user' => DB_USER, 'pass' => DB_PASS],
+                ['host' => 'localhost', 'name' => 'u332237642_ccs', 'user' => 'u332237642_ccs', 'pass' => '786004@Ccs'],
+                ['host' => 'localhost', 'name' => 'u332237642_ccsa', 'user' => 'u332237642_ccsa', 'pass' => '786004@Ccs']
+            ];
+
+            $lastError = null;
+            foreach ($attempts as $conn) {
+                try {
+                    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s', $conn['host'], $conn['name'], DB_CHARSET);
+                    self::$instance = new \PDO($dsn, $conn['user'], $conn['pass'], $options);
+                    break;
+                } catch (\PDOException $e) {
+                    $lastError = $e->getMessage();
+                }
+            }
+
+            if (self::$instance === null) {
+                error_log('Database connection error: ' . $lastError);
+                throw new \RuntimeException('Database connection failed: ' . $lastError);
             }
         }
 
