@@ -166,25 +166,18 @@ if (!in_array($currentTab, $allowedTabs, true)) {
             </div>
 
             <div class="flex items-center gap-3">
-                <!-- Live Database Connection Status Badge & Sync Trigger -->
-                <div class="flex items-center gap-2">
-                    <?php if (isset($pdo) && $pdo !== null): ?>
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" title="Connected directly to Hostinger MySQL Database">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span class="hidden md:inline">MySQL</span> Connected
-                        </span>
-                    <?php else: ?>
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30" title="Running in Local Cache Mirror">
-                            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                            <span class="hidden md:inline">Local</span> Cache
-                        </span>
-                    <?php endif; ?>
-
-                    <a href="sync_db.php?key=786004@Ccs" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-xl transition flex items-center gap-1 shadow border border-indigo-400/30 cursor-pointer" title="Auto-Sync all server cache accounts & notices into MySQL">
-                        <i class="fas fa-sync-alt text-[10px]"></i>
-                        <span class="hidden sm:inline">Sync DB</span>
-                    </a>
-                </div>
+                <!-- Live Database Connection Status Badge -->
+                <?php if (isset($pdo) && $pdo !== null): ?>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" title="Connected directly to Hostinger MySQL Database">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="hidden md:inline">MySQL</span> Connected
+                    </span>
+                <?php else: ?>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30" title="Running in Local Cache Mirror">
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                        <span class="hidden md:inline">Local</span> Cache
+                    </span>
+                <?php endif; ?>
 
                 <div class="text-right hidden sm:block">
                     <p class="text-xs font-bold text-white"><?php echo $username; ?></p>
