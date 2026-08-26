@@ -118,7 +118,7 @@ include 'templates/header.php';
             <!-- 1. Dr. Utpala Borgohain -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="364">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/UtpolaMam.png" alt="Dr. Utpala Borgohain" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/sj2Z0O1slmkpyxCR7FdzBDs5U9GjeWjKuM7IBssn.png" alt="Dr. Utpala Borgohain" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_364.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Utpala Borgohain</h4>
@@ -129,7 +129,7 @@ include 'templates/header.php';
             <!-- 2. Dr. Rizwan Rehman -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="365">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/Rizwan_SIr.png" alt="Dr. Rizwan Rehman" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/WtWED8hVWYdBI5MFpYjwrCUdgVzXx7pstQBrPyxE.png" alt="Dr. Rizwan Rehman" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_365.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Rizwan Rehman</h4>
@@ -140,7 +140,7 @@ include 'templates/header.php';
             <!-- 3. Dr. Toralima Bora -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="398">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/ToraliMam.png" alt="Dr. Toralima Bora" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/Wyh0od9HyPZ1inzyv8dFS8UHCmwPCHzVj40viQZd.png" alt="Dr. Toralima Bora" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_398.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Toralima Bora</h4>
@@ -151,7 +151,7 @@ include 'templates/header.php';
             <!-- 4. Dr. Ujjal Saikia -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="397">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/UjjalSir.png" alt="Dr. Ujjal Saikia" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/9inBJ2Udzt0YCp9DY92xcXFdHL7PLeQ6WJLY2QKg.png" alt="Dr. Ujjal Saikia" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_397.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Ujjal Saikia</h4>
@@ -162,7 +162,7 @@ include 'templates/header.php';
             <!-- 5. Ms. Kimasha Borah -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="396">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/KimashaMam.png" alt="Ms. Kimasha Borah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/U4mquF8hTiPkfIGsay0ygDE2FwcyxhEkKePf3mAB.png" alt="Ms. Kimasha Borah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_396.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Ms. Kimasha Borah</h4>
@@ -173,7 +173,7 @@ include 'templates/header.php';
             <!-- 6. Dr. Pranjal Kumar Bora -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="393">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/PranjalSir.png" alt="Dr. Pranjal Kumar Bora" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/vVoEEIQjUFnC1MZQYEUTrtcwSg37cX7WYwKQvrbE.png" alt="Dr. Pranjal Kumar Bora" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_393.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Pranjal Kumar Bora</h4>
@@ -184,7 +184,7 @@ include 'templates/header.php';
             <!-- 7. Mr. Ankumon Sarmah -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="394">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/AnkumonSir.png" alt="Mr. Ankumon Sarmah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/6TNcXOg6UuHghb0NCpeWYffwugk6Px8N83QiHtHp.png" alt="Mr. Ankumon Sarmah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_394.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Mr. Ankumon Sarmah</h4>
@@ -195,7 +195,7 @@ include 'templates/header.php';
             <!-- 8. Ms. Kankana Dutta -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="395">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/KanKanMam.png" alt="Ms. Kankana Dutta" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/8kleNUe0ajfrxoY0MB4v1WSjHrtFApiwJfe1h0E1.png" alt="Ms. Kankana Dutta" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_395.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Ms. Kankana Dutta</h4>
@@ -206,7 +206,7 @@ include 'templates/header.php';
             <!-- 9. Dr. Sumpi Saikia -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="399">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/SumpiMam.png" alt="Dr. Sumpi Saikia" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/1quSjPrHSlfJG6WnTaPC8fF3ZBI7SwKYEeaA3syd.png" alt="Dr. Sumpi Saikia" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_399.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Dr. Sumpi Saikia</h4>
@@ -217,7 +217,7 @@ include 'templates/header.php';
             <!-- 10. Ms. Pinakshi Konwar -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="4626">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/PinakshiMam.png" alt="Ms. Pinakshi Konwar" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
+                    <img src="https://dibru-files.sgp1.cdn.digitaloceanspaces.com/staff/HGSPT0LLsriLLvcucNHxfQuhzWk5haZJyhCoGeTq.png" alt="Ms. Pinakshi Konwar" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/updated_4626.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Ms. Pinakshi Konwar</h4>
