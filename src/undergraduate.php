@@ -270,11 +270,11 @@ include 'templates/header.php';
                                 </tr>
                                 <tr class="hover:bg-slate-50 bg-amber-50/40">
                                     <td class="px-4 py-2.5 font-semibold text-slate-800">7<sup>th</sup> Semester</td>
-                                    <td class="px-4 py-2.5 font-bold text-amber-700 text-right">Coming Soon</td>
+                                    <td class="px-4 py-2.5 font-bold text-amber-700 text-right">To be announced</td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 bg-amber-50/40">
                                     <td class="px-4 py-2.5 font-semibold text-slate-800">8<sup>th</sup> Semester</td>
-                                    <td class="px-4 py-2.5 font-bold text-amber-700 text-right">Coming Soon</td>
+                                    <td class="px-4 py-2.5 font-bold text-amber-700 text-right">To be announced</td>
                                 </tr>
                             </tbody>
                         </table>
