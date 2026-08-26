@@ -30,73 +30,10 @@ if (empty($csrfToken) || (!SecurityValidator::validateCSRFToken($csrfToken) && !
     exit;
 }
 
-/**
- * Storage Helpers (MySQL Primary, local cache fallback for offline testing)
- */
-function fetchAdminUser(string $email, ?PDO $pdo): ?array {
-    if ($pdo !== null) {
-        $stmt = $pdo->prepare('SELECT id, name, email, role, status FROM admin_users WHERE email = ? LIMIT 1');
-        $stmt->execute([$email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
-    }
-    if (strcasecmp($email, 'ccsduoffice@gmail.com') === 0) {
-        return ['id' => 1, 'name' => 'CCSA Super Administrator', 'email' => 'ccsduoffice@gmail.com', 'role' => 'super_admin', 'status' => 'active'];
-    }
-    return null;
-}
-
-function storeOtpRecord(string $email, string $otpHash, string $purpose, ?PDO $pdo): bool {
-    if ($pdo !== null) {
-        $del = $pdo->prepare("DELETE FROM admin_otps WHERE email = ? AND purpose = ?");
-        $del->execute([$email, $purpose]);
-        $ins = $pdo->prepare("INSERT INTO admin_otps (email, otp_hash, purpose, attempts, expires_at, created_at) 
-            VALUES (?, ?, ?, 0, DATE_ADD(NOW(), INTERVAL 10 MINUTE), NOW())");
-        return $ins->execute([$email, $otpHash, $purpose]);
-    }
-    $cacheDir = __DIR__ . '/../cache';
-    if (!is_dir($cacheDir)) @mkdir($cacheDir, 0755, true);
-    $file = $cacheDir . '/local_otps.json';
-    $otps = file_exists($file) ? (json_decode((string)file_get_contents($file), true) ?: []) : [];
-    $otps[$email . '_' . $purpose] = [
-        'id' => time(),
-        'email' => $email,
-        'otp_hash' => $otpHash,
-        'purpose' => $purpose,
-        'attempts' => 0,
-        'expires_at' => time() + 600,
-        'created_at' => time()
-    ];
-    file_put_contents($file, json_encode($otps, JSON_PRETTY_PRINT));
-    return true;
-}
-
-function fetchOtpRecord(string $email, string $purpose, ?PDO $pdo): ?array {
-    if ($pdo !== null) {
-        $stmt = $pdo->prepare("SELECT id, otp_hash, attempts, expires_at FROM admin_otps 
-            WHERE email = ? AND purpose = ? AND expires_at > NOW() ORDER BY id DESC LIMIT 1");
-        $stmt->execute([$email, $purpose]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
-    }
-    $file = __DIR__ . '/../cache/local_otps.json';
-    if (!file_exists($file)) return null;
-    $otps = json_decode((string)file_get_contents($file), true) ?: [];
-    $row = $otps[$email . '_' . $purpose] ?? null;
-    if (!$row || ($row['expires_at'] ?? 0) < time()) return null;
-    return $row;
-}
-
-function removeOtpRecord(string $email, string $purpose, ?PDO $pdo): void {
-    if ($pdo !== null) {
-        $del = $pdo->prepare("DELETE FROM admin_otps WHERE email = ? AND purpose = ?");
-        $del->execute([$email, $purpose]);
-    } else {
-        $file = __DIR__ . '/../cache/local_otps.json';
-        if (file_exists($file)) {
-            $otps = json_decode((string)file_get_contents($file), true) ?: [];
-            unset($otps[$email . '_' . $purpose]);
-            file_put_contents($file, json_encode($otps, JSON_PRETTY_PRINT));
-        }
-    }
+if (!isset($pdo) || $pdo === null) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => 'Database connection unavailable.']);
+    exit;
 }
 
 // -------------------------------------------------------------
@@ -120,7 +57,9 @@ if ($action === 'send_login_otp') {
     }
 
     try {
-        $user = fetchAdminUser($email, $pdo);
+        $stmt = $pdo->prepare('SELECT id, name, email, status FROM admin_users WHERE email = ? LIMIT 1');
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user) {
             Security::recordFailedAttempt($rateKey, 300);
@@ -138,15 +77,21 @@ if ($action === 'send_login_otp') {
             exit;
         }
 
+        // Clean up expired or older active login OTPs for this email
+        $del = $pdo->prepare("DELETE FROM admin_otps WHERE email = ? AND purpose = 'login'");
+        $del->execute([$email]);
+
         // Generate 6-digit OTP code & hash
         $otpCode = Security::generateOtp();
         $otpHash = Security::hashOtp($otpCode);
 
         // Store OTP with 10-minute expiry
-        storeOtpRecord($email, $otpHash, 'login', $pdo);
+        $ins = $pdo->prepare("INSERT INTO admin_otps (email, otp_hash, purpose, attempts, expires_at, created_at) 
+            VALUES (?, ?, 'login', 0, DATE_ADD(NOW(), INTERVAL 10 MINUTE), NOW())");
+        $ins->execute([$email, $otpHash]);
 
         // Send OTP Email via Hostinger Mailer / SMTP
-        Mailer::sendOtpEmail($email, $otpCode, 'login', $user['name'] ?? 'Administrator');
+        $mailResult = Mailer::sendOtpEmail($email, $otpCode, 'login', $user['name'] ?? 'Administrator');
 
         Security::logAudit($pdo, 'OTP_SENT_LOGIN', "Login OTP dispatched to $email", $email);
 
@@ -185,7 +130,10 @@ if ($action === 'verify_login_otp') {
     }
 
     try {
-        $otpRow = fetchOtpRecord($email, 'login', $pdo);
+        $stmt = $pdo->prepare("SELECT id, otp_hash, attempts, expires_at FROM admin_otps 
+            WHERE email = ? AND purpose = 'login' AND expires_at > NOW() ORDER BY id DESC LIMIT 1");
+        $stmt->execute([$email]);
+        $otpRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$otpRow) {
             Security::recordFailedAttempt($verifyRateKey, 300);
@@ -195,15 +143,23 @@ if ($action === 'verify_login_otp') {
             exit;
         }
 
-        $attempts = (int)($otpRow['attempts'] ?? 0) + 1;
+        $otpId = (int)$otpRow['id'];
+        $attempts = (int)$otpRow['attempts'] + 1;
+
         if ($attempts > 5) {
-            removeOtpRecord($email, 'login', $pdo);
+            $del = $pdo->prepare("DELETE FROM admin_otps WHERE id = ?");
+            $del->execute([$otpId]);
             http_response_code(403);
             echo json_encode(['success' => false, 'error' => 'Maximum verification attempts exceeded. Please request a fresh code.']);
             exit;
         }
 
-        if (!Security::verifyOtp($otp, (string)$otpRow['otp_hash'])) {
+        // Increment attempts counter
+        $updAttempts = $pdo->prepare("UPDATE admin_otps SET attempts = ? WHERE id = ?");
+        $updAttempts->execute([$attempts, $otpId]);
+
+        // Verify the code
+        if (!Security::verifyOtp($otp, $otpRow['otp_hash'])) {
             Security::recordFailedAttempt($verifyRateKey, 300);
             Security::logAudit($pdo, 'OTP_VERIFICATION_FAILED', "Incorrect OTP entered for $email (Attempt $attempts/5)", $email);
             http_response_code(400);
@@ -212,10 +168,13 @@ if ($action === 'verify_login_otp') {
         }
 
         // Valid OTP! Delete OTP single-use record
-        removeOtpRecord($email, 'login', $pdo);
+        $del = $pdo->prepare("DELETE FROM admin_otps WHERE id = ?");
+        $del->execute([$otpId]);
 
         // Fetch User and Start Authenticated Session
-        $user = fetchAdminUser($email, $pdo);
+        $userStmt = $pdo->prepare("SELECT id, name, email, role, status FROM admin_users WHERE email = ? LIMIT 1");
+        $userStmt->execute([$email]);
+        $user = $userStmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user || ($user['status'] ?? 'active') !== 'active') {
             http_response_code(403);
@@ -236,10 +195,8 @@ if ($action === 'verify_login_otp') {
         $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
         $_SESSION['last_activity'] = time();
 
-        if ($pdo !== null) {
-            $updLogin = $pdo->prepare("UPDATE admin_users SET last_login = NOW() WHERE id = ?");
-            $updLogin->execute([$user['id']]);
-        }
+        $updLogin = $pdo->prepare("UPDATE admin_users SET last_login = NOW() WHERE id = ?");
+        $updLogin->execute([$user['id']]);
 
         Security::logAudit($pdo, 'LOGIN_SUCCESS_OTP', "Administrator signed in securely via Email OTP verification.", $user['email']);
 
@@ -277,7 +234,9 @@ if ($action === 'send_reset_otp') {
     }
 
     try {
-        $user = fetchAdminUser($email, $pdo);
+        $stmt = $pdo->prepare('SELECT id, name, email, status FROM admin_users WHERE email = ? LIMIT 1');
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user) {
             http_response_code(404);
@@ -285,10 +244,16 @@ if ($action === 'send_reset_otp') {
             exit;
         }
 
+        // Clean up prior reset OTPs
+        $del = $pdo->prepare("DELETE FROM admin_otps WHERE email = ? AND purpose = 'password_reset'");
+        $del->execute([$email]);
+
         $otpCode = Security::generateOtp();
         $otpHash = Security::hashOtp($otpCode);
 
-        storeOtpRecord($email, $otpHash, 'password_reset', $pdo);
+        $ins = $pdo->prepare("INSERT INTO admin_otps (email, otp_hash, purpose, attempts, expires_at, created_at) 
+            VALUES (?, ?, 'password_reset', 0, DATE_ADD(NOW(), INTERVAL 10 MINUTE), NOW())");
+        $ins->execute([$email, $otpHash]);
 
         Mailer::sendOtpEmail($email, $otpCode, 'password_reset', $user['name'] ?? 'Administrator');
 
@@ -336,7 +301,10 @@ if ($action === 'verify_reset_password') {
     }
 
     try {
-        $otpRow = fetchOtpRecord($email, 'password_reset', $pdo);
+        $stmt = $pdo->prepare("SELECT id, otp_hash, attempts FROM admin_otps 
+            WHERE email = ? AND purpose = 'password_reset' AND expires_at > NOW() ORDER BY id DESC LIMIT 1");
+        $stmt->execute([$email]);
+        $otpRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$otpRow) {
             http_response_code(400);
@@ -344,21 +312,31 @@ if ($action === 'verify_reset_password') {
             exit;
         }
 
-        if (!Security::verifyOtp($otp, (string)$otpRow['otp_hash'])) {
+        $otpId = (int)$otpRow['id'];
+        $attempts = (int)$otpRow['attempts'] + 1;
+
+        if ($attempts > 5) {
+            $pdo->prepare("DELETE FROM admin_otps WHERE id = ?")->execute([$otpId]);
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Maximum attempts exceeded. Please request a fresh reset code.']);
+            exit;
+        }
+
+        $pdo->prepare("UPDATE admin_otps SET attempts = ? WHERE id = ?")->execute([$attempts, $otpId]);
+
+        if (!Security::verifyOtp($otp, $otpRow['otp_hash'])) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => "Incorrect verification code."]);
+            echo json_encode(['success' => false, 'error' => "Incorrect verification code. ($attempts/5 attempts used)"]);
             exit;
         }
 
         // Code is verified! Delete OTP row
-        removeOtpRecord($email, 'password_reset', $pdo);
+        $pdo->prepare("DELETE FROM admin_otps WHERE id = ?")->execute([$otpId]);
 
         // Update password hash in admin_users
-        if ($pdo !== null) {
-            $newHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
-            $upd = $pdo->prepare("UPDATE admin_users SET password = ?, updatedAt = NOW() WHERE email = ?");
-            $upd->execute([$newHash, $email]);
-        }
+        $newHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
+        $upd = $pdo->prepare("UPDATE admin_users SET password = ?, updatedAt = NOW() WHERE email = ?");
+        $upd->execute([$newHash, $email]);
 
         Security::logAudit($pdo, 'PASSWORD_RESET_SUCCESS', "Password successfully reset via verified Email OTP.", $email);
 
