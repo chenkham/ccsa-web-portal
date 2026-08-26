@@ -115,18 +115,7 @@ include 'templates/header.php';
 
         <!-- Faculty Selector Grid with Authentic Photos -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-12">
-            <!-- 1. Prof. Paramananda Deka (Chairperson) -->
-            <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="292">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/Chairperson_Real.png" alt="Prof. Paramananda Deka" class="w-full h-full object-cover object-center block" loading="lazy" decoding="async" onerror="this.src='faculty/Chairperson.jpg'">
-                </div>
-                <div class="min-w-0 flex-1 text-left">
-                    <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Prof. Paramananda Deka</h4>
-                    <p class="text-[11px] text-[#fbbf24] font-bold truncate">Chairperson &amp; Professor</p>
-                </div>
-            </div>
-
-            <!-- 2. Dr. Utpala Borgohain -->
+            <!-- 1. Dr. Utpala Borgohain -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="364">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/UtpolaMam.png" alt="Dr. Utpala Borgohain" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -137,7 +126,7 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 3. Dr. Rizwan Rehman -->
+            <!-- 2. Dr. Rizwan Rehman -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="365">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/Rizwan_SIr.png" alt="Dr. Rizwan Rehman" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -148,7 +137,7 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 4. Dr. Toralima Bora -->
+            <!-- 3. Dr. Toralima Bora -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="398">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/ToraliMam.png" alt="Dr. Toralima Bora" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -159,7 +148,7 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 5. Dr. Ujjal Saikia -->
+            <!-- 4. Dr. Ujjal Saikia -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="397">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/UjjalSir.png" alt="Dr. Ujjal Saikia" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -170,7 +159,7 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 6. Ms. Kimasha Borah -->
+            <!-- 5. Ms. Kimasha Borah -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="396">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/KimashaMam.png" alt="Ms. Kimasha Borah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -181,7 +170,7 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 7. Dr. Pranjal Kumar Bora -->
+            <!-- 6. Dr. Pranjal Kumar Bora -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="393">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/PranjalSir.png" alt="Dr. Pranjal Kumar Bora" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -192,7 +181,7 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 8. Mr. Ankumon Sarmah -->
+            <!-- 7. Mr. Ankumon Sarmah -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="394">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/AnkumonSir.png" alt="Mr. Ankumon Sarmah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -203,7 +192,7 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 9. Ms. Kankana Dutta -->
+            <!-- 8. Ms. Kankana Dutta -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="395">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/KanKanMam.png" alt="Ms. Kankana Dutta" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -214,7 +203,7 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 10. Dr. Sumpi Saikia -->
+            <!-- 9. Dr. Sumpi Saikia -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="399">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/SumpiMam.png" alt="Dr. Sumpi Saikia" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
@@ -225,24 +214,13 @@ include 'templates/header.php';
                 </div>
             </div>
 
-            <!-- 11. Ms. Pinakshi Konwar -->
+            <!-- 10. Ms. Pinakshi Konwar -->
             <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="4626">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
                     <img src="faculty/PinakshiMam.png" alt="Ms. Pinakshi Konwar" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Ms. Pinakshi Konwar</h4>
-                    <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
-                </div>
-            </div>
-
-            <!-- 12. Ms. Gunajan Borah -->
-            <div class="faculty-tab group cursor-pointer p-3.5 bg-white/95 hover:bg-white rounded-2xl shadow-sm hover:shadow-lg border border-slate-200/90 transition-all duration-300 flex items-center gap-3" data-staff-id="393">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full overflow-hidden border-2 border-slate-200 group-hover:border-[#fbbf24] shadow-sm bg-slate-100">
-                    <img src="faculty/Gunajn Sir.png" alt="Ms. Gunajan Borah" class="w-full h-full object-cover object-top block" loading="lazy" decoding="async" onerror="this.src='faculty/du.png'">
-                </div>
-                <div class="min-w-0 flex-1 text-left">
-                    <h4 class="font-bold text-slate-800 text-xs sm:text-sm group-hover:text-[#1a365d] transition-colors truncate">Ms. Gunajan Borah</h4>
                     <p class="text-[11px] text-slate-500 font-medium truncate">Assistant Professor</p>
                 </div>
             </div>
