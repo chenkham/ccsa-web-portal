@@ -560,38 +560,15 @@ include 'templates/header.php';
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                <!-- Chairperson Portrait Column with Full Elegant Portrait Card -->
-                <div class="lg:col-span-5 flex justify-center items-center relative pt-2 lg:pt-0 order-1 lg:order-2 mb-4 lg:mb-0">
-                    <!-- Ambient subtle backlight halo behind portrait -->
-                    <div class="absolute w-64 h-80 sm:w-80 sm:h-96 lg:w-96 lg:h-[440px] bg-gradient-to-tr from-[#fbbf24]/30 via-blue-500/20 to-indigo-600/30 rounded-3xl blur-2xl -z-10"></div>
-
-                    <!-- Prestigious Full Portrait Card with Gold Rim & Glassmorphism -->
-                    <div class="relative w-64 sm:w-80 lg:w-88 rounded-3xl p-3 sm:p-3.5 bg-gradient-to-b from-[#fbbf24]/60 via-white/20 to-[#1a365d]/80 border-2 border-[#fbbf24]/70 shadow-[0_25px_50px_rgba(0,0,0,0.6),inset_0_2px_4px_rgba(255,255,255,0.3)] backdrop-blur-lg flex flex-col items-center overflow-hidden group">
-                        
-                        <div class="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-inner bg-slate-900 border border-white/20 relative">
-                            <img src="faculty/Chairperson_Real.png" 
-                                alt="Prof. Paramananda Deka - Chairperson, CCSA" 
-                                loading="lazy"
-                                decoding="async"
-                                class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                                onerror="this.src='faculty/Chairperson.jpg'">
-                            
-                            <!-- Subtle Gradient Bottom Vignette with Badge -->
-                            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent p-3 pt-8 flex items-center justify-between">
-                                <span class="bg-[#fbbf24] text-slate-900 text-[10px] sm:text-xs font-black uppercase px-2.5 py-0.5 rounded-full shadow-sm tracking-wider">
-                                    Chairperson
-                                </span>
-                                <span class="text-[10px] text-blue-200 font-semibold tracking-wide flex items-center gap-1">
-                                    <i class="fas fa-university text-[#fbbf24] text-[9px]"></i> DU CCSA
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Card Footer Strip -->
-                        <div class="w-full pt-2.5 text-center">
-                            <h4 class="text-sm sm:text-base font-bold text-white tracking-wide">Prof. Paramananda Deka</h4>
-                            <p class="text-[11px] text-[#fbbf24] font-semibold mt-0.5">Chairperson, CCSA &amp; Professor, Mathematics</p>
-                        </div>
+                <!-- Chairperson Photo Column (Clean, simple, professional) -->
+                <div class="lg:col-span-5 flex justify-center items-center order-1 lg:order-2 mb-6 lg:mb-0">
+                    <div class="w-60 sm:w-72 lg:w-80 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/30 bg-slate-900">
+                        <img src="faculty/Chairperson_Real.png" 
+                            alt="Prof. Paramananda Deka - Chairperson, CCSA" 
+                            loading="lazy"
+                            decoding="async"
+                            class="w-full h-auto object-cover block"
+                            onerror="this.src='faculty/Chairperson.jpg'">
                     </div>
                 </div>
 
