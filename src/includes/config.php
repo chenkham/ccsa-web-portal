@@ -21,7 +21,7 @@ define('DB_PASS', getenv('DB_PASS') ?: ($isLiveHostinger ? '786004@Ccs' : ''));
 define('DB_CHARSET', 'utf8mb4');
 
 // Asset Release Version (for efficient browser caching)
-define('ASSET_VERSION', '2.5.2');
+define('ASSET_VERSION', '2.5.4');
 
 // reCAPTCHA v3 Configuration
 define('RECAPTCHA_SITE_KEY', getenv('RECAPTCHA_SITE_KEY') ?: '6LeEW94sAAAAAPFa_NXd8WemwqWn-SLlNjpnN0CH');
