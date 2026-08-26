@@ -34,10 +34,15 @@ ErrorDocument 404 /404.php
     RewriteRule ^([^/]+)/?$ $1.php [L]
 </IfModule>
 
-# 3. Block Access to Hidden & Sensitive Files
-<FilesMatch "(^\.|\.(sql|env|bak|log|ini|sh|md|git))$">
-    Order allow,deny
-    Deny from all
+# 3. Block Direct Access to Sensitive & Configuration Files
+<FilesMatch "(^\.|\.(sql|json|env|bak|log|ini|sh|md|git))$">
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
 </FilesMatch>
 
 # 3. Global Security Headers
