@@ -267,15 +267,17 @@ class Security
             try {
                 $stmt = $pdo->prepare('INSERT INTO audit_logs (user_email, ip_address, action, details, user_agent, created_at) VALUES (?, ?, ?, ?, ?, NOW())');
                 $stmt->execute([$email, $ip, $action, $details, $ua]);
+                return; // Database successfully logged; no file disk pollution needed
             } catch (\Throwable $e) {
                 error_log('Audit log database error: ' . $e->getMessage());
             }
         }
 
+        // Only fall back to local file if MySQL is unavailable
         try {
             $cacheDir = __DIR__ . '/../cache';
             if (!is_dir($cacheDir)) {
-                mkdir($cacheDir, 0755, true);
+                @mkdir($cacheDir, 0755, true);
             }
             $cacheFile = $cacheDir . '/audit_logs.json';
             $logs = file_exists($cacheFile) ? (json_decode((string)file_get_contents($cacheFile), true) ?: []) : [];
@@ -288,8 +290,7 @@ class Security
                 'user_agent' => $ua,
                 'created_at' => $timeStr
             ]);
-            // Keep up to 200 recent entries in cache
-            $logs = array_slice($logs, 0, 200);
+            $logs = array_slice($logs, 0, 100);
             file_put_contents($cacheFile, json_encode($logs, JSON_PRETTY_PRINT));
         } catch (\Throwable $e) {
             error_log('Audit log cache error: ' . $e->getMessage());

@@ -104,30 +104,30 @@ if ($action === 'add_notification') {
         } catch (Throwable $e) {
             error_log('Notification DB insert failed: ' . $e->getMessage());
         }
-    }
+    } else {
+        $cacheDir = __DIR__ . '/../cache';
+        if (!is_dir($cacheDir)) {
+            @mkdir($cacheDir, 0755, true);
+        }
+        $localNoticeFile = $cacheDir . '/local_notifications.json';
+        $localNotices = file_exists($localNoticeFile) ? (json_decode((string)file_get_contents($localNoticeFile), true) ?: []) : [];
 
-    $cacheDir = __DIR__ . '/../cache';
-    if (!is_dir($cacheDir)) {
-        mkdir($cacheDir, 0755, true);
+        $newNotice = [
+            'id' => time() . rand(100, 999),
+            'title' => $title,
+            'description' => $description,
+            'is_pinned' => $is_pinned,
+            'is_new' => $show_new,
+            'new_until' => $new_until,
+            'creator_email' => $userEmail,
+            'file_path' => $file_path,
+            'file_url' => $file_url,
+            'createdAt' => date('Y-m-d H:i:s'),
+            'updatedAt' => date('Y-m-d H:i:s')
+        ];
+        array_unshift($localNotices, $newNotice);
+        file_put_contents($localNoticeFile, json_encode(array_values($localNotices), JSON_PRETTY_PRINT));
     }
-    $localNoticeFile = $cacheDir . '/local_notifications.json';
-    $localNotices = file_exists($localNoticeFile) ? (json_decode((string)file_get_contents($localNoticeFile), true) ?: []) : [];
-
-    $newNotice = [
-        'id' => time() . rand(100, 999),
-        'title' => $title,
-        'description' => $description,
-        'is_pinned' => $is_pinned,
-        'is_new' => $show_new,
-        'new_until' => $new_until,
-        'creator_email' => $userEmail,
-        'file_path' => $file_path,
-        'file_url' => $file_url,
-        'createdAt' => date('Y-m-d H:i:s'),
-        'updatedAt' => date('Y-m-d H:i:s')
-    ];
-    array_unshift($localNotices, $newNotice);
-    file_put_contents($localNoticeFile, json_encode(array_values($localNotices), JSON_PRETTY_PRINT));
 
     Security::logAudit($pdo ?? null, 'NOTICE_PUBLISHED', 'Published announcement: ' . substr($title, 0, 80), $userEmail);
 
@@ -197,28 +197,26 @@ if ($action === 'edit_notification') {
         } catch (Throwable $e) {
             error_log('Notification DB update failed: ' . $e->getMessage());
         }
-    }
-
-    $cacheFile = __DIR__ . '/../cache/local_notifications.json';
-    if (file_exists($cacheFile)) {
-        $localNotices = json_decode((string)file_get_contents($cacheFile), true) ?: [];
-        $matched = false;
-        foreach ($localNotices as &$ln) {
-            if ((string)($ln['id'] ?? '') === (string)$id || (!empty($ln['title']) && trim($ln['title']) === $title)) {
-                $ln['title'] = $title;
-                $ln['description'] = $description;
-                $ln['is_pinned'] = $is_pinned;
-                $ln['is_new'] = $show_new;
-                $ln['new_until'] = $new_until;
-                $ln['file_path'] = $file_path;
-                $ln['file_url'] = $file_url;
-                $ln['updatedAt'] = date('Y-m-d H:i:s');
-                $matched = true;
-                break;
+    } else {
+        $cacheFile = __DIR__ . '/../cache/local_notifications.json';
+        if (file_exists($cacheFile)) {
+            $localNotices = json_decode((string)file_get_contents($cacheFile), true) ?: [];
+            foreach ($localNotices as &$ln) {
+                if ((string)($ln['id'] ?? '') === (string)$id || (!empty($ln['title']) && trim($ln['title']) === $title)) {
+                    $ln['title'] = $title;
+                    $ln['description'] = $description;
+                    $ln['is_pinned'] = $is_pinned;
+                    $ln['is_new'] = $show_new;
+                    $ln['new_until'] = $new_until;
+                    $ln['file_path'] = $file_path;
+                    $ln['file_url'] = $file_url;
+                    $ln['updatedAt'] = date('Y-m-d H:i:s');
+                    break;
+                }
             }
+            unset($ln);
+            file_put_contents($cacheFile, json_encode(array_values($localNotices), JSON_PRETTY_PRINT));
         }
-        unset($ln);
-        file_put_contents($cacheFile, json_encode(array_values($localNotices), JSON_PRETTY_PRINT));
     }
 
     Security::logAudit($pdo ?? null, 'NOTICE_UPDATED', 'Updated announcement: ' . substr($title, 0, 80), $userEmail);
@@ -240,17 +238,17 @@ if ($action === 'delete_notification') {
         } catch (Throwable $e) {
             error_log('Notification delete failed: ' . $e->getMessage());
         }
-    }
-
-    $localNoticeFile = __DIR__ . '/../cache/local_notifications.json';
-    if (file_exists($localNoticeFile)) {
-        $localNotices = json_decode((string)file_get_contents($localNoticeFile), true) ?: [];
-        $localNotices = array_filter($localNotices, function($n) use ($id, $filePath) {
-            if ((int)($n['id'] ?? 0) === $id) return false;
-            if (!empty($filePath) && ($n['file_path'] ?? '') === $filePath) return false;
-            return true;
-        });
-        file_put_contents($localNoticeFile, json_encode(array_values($localNotices), JSON_PRETTY_PRINT));
+    } else {
+        $localNoticeFile = __DIR__ . '/../cache/local_notifications.json';
+        if (file_exists($localNoticeFile)) {
+            $localNotices = json_decode((string)file_get_contents($localNoticeFile), true) ?: [];
+            $localNotices = array_filter($localNotices, function($n) use ($id, $filePath) {
+                if ((int)($n['id'] ?? 0) === $id) return false;
+                if (!empty($filePath) && ($n['file_path'] ?? '') === $filePath) return false;
+                return true;
+            });
+            file_put_contents($localNoticeFile, json_encode(array_values($localNotices), JSON_PRETTY_PRINT));
+        }
     }
 
     if (!empty($filePath) && str_starts_with($filePath, 'uploads/notification_docs/')) {
@@ -307,30 +305,28 @@ if ($action === 'add_admin') {
             header('Location: /admin/index.php?error=' . urlencode('Email address is already registered in the administrator directory.') . '&tab=admin');
             exit;
         }
-    }
-
-    // Always persist to JSON cache
-    $cacheFile = __DIR__ . '/../cache/admin_users.json';
-    $cachedUsers = file_exists($cacheFile) ? (json_decode((string)file_get_contents($cacheFile), true) ?: []) : [];
-    
-    // Check duplicate email in cache
-    foreach ($cachedUsers as $cu) {
-        if (strcasecmp($cu['email'] ?? '', $email) === 0) {
-            header('Location: /admin/index.php?error=' . urlencode('Email address is already registered.') . '&tab=admin');
-            exit;
+    } else {
+        $cacheFile = __DIR__ . '/../cache/admin_users.json';
+        $cachedUsers = file_exists($cacheFile) ? (json_decode((string)file_get_contents($cacheFile), true) ?: []) : [];
+        
+        foreach ($cachedUsers as $cu) {
+            if (strcasecmp($cu['email'] ?? '', $email) === 0) {
+                header('Location: /admin/index.php?error=' . urlencode('Email address is already registered.') . '&tab=admin');
+                exit;
+            }
         }
-    }
 
-    $cachedUsers[] = [
-        'id' => (int)$newId,
-        'name' => $name,
-        'email' => $email,
-        'password' => $hash,
-        'role' => $role,
-        'status' => 'active',
-        'createdAt' => date('Y-m-d H:i:s')
-    ];
-    file_put_contents($cacheFile, json_encode($cachedUsers, JSON_PRETTY_PRINT));
+        $cachedUsers[] = [
+            'id' => time(),
+            'name' => $name,
+            'email' => $email,
+            'password' => $hash,
+            'role' => $role,
+            'status' => 'active',
+            'createdAt' => date('Y-m-d H:i:s')
+        ];
+        file_put_contents($cacheFile, json_encode($cachedUsers, JSON_PRETTY_PRINT));
+    }
 
     Security::logAudit($pdo ?? null, 'ADMIN_CREATED', "Created new $role account: $email ($name)", $userEmail);
 
@@ -359,16 +355,15 @@ if ($action === 'delete_admin') {
         } catch (Throwable $e) {
             error_log('Admin delete failed: ' . $e->getMessage());
         }
-    }
-
-    // Always delete from JSON cache
-    $cacheFile = __DIR__ . '/../cache/admin_users.json';
-    if (file_exists($cacheFile)) {
-        $cachedUsers = json_decode((string)file_get_contents($cacheFile), true) ?: [];
-        $cachedUsers = array_filter($cachedUsers, function($u) use ($id) {
-            return (int)($u['id'] ?? 0) !== $id;
-        });
-        file_put_contents($cacheFile, json_encode(array_values($cachedUsers), JSON_PRETTY_PRINT));
+    } else {
+        $cacheFile = __DIR__ . '/../cache/admin_users.json';
+        if (file_exists($cacheFile)) {
+            $cachedUsers = json_decode((string)file_get_contents($cacheFile), true) ?: [];
+            $cachedUsers = array_filter($cachedUsers, function($u) use ($id) {
+                return (int)($u['id'] ?? 0) !== $id;
+            });
+            file_put_contents($cacheFile, json_encode(array_values($cachedUsers), JSON_PRETTY_PRINT));
+        }
     }
 
     Security::logAudit($pdo ?? null, 'ADMIN_DELETED', "Deleted administrator account ID #$id", $userEmail);
@@ -388,15 +383,15 @@ if ($action === 'delete_message') {
         } catch (Throwable $e) {
             error_log('Message delete failed: ' . $e->getMessage());
         }
-    }
-
-    $fallbackFile = __DIR__ . '/../cache/messages_fallback.json';
-    if (file_exists($fallbackFile)) {
-        $fallbackMessages = json_decode((string)file_get_contents($fallbackFile), true) ?: [];
-        $fallbackMessages = array_filter($fallbackMessages, function($m) use ($id) {
-            return (int)($m['id'] ?? 0) !== $id;
-        });
-        file_put_contents($fallbackFile, json_encode(array_values($fallbackMessages), JSON_PRETTY_PRINT));
+    } else {
+        $fallbackFile = __DIR__ . '/../cache/messages_fallback.json';
+        if (file_exists($fallbackFile)) {
+            $fallbackMessages = json_decode((string)file_get_contents($fallbackFile), true) ?: [];
+            $fallbackMessages = array_filter($fallbackMessages, function($m) use ($id) {
+                return (int)($m['id'] ?? 0) !== $id;
+            });
+            file_put_contents($fallbackFile, json_encode(array_values($fallbackMessages), JSON_PRETTY_PRINT));
+        }
     }
 
     Security::logAudit($pdo ?? null, 'MESSAGE_DELETED', "Deleted contact inquiry message ID #$id", $userEmail);
@@ -445,30 +440,24 @@ if ($action === 'change_password') {
             $upd->execute([$newHash, $userId]);
             $passwordUpdated = true;
         }
-    }
-
-    // Always check and update in JSON cache
-    $cacheFile = __DIR__ . '/../cache/admin_users.json';
-    if (file_exists($cacheFile)) {
-        $cachedUsers = json_decode((string)file_get_contents($cacheFile), true) ?: [];
-        $foundInCache = false;
-        foreach ($cachedUsers as &$cu) {
-            if ((int)($cu['id'] ?? 0) === $userId || strcasecmp($cu['email'] ?? '', $userEmail) === 0) {
-                $foundInCache = true;
-                if (!password_verify($currentPassword, $cu['password'] ?? '')) {
-                    if (!$passwordUpdated) {
+    } else {
+        $cacheFile = __DIR__ . '/../cache/admin_users.json';
+        if (file_exists($cacheFile)) {
+            $cachedUsers = json_decode((string)file_get_contents($cacheFile), true) ?: [];
+            foreach ($cachedUsers as &$cu) {
+                if ((int)($cu['id'] ?? 0) === $userId || strcasecmp($cu['email'] ?? '', $userEmail) === 0) {
+                    if (!password_verify($currentPassword, $cu['password'] ?? '')) {
                         Security::logAudit($pdo ?? null, 'PASSWORD_CHANGE_FAILED', 'Incorrect current password provided.', $userEmail);
                         header('Location: /admin/index.php?error=' . urlencode('Your current password was incorrect.') . '&tab=notifications');
                         exit;
                     }
+                    $newHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
+                    $cu['password'] = $newHash;
+                    $passwordUpdated = true;
+                    break;
                 }
-                $newHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
-                $cu['password'] = $newHash;
-                $passwordUpdated = true;
-                break;
             }
-        }
-        if ($foundInCache) {
+            unset($cu);
             file_put_contents($cacheFile, json_encode($cachedUsers, JSON_PRETTY_PRINT));
         }
     }
