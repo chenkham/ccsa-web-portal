@@ -1,7 +1,11 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /login.php
+Disallow: /actions.php
 Disallow: /cache/
 Disallow: /includes/
+Disallow: /endpoints/
+Disallow: /wp-admin.php
 
 Sitemap: https://ccsdu.in/sitemap.xml

@@ -3,9 +3,38 @@
 
 # 1. Directory Index & Fallback (Prioritize index.php)
 DirectoryIndex index.php index.html
-Options -Indexes
+Options -Indexes +FollowSymLinks
+ErrorDocument 404 /404.php
 
-# 2. Block Access to Hidden & Sensitive Files
+# 2. URL Rewriting & Google Sitelinks Aliasing
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Google Search Sitelink Normalizations
+    RewriteRule ^notifications/?$ /notices.php [R=301,L]
+    RewriteRule ^all-notifications/?$ /notices.php [R=301,L]
+    RewriteRule ^all_notifications/?$ /notices.php [R=301,L]
+    RewriteRule ^document/?$ /notices.php [R=301,L]
+    RewriteRule ^documents/?$ /notices.php [R=301,L]
+    RewriteRule ^bca/?$ /undergraduate.php [R=301,L]
+    RewriteRule ^mca/?$ /postgraduate.php [R=301,L]
+    RewriteRule ^students/?$ /Present_Stu.php [R=301,L]
+    RewriteRule ^present-students/?$ /Present_Stu.php [R=301,L]
+    RewriteRule ^present_students/?$ /Present_Stu.php [R=301,L]
+    RewriteRule ^present_stu/?$ /Present_Stu.php [R=301,L]
+
+    # Legacy .html to .php Redirection
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)\.html$ /$1.php [R=301,L]
+
+    # Clean URL support (extensionless PHP files)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}\.php -f
+    RewriteRule ^([^/]+)/?$ $1.php [L]
+</IfModule>
+
+# 3. Block Access to Hidden & Sensitive Files
 <FilesMatch "(^\.|\.(sql|env|bak|log|ini|sh|md|git))$">
     Order allow,deny
     Deny from all

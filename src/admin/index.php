@@ -21,6 +21,7 @@ $expired = isset($_GET['expired']);
 
 // Authentication check: show login form if not logged in
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet');
     $csrf_token = SecurityValidator::generateCSRFToken();
     ?>
     <!DOCTYPE html>
@@ -28,6 +29,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
         <title>Admin Login - CCSA Dibrugarh University</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

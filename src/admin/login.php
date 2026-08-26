@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet');
+
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/security-validator.php';
 require_once __DIR__ . '/../includes/Security.php';
