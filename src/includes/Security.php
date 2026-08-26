@@ -296,4 +296,31 @@ class Security
             error_log('Audit log cache error: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Generates a secure 6-digit cryptographic OTP code.
+     */
+    public static function generateOtp(): string
+    {
+        return sprintf('%06d', random_int(100000, 999999));
+    }
+
+    /**
+     * Hashes an OTP code for secure storage.
+     */
+    public static function hashOtp(string $otp): string
+    {
+        return password_hash($otp, PASSWORD_BCRYPT, ['cost' => 10]);
+    }
+
+    /**
+     * Verifies an OTP code against its stored hash.
+     */
+    public static function verifyOtp(string $otp, string $hash): bool
+    {
+        if (strlen($otp) !== 6 || !ctype_digit($otp)) {
+            return false;
+        }
+        return password_verify($otp, $hash);
+    }
 }

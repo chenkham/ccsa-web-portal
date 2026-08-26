@@ -402,12 +402,13 @@ if ($action === 'delete_message') {
 
 if ($action === 'change_password') {
     $currentPassword = (string)($_POST['current_password'] ?? '');
+    $otp = trim((string)($_POST['otp'] ?? ''));
     $newPassword = (string)($_POST['new_password'] ?? '');
     $confirmPassword = (string)($_POST['confirm_password'] ?? '');
     $userId = (int)($_SESSION['user_id'] ?? 0);
 
-    if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
-        header('Location: /admin/index.php?error=' . urlencode('All password fields are required.') . '&tab=notifications');
+    if ((empty($currentPassword) && empty($otp)) || empty($newPassword) || empty($confirmPassword)) {
+        header('Location: /admin/index.php?error=' . urlencode('Please provide your current password or email OTP, and new password.') . '&tab=notifications');
         exit;
     }
 
@@ -424,41 +425,42 @@ if ($action === 'change_password') {
     $passwordUpdated = false;
 
     if (isset($pdo) && $pdo !== null && $userId > 0) {
-        $stmt = $pdo->prepare('SELECT password FROM admin_users WHERE id = ? LIMIT 1');
+        $stmt = $pdo->prepare('SELECT email, password FROM admin_users WHERE id = ? LIMIT 1');
         $stmt->execute([$userId]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            if (!password_verify($currentPassword, $row['password'])) {
-                Security::logAudit($pdo, 'PASSWORD_CHANGE_FAILED', 'Incorrect current password provided during change attempt.', $userEmail);
-                header('Location: /admin/index.php?error=' . urlencode('Your current password was incorrect.') . '&tab=notifications');
-                exit;
-            }
-
-            $newHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
-            $upd = $pdo->prepare('UPDATE admin_users SET password = ?, updatedAt = NOW() WHERE id = ?');
-            $upd->execute([$newHash, $userId]);
-            $passwordUpdated = true;
-        }
-    } else {
-        $cacheFile = __DIR__ . '/../cache/admin_users.json';
-        if (file_exists($cacheFile)) {
-            $cachedUsers = json_decode((string)file_get_contents($cacheFile), true) ?: [];
-            foreach ($cachedUsers as &$cu) {
-                if ((int)($cu['id'] ?? 0) === $userId || strcasecmp($cu['email'] ?? '', $userEmail) === 0) {
-                    if (!password_verify($currentPassword, $cu['password'] ?? '')) {
-                        Security::logAudit($pdo ?? null, 'PASSWORD_CHANGE_FAILED', 'Incorrect current password provided.', $userEmail);
-                        header('Location: /admin/index.php?error=' . urlencode('Your current password was incorrect.') . '&tab=notifications');
-                        exit;
-                    }
-                    $newHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
-                    $cu['password'] = $newHash;
-                    $passwordUpdated = true;
-                    break;
+            $authOk = false;
+            // Check OTP if provided
+            if (!empty($otp)) {
+                $otpStmt = $pdo->prepare("SELECT id, otp_hash FROM admin_otps WHERE email = ? AND (purpose = 'password_change' OR purpose = 'password_reset') AND expires_at > NOW() ORDER BY id DESC LIMIT 1");
+                $otpStmt->execute([$row['email']]);
+                $otpRow = $otpStmt->fetch(PDO::FETCH_ASSOC);
+                if ($otpRow && Security::verifyOtp($otp, $otpRow['otp_hash'])) {
+                    $authOk = true;
+                    $pdo->prepare("DELETE FROM admin_otps WHERE id = ?")->execute([$otpRow['id']]);
+                } else {
+                    Security::logAudit($pdo, 'PASSWORD_CHANGE_FAILED_OTP', 'Invalid or expired OTP provided during password change.', $userEmail);
+                    header('Location: /admin/index.php?error=' . urlencode('Invalid or expired verification code.') . '&tab=notifications');
+                    exit;
+                }
+            } else {
+                // Check current password
+                if (password_verify($currentPassword, $row['password'])) {
+                    $authOk = true;
+                } else {
+                    Security::logAudit($pdo, 'PASSWORD_CHANGE_FAILED', 'Incorrect current password provided.', $userEmail);
+                    header('Location: /admin/index.php?error=' . urlencode('Your current password was incorrect.') . '&tab=notifications');
+                    exit;
                 }
             }
-            unset($cu);
-            file_put_contents($cacheFile, json_encode($cachedUsers, JSON_PRETTY_PRINT));
+
+            if ($authOk) {
+                $newHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
+                $upd = $pdo->prepare('UPDATE admin_users SET password = ?, updatedAt = NOW() WHERE id = ?');
+                $upd->execute([$newHash, $userId]);
+                $passwordUpdated = true;
+            }
         }
     }
 
