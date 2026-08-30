@@ -1,0 +1,8 @@
+[
+    {
+        "timestamp": "2026-08-26 19:44:01",
+        "to": "ccsduoffice@gmail.com",
+        "success": false,
+        "details": "PHP mail() dispatch error"
+    }
+]

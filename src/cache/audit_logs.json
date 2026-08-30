@@ -1,0 +1,29 @@
+[
+    {
+        "id": "1787773474740",
+        "user_email": "ccsduoffice@gmail.com",
+        "ip_address": "127.0.0.1",
+        "action": "OTP_EXPIRED_OR_NOT_FOUND",
+        "details": "Expired or missing OTP verification attempt for ccsduoffice@gmail.com",
+        "user_agent": "Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell\/5.1.26100.9168",
+        "created_at": "2026-08-26 19:44:34"
+    },
+    {
+        "id": "1787773448242",
+        "user_email": "ccsduoffice@gmail.com",
+        "ip_address": "127.0.0.1",
+        "action": "OTP_VERIFICATION_FAILED",
+        "details": "Incorrect OTP entered for ccsduoffice@gmail.com (Attempt 1\/5)",
+        "user_agent": "Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell\/5.1.26100.9168",
+        "created_at": "2026-08-26 19:44:08"
+    },
+    {
+        "id": "1787773441987",
+        "user_email": "ccsduoffice@gmail.com",
+        "ip_address": "127.0.0.1",
+        "action": "OTP_SENT_LOGIN",
+        "details": "Login OTP dispatched to ccsduoffice@gmail.com",
+        "user_agent": "Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell\/5.1.26100.9168",
+        "created_at": "2026-08-26 19:44:01"
+    }
+]

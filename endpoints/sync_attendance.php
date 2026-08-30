@@ -55,7 +55,7 @@ try {
     // 3. Insert finalized records in app_attendance_records
     $recStmt = $pdo->prepare('
         INSERT INTO app_attendance_records 
-        (id, session_id, student_id, student_roll_no, student_name, status, marked_by, confidence, marked_at)
+        (id, session_id, student_id, student_roll_no, student_name, status, marked_by, confidence, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ');
 

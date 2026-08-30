@@ -83,12 +83,12 @@ try {
     $existing = $checkStmt->fetch();
 
     if ($existing) {
-        $updateStmt = $pdo->prepare("UPDATE app_attendance_records SET status = 'present', marked_by = ?, marked_at = CURRENT_TIMESTAMP WHERE id = ?");
+        $updateStmt = $pdo->prepare("UPDATE app_attendance_records SET status = 'present', marked_by = ?, created_at = CURRENT_TIMESTAMP WHERE id = ?");
         $updateStmt->execute([$markedBy, $existing['id']]);
     } else {
         $recordId = bin2hex(random_bytes(16));
         $insertStmt = $pdo->prepare("
-            INSERT INTO app_attendance_records (id, session_id, student_id, student_roll_no, student_name, status, marked_by, marked_at)
+            INSERT INTO app_attendance_records (id, session_id, student_id, student_roll_no, student_name, status, marked_by, created_at)
             VALUES (?, ?, ?, ?, ?, 'present', ?, CURRENT_TIMESTAMP)
         ");
         $insertStmt->execute([$recordId, $sessionId, $studentId, $rollNo, $name, $markedBy]);

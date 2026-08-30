@@ -145,10 +145,20 @@ class AppDatabase
                         student_name VARCHAR(255) NOT NULL,
                         status ENUM('present', 'absent') NOT NULL,
                         marked_by VARCHAR(50) DEFAULT 'totp_qr',
-                        marked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         UNIQUE KEY uq_session_student (session_id, student_id)
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
                 ");
+
+                // Ensure missing columns exist on already-created tables
+                try {
+                    self::$pdo->exec("ALTER TABLE app_attendance_sessions ADD COLUMN IF NOT EXISTS duration_hours INT DEFAULT 1 AFTER is_lab");
+                    self::$pdo->exec("ALTER TABLE app_attendance_sessions ADD COLUMN IF NOT EXISTS geofence_enabled TINYINT(1) DEFAULT 0 AFTER total_present");
+                    self::$pdo->exec("ALTER TABLE app_attendance_sessions ADD COLUMN IF NOT EXISTS session_lat DOUBLE NULL AFTER geofence_enabled");
+                    self::$pdo->exec("ALTER TABLE app_attendance_sessions ADD COLUMN IF NOT EXISTS session_lng DOUBLE NULL AFTER session_lat");
+                    self::$pdo->exec("ALTER TABLE app_attendance_sessions ADD COLUMN IF NOT EXISTS session_radius DOUBLE DEFAULT 80.0 AFTER session_lng");
+                    self::$pdo->exec("ALTER TABLE app_attendance_records ADD COLUMN IF NOT EXISTS confidence DECIMAL(5,2) NULL AFTER marked_by");
+                } catch (\Throwable $e) {}
 
                 // Clean up any historical duplicate records
                 self::$pdo->exec("

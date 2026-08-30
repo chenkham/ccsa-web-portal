@@ -57,7 +57,7 @@ try {
             sess.is_lab,
             COALESCE(MAX(r.status), 'absent') AS status,
             MAX(r.marked_by) AS marked_by,
-            MAX(r.marked_at) AS marked_at
+            MAX(r.created_at) AS marked_at
         FROM app_attendance_sessions sess
         LEFT JOIN app_subject_students enroll 
             ON sess.subject_id = enroll.subject_id 
