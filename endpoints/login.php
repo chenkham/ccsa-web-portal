@@ -42,6 +42,14 @@ try {
     $classRoll = $user['student_roll_no'] ?? '';
     $examRoll  = $user['du_exam_roll_no'] ?? '';
 
+    // Auto-bind device ID on student login if not yet bound
+    $deviceId = trim((string)($input['device_id'] ?? ''));
+    if (!empty($deviceId) && empty($user['device_id']) && $user['role'] === 'student') {
+        $pdo->prepare('UPDATE app_users SET device_id = ? WHERE id = ?')->execute([$deviceId, $user['id']]);
+        $pdo->prepare('UPDATE app_students SET device_id = ? WHERE id = ? OR LOWER(email) = LOWER(?)')->execute([$deviceId, $user['id'], $email]);
+        $user['device_id'] = $deviceId;
+    }
+
     if ($user['role'] === 'student') {
         $stdStmt = $pdo->prepare('SELECT class_roll_no, du_exam_roll_no FROM app_students WHERE LOWER(email) = LOWER(?) OR id = ? LIMIT 1');
         $stdStmt->execute([$email, $user['id']]);
