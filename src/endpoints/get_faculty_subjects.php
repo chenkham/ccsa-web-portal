@@ -26,13 +26,24 @@ try {
     $stmt->execute([$email]);
     $subjects = $stmt->fetchAll();
 
-    // Attach enrolled student IDs for each subject
+    // Attach enrolled student IDs and profiles for each subject
     foreach ($subjects as &$sub) {
         $stdStmt = $pdo->prepare("
-            SELECT s.* FROM app_students s
-            INNER JOIN app_subject_students ss ON s.id = ss.student_id
+            SELECT 
+                COALESCE(s.id, u.id, ss.student_id) AS id,
+                COALESCE(s.name, u.name, 'Student') AS name,
+                COALESCE(s.email, u.email, '') AS email,
+                COALESCE(s.class_roll_no, u.student_roll_no, '') AS class_roll_no,
+                COALESCE(s.du_exam_roll_no, u.du_exam_roll_no, '') AS du_exam_roll_no,
+                COALESCE(s.course, u.course, 'BCA') AS course,
+                COALESCE(s.semester, u.semester, 1) AS semester
+            FROM app_subject_students ss
+            LEFT JOIN app_students s ON ss.student_id = s.id
+            LEFT JOIN app_users u ON ss.student_id = u.id OR (s.email IS NOT NULL AND s.email != '' AND LOWER(u.email) = LOWER(s.email))
             WHERE ss.subject_id = ?
-            ORDER BY s.class_roll_no ASC
+            ORDER BY CASE WHEN s.class_roll_no IS NOT NULL AND s.class_roll_no != '' THEN CAST(s.class_roll_no AS UNSIGNED)
+                          WHEN u.student_roll_no IS NOT NULL AND u.student_roll_no != '' THEN CAST(u.student_roll_no AS UNSIGNED)
+                          ELSE 9999 END ASC, COALESCE(s.name, u.name) ASC
         ");
         $stdStmt->execute([$sub['id']]);
         $sub['enrolled_students'] = $stdStmt->fetchAll();

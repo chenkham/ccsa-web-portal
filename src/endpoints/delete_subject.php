@@ -19,11 +19,15 @@ if (empty($subjectId)) {
 try {
     $pdo = AppDatabase::getConnection();
 
+    $pdo->beginTransaction();
+
     // Cascading deletes across all dependent tables
     $pdo->prepare("DELETE FROM app_subject_students WHERE subject_id = ?")->execute([$subjectId]);
     $pdo->prepare("DELETE FROM app_attendance_records WHERE session_id IN (SELECT id FROM app_attendance_sessions WHERE subject_id = ?)")->execute([$subjectId]);
     $pdo->prepare("DELETE FROM app_attendance_sessions WHERE subject_id = ?")->execute([$subjectId]);
     $pdo->prepare("DELETE FROM app_subjects WHERE id = ?")->execute([$subjectId]);
+
+    $pdo->commit();
 
     echo json_encode([
         'success' => true,
@@ -31,5 +35,9 @@ try {
     ]);
 
 } catch (\Exception $e) {
+    if (isset($pdo) && $pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Delete failed: ' . $e->getMessage()]);
 }

@@ -19,10 +19,10 @@ try {
     $pdo = AppDatabase::getConnection();
 
     $stmt = $pdo->prepare("
-        SELECT student_id, student_name, student_roll_no, marked_at 
+        SELECT student_id, student_name, student_roll_no, created_at 
         FROM app_attendance_records 
         WHERE session_id = ? AND status = 'present' 
-        ORDER BY marked_at DESC
+        ORDER BY created_at DESC
     ");
     $stmt->execute([$sessionId]);
     $presentList = $stmt->fetchAll();

@@ -24,6 +24,10 @@ ErrorDocument 404 /404.php
     RewriteRule ^present_students/?$ /Present_Stu.php [R=301,L]
     RewriteRule ^present_stu/?$ /Present_Stu.php [R=301,L]
 
+    # Alumni Redirection to Official Portal
+    RewriteRule ^alumni/?$ https://ccsaalumni.in/ [R=301,L]
+    RewriteRule ^alumni\.php$ https://ccsaalumni.in/ [R=301,L]
+
     # Legacy .html to .php Redirection
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)\.html$ /$1.php [R=301,L]

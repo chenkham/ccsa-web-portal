@@ -10,6 +10,9 @@
 
 RewriteEngine On
 
+# Redirect alumni route directly to official alumni portal
+RewriteRule ^(src/)?alumni(\.php)?/?$ https://ccsaalumni.in/ [R=301,L,NC]
+
 # Block direct access to PHP include files & cache
 RewriteRule ^src/includes/ - [F,L]
 RewriteRule ^src/templates/ - [F,L]
@@ -25,6 +28,10 @@ RewriteRule ^src/([^/]+)\.html$ /src/$1.php [L]
 
 RewriteCond %{DOCUMENT_ROOT}/$1.php -f
 RewriteRule ^([^/]+)\.html$ /$1.php [L]
+
+# Route /api and /endpoints to /src/endpoints
+RewriteRule ^api/(.*)$ /src/endpoints/$1 [L]
+RewriteRule ^endpoints/(.*)$ /src/endpoints/$1 [L]
 
 # Do not rewrite if already inside /src
 RewriteCond %{REQUEST_URI} !^/src/

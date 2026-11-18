@@ -6,49 +6,49 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
-if (\['REQUEST_METHOD'] === 'OPTIONS') {
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-\ = __DIR__ . '/../src/cache/students_dept_25.json';
-if (!file_exists(\)) {
-    \ = __DIR__ . '/../../src/cache/students_dept_25.json';
+$jsonPath = __DIR__ . '/../src/cache/students_dept_25.json';
+if (!file_exists($jsonPath)) {
+    $jsonPath = __DIR__ . '/../../src/cache/students_dept_25.json';
 }
 
-\ = [];
+$students = [];
 
-if (file_exists(\)) {
-    \ = file_get_contents(\);
-    \ = json_decode(\, true);
+if (file_exists($jsonPath)) {
+    $content = file_get_contents($jsonPath);
+    $data = json_decode($content ?: '', true);
 
-    if (is_array(\)) {
-        foreach (\ as \) {
-            foreach ((\['programmes'] ?? []) as \) {
-                \ = (string)(\['programme'] ?? '');
-                \ = 'BCA';
-                if (stripos(\, 'MCA') !== false) \ = 'MCA';
-                elseif (stripos(\, 'PGDCA') !== false) \ = 'PGDCA';
+    if (is_array($data)) {
+        foreach ($data as $dept) {
+            foreach (($dept['programmes'] ?? []) as $prog) {
+                $progName = (string)($prog['programme'] ?? '');
+                $course = 'BCA';
+                if (stripos($progName, 'MCA') !== false) $course = 'MCA';
+                elseif (stripos($progName, 'PGDCA') !== false) $course = 'PGDCA';
 
-                foreach ((\['semesters'] ?? []) as \) {
-                    \ = (string)(\['semester'] ?? '');
-                    \ = 1;
-                    if (stripos(\, '1st') !== false) \ = 1;
-                    elseif (stripos(\, '2nd') !== false) \ = 2;
-                    elseif (stripos(\, '3rd') !== false) \ = 3;
-                    elseif (stripos(\, '4th') !== false) \ = 4;
-                    elseif (stripos(\, '5th') !== false) \ = 5;
-                    elseif (stripos(\, '6th') !== false) \ = 6;
-                    elseif (stripos(\, '7th') !== false) \ = 7;
-                    elseif (stripos(\, '8th') !== false) \ = 8;
+                foreach (($prog['semesters'] ?? []) as $sem) {
+                    $semStr = (string)($sem['semester'] ?? '');
+                    $semester = 1;
+                    if (stripos($semStr, '1st') !== false) $semester = 1;
+                    elseif (stripos($semStr, '2nd') !== false) $semester = 2;
+                    elseif (stripos($semStr, '3rd') !== false) $semester = 3;
+                    elseif (stripos($semStr, '4th') !== false) $semester = 4;
+                    elseif (stripos($semStr, '5th') !== false) $semester = 5;
+                    elseif (stripos($semStr, '6th') !== false) $semester = 6;
+                    elseif (stripos($semStr, '7th') !== false) $semester = 7;
+                    elseif (stripos($semStr, '8th') !== false) $semester = 8;
 
-                    foreach ((\['students'] ?? []) as \) {
-                        \ = trim((string)(\['name'] ?? ''));
-                        if (!empty(\)) {
-                            \[] = [
-                                'name'     => \,
-                                'course'   => \,
-                                'semester' => \,
+                    foreach (($sem['students'] ?? []) as $st) {
+                        $name = trim((string)($st['name'] ?? ''));
+                        if (!empty($name)) {
+                            $students[] = [
+                                'name'     => $name,
+                                'course'   => $course,
+                                'semester' => $semester,
                             ];
                         }
                     }
@@ -60,6 +60,7 @@ if (file_exists(\)) {
 
 echo json_encode([
     'success'  => true,
-    'count'    => count(\),
-    'students' => \,
+    'count'    => count($students),
+    'students' => $students,
 ]);
+

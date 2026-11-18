@@ -339,7 +339,7 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
                                 <i class="fas fa-shield-alt text-amber-300 text-xs"></i>
                                 <span>Anti-Ragging Helpline</span>
                             </button>
-                            <a href="alumni.php" class="hover:text-[#fbbf24] transition-colors">Alumni</a>
+                            <a href="https://ccsaalumni.in/" target="_blank" rel="noopener noreferrer" class="hover:text-[#fbbf24] transition-colors">Alumni</a>
                             <a href="https://placeccsa.wordpress.com/" target="_blank" rel="noopener noreferrer" class="hover:text-[#fbbf24] transition-colors">Placement Cell</a>
                         </div>
 
@@ -448,7 +448,7 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
             <?php elseif (!empty($child['download']) || !empty($child['view'])): ?>
                                 <?php echo renderDownloadItem($child, $viewIcon); ?>
             <?php else: ?>
-                                <a href="<?php echo Security::escape($child['href']); ?>" class="dropdown-item block px-4 py-2.5 text-[#1a365d] hover:bg-slate-100 transition-colors text-sm font-medium"><?php echo Security::escape($child['label']); ?></a>
+                                <a href="<?php echo Security::escape($child['href']); ?>"<?php if (!empty($child['target'])): ?> target="<?php echo Security::escape($child['target']); ?>" rel="noopener noreferrer"<?php elseif (str_starts_with($child['href'] ?? '', 'http')): ?> target="_blank" rel="noopener noreferrer"<?php endif; ?> class="dropdown-item block px-4 py-2.5 text-[#1a365d] hover:bg-slate-100 transition-colors text-sm font-medium"><?php echo Security::escape($child['label']); ?></a>
             <?php endif; ?>
         <?php endforeach; ?>
                             </div>
@@ -494,7 +494,7 @@ function renderMobileDownloadItem(array $item, string $viewIcon): string {
             <?php elseif (!empty($child['download']) || !empty($child['view'])): ?>
                             <?php echo renderMobileDownloadItem($child, $viewIcon); ?>
             <?php else: ?>
-                            <a href="<?php echo Security::escape($child['href']); ?>" class="block py-1.5 px-2 text-slate-300 hover:text-[#fbbf24] text-xs font-normal transition-colors"><?php echo Security::escape($child['label']); ?></a>
+                            <a href="<?php echo Security::escape($child['href']); ?>"<?php if (!empty($child['target'])): ?> target="<?php echo Security::escape($child['target']); ?>" rel="noopener noreferrer"<?php elseif (str_starts_with($child['href'] ?? '', 'http')): ?> target="_blank" rel="noopener noreferrer"<?php endif; ?> class="block py-1.5 px-2 text-slate-300 hover:text-[#fbbf24] text-xs font-normal transition-colors"><?php echo Security::escape($child['label']); ?></a>
             <?php endif; ?>
         <?php endforeach; ?>
                         </div>

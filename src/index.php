@@ -924,11 +924,11 @@ include 'templates/header.php';
                 </div>
 
                 <!-- 1000+ Alumni Network -->
-                <div class="relative overflow-hidden bg-gradient-to-b from-[#333842] via-[#21242b] to-[#15171c] p-5 sm:p-6 rounded-2xl border border-slate-500/40 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.45),inset_0_1px_1px_rgba(255,255,255,0.25)] text-center hover:scale-[1.02] hover:border-slate-400/60 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.6),inset_0_1px_2px_rgba(255,255,255,0.35)] transition-all duration-300 group">
+                <a href="https://ccsaalumni.in/" target="_blank" rel="noopener noreferrer" class="relative block overflow-hidden bg-gradient-to-b from-[#333842] via-[#21242b] to-[#15171c] p-5 sm:p-6 rounded-2xl border border-slate-500/40 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.45),inset_0_1px_1px_rgba(255,255,255,0.25)] text-center hover:scale-[1.02] hover:border-slate-400/60 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.6),inset_0_1px_2px_rgba(255,255,255,0.35)] transition-all duration-300 group cursor-pointer">
                     <div class="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/[0.09] to-transparent pointer-events-none rounded-t-2xl"></div>
                     <p class="text-3xl sm:text-4xl font-black font-display text-[#34d399] drop-shadow-[0_2px_10px_rgba(52,211,153,0.35)] relative z-10">1000+</p>
                     <p class="text-xs sm:text-sm font-semibold text-slate-200 mt-1.5 tracking-wide relative z-10">Alumni Network</p>
-                </div>
+                </a>
             </div>
 
             <!-- 3 Structured Pillar Cards -->

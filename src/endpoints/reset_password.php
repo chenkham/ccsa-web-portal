@@ -47,6 +47,11 @@ try {
         exit;
     }
 
+    if (!empty($row['expires_at']) && strtotime($row['expires_at']) < time()) {
+        echo json_encode(['success' => false, 'message' => 'This OTP code has expired. Please request a new code.']);
+        exit;
+    }
+
     // Mark OTP as used
     $updateOtp = $pdo->prepare("UPDATE app_otp_verifications SET is_used = 1 WHERE id = ?");
     $updateOtp->execute([$row['id']]);

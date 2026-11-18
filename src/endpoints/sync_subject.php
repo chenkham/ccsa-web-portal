@@ -15,6 +15,7 @@ $teacherEmail   = trim((string)($input['teacher_email'] ?? ''));
 $geofenceLat    = isset($input['geofence_lat']) ? (float)$input['geofence_lat'] : null;
 $geofenceLng    = isset($input['geofence_lng']) ? (float)$input['geofence_lng'] : null;
 $geofenceRadius = isset($input['geofence_radius']) ? (float)$input['geofence_radius'] : null;
+$geofenceEnabled = !empty($input['geofence_enabled']) ? 1 : 0;
 $studentIds     = is_array($input['enrolled_student_ids'] ?? null) ? $input['enrolled_student_ids'] : [];
 
 if (empty($id) || empty($code) || empty($name)) {
@@ -31,8 +32,8 @@ try {
     // 1. Insert or update subject in app_subjects
     $stmt = $pdo->prepare('
         INSERT INTO app_subjects 
-        (id, code, name, course, semester, teacher_name, teacher_email, geofence_lat, geofence_lng, geofence_radius)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (id, code, name, course, semester, teacher_name, teacher_email, geofence_lat, geofence_lng, geofence_radius, geofence_enabled)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE 
             code = VALUES(code),
             name = VALUES(name),
@@ -42,7 +43,8 @@ try {
             teacher_email = VALUES(teacher_email),
             geofence_lat = VALUES(geofence_lat),
             geofence_lng = VALUES(geofence_lng),
-            geofence_radius = VALUES(geofence_radius)
+            geofence_radius = VALUES(geofence_radius),
+            geofence_enabled = VALUES(geofence_enabled)
     ');
     $stmt->execute([
         $id,
@@ -54,10 +56,14 @@ try {
         $teacherEmail,
         $geofenceLat,
         $geofenceLng,
-        $geofenceRadius
+        $geofenceRadius,
+        $geofenceEnabled
     ]);
 
     // 2. Sync enrolled students in app_subject_students
+    // First delete ALL existing enrollments for this subject, then insert the current list
+    $pdo->prepare('DELETE FROM app_subject_students WHERE subject_id = ?')->execute([$id]);
+
     $enrollStmt = $pdo->prepare('
         INSERT IGNORE INTO app_subject_students (subject_id, student_id)
         VALUES (?, ?)

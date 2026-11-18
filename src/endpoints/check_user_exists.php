@@ -35,22 +35,9 @@ try {
         }
     }
 
-    // Check if student name already has an account created
-    if (!empty($name) && $role === 'student') {
-        $stmt = $pdo->prepare('SELECT id, name, email FROM app_students WHERE LOWER(name) = LOWER(?) LIMIT 1');
-        $stmt->execute([$name]);
-        $existingByName = $stmt->fetch();
-
-        if ($existingByName) {
-            echo json_encode([
-                'success' => true,
-                'exists'  => true,
-                'reason'  => 'name',
-                'message' => "An account has already been registered for {$name}. Please log in with your registered email."
-            ]);
-            exit;
-        }
-    }
+    // NOTE: no name-based existence check — two students can legitimately
+    // share a full name. Email is the unique identity; duplicates by name
+    // are distinguished by their roll numbers on the faculty side.
 
     // No existing user found -> Safe to proceed with OTP signup
     echo json_encode([

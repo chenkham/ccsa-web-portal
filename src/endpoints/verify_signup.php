@@ -45,8 +45,23 @@ try {
     // Mark OTP as used
     $pdo->prepare('UPDATE app_otp_verifications SET is_used = 1 WHERE id = ?')->execute([$validOtp['id']]);
 
-    // 2. Generate unique user ID
-    $userId = bin2hex(random_bytes(16));
+    // 2. Check if student or user already exists by email to preserve ID link
+    $checkOld = $pdo->prepare('SELECT id FROM app_users WHERE LOWER(email) = LOWER(?) LIMIT 1');
+    $checkOld->execute([$email]);
+    $oldUser = $checkOld->fetch();
+
+    $checkStd = $pdo->prepare('SELECT id FROM app_students WHERE LOWER(email) = LOWER(?) LIMIT 1');
+    $checkStd->execute([$email]);
+    $oldStd = $checkStd->fetch();
+
+    if ($oldUser) {
+        $userId = $oldUser['id'];
+    } elseif ($oldStd) {
+        $userId = $oldStd['id'];
+    } else {
+        $userId = bin2hex(random_bytes(16));
+    }
+
     $hashedPassword = password_hash($password ?: 'ccsa1234', PASSWORD_BCRYPT);
 
     // 3. Insert into app_users
